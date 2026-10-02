@@ -73,7 +73,7 @@ Orden de fusión: de la más antigua a la más nueva, con "Merge commit".
 - `gradle/libs.versions.toml` conserva la entrada `games-activity`, ya sin uso; quitarla es opcional y lo decide el usuario (`gradle/` no lo toca el agente).
 
 ## Pruebas
-Nube, 2026-10-02 (bloque 9): `scripts/probar-logica.sh` 222 de 222 pruebas pasan en `chore/limpieza-h36-h4`. Antes (bloque 8): 220 de 220 en `feature/h4-narrativa`. GitHub Actions: `feature/h36-menu-del-grupo` con `Pruebas` y `APK` en verde; `feature/h4-narrativa` con `Pruebas` (push y pull request) y `APK` en verde.
+Nube, 2026-10-02 (bloque 9): `scripts/probar-logica.sh` 222 de 222 pruebas pasan en `chore/limpieza-h36-h4`. GitHub Actions: `Pruebas` en verde en `chore/limpieza-h36-h4`; `APK` no corre en ramas `chore/**` (solo `main`, `feature/**`, `fix/**`). Antes (bloque 8): 220 de 220 en `feature/h4-narrativa`. GitHub Actions: `feature/h36-menu-del-grupo` con `Pruebas` y `APK` en verde; `feature/h4-narrativa` con `Pruebas` (push y pull request) y `APK` en verde.
 
 ## Notas
 - `ExampleUnitTest` y `ExampleInstrumentedTest` son de la plantilla y se reemplazarán.
