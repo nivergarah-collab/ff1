@@ -179,7 +179,40 @@ public final class Partida {
         /** No habría efecto (vida llena, héroe caído...): no se gasta nada. */
         SIN_EFECTO,
         /** No es un consumible aplicable al grupo, o no quedan unidades. */
-        NO_USABLE
+        NO_USABLE,
+        /** El héroe no tiene magia suficiente. */
+        SIN_MAGIA
+    }
+
+    /** Si una habilidad se puede lanzar fuera de combate: va a aliados y no aplica estados. */
+    public static boolean sirveFueraDeCombate(Habilidad h) {
+        return h.objetivo != Habilidad.Objetivo.ENEMIGO && h.estado == null;
+    }
+
+    /**
+     * Lanza una habilidad de {@code lanzador} sobre {@code objetivo} fuera de combate, gastando
+     * magia. Si no tendría efecto (vida llena, objetivo caído) no se gasta nada. Las habilidades
+     * dirigidas a uno mismo ignoran el objetivo recibido.
+     */
+    public Uso usarHabilidad(Heroe lanzador, Habilidad h, Heroe objetivo) {
+        Heroe destino = h.objetivo == Habilidad.Objetivo.SI_MISMO ? lanzador : objetivo;
+        if (!sirveFueraDeCombate(h) || lanzador.vida() <= 0) {
+            return Uso.NO_USABLE;
+        }
+        Combatiente quien = lanzador.entrarEnCombate();
+        Combatiente sobre = destino == lanzador ? quien : destino.entrarEnCombate();
+        ResultadoAccion r = acciones.usarHabilidad(quien, h, sobre);
+        if (r.fallo == ResultadoAccion.Fallo.SIN_MAGIA) {
+            return Uso.SIN_MAGIA;
+        }
+        if (!r.exito() || sobre.vida() == destino.vida()) {
+            return Uso.SIN_EFECTO;
+        }
+        lanzador.salirDeCombate(quien);
+        if (destino != lanzador) {
+            destino.salirDeCombate(sobre);
+        }
+        return Uso.USADO;
     }
 
     /**

@@ -46,6 +46,7 @@ public final class PantallaMenu implements Pantalla {
     static boolean habilitada(Seccion s) {
         switch (s) {
             case OBJETOS:
+            case MAGIA:
             case SALIR:
                 return true;
             default:
@@ -70,6 +71,8 @@ public final class PantallaMenu implements Pantalla {
         switch (s) {
             case OBJETOS:
                 return new PantallaObjetos(juego, partida);
+            case MAGIA:
+                return new PantallaMagia(juego, partida);
             default:
                 return null;
         }
