@@ -72,13 +72,13 @@ Limitaciones conocidas: una sola ranura de guardado; no se guarda a mitad de un 
 ## Ramas y pull requests pendientes
 Orden de fusión: de la más antigua a la más nueva, con "Merge commit".
 1. `chore/limpieza-h36-h4` (parte de `main`): limpieza de las pantallas del menú. Pull request #16 https://github.com/nivergarah-collab/ff1/pull/16
-2. `feature/h5-pueblo` (parte de `chore/limpieza-h36-h4`): H5 Pozaluz, H6 Cantera y jefe, H7 guardado. PULL_REQUEST_AQUI
+2. `feature/h5-pueblo` (parte de `chore/limpieza-h36-h4`): H5 Pozaluz, H6 Cantera y jefe, H7 guardado. Pull request #17 https://github.com/nivergarah-collab/ff1/pull/17
 
 ## Preguntas pendientes
 - `gradle/libs.versions.toml` conserva la entrada `games-activity`, ya sin uso; quitarla es opcional y lo decide el usuario (`gradle/` no lo toca el agente).
 
 ## Pruebas
-Nube, 2026-10-02 (bloque 10): `scripts/probar-logica.sh` 254 de 254 pruebas pasan en `feature/h5-pueblo`. GitHub Actions: ACTIONS_AQUI
+Nube, 2026-10-02 (bloque 10): `scripts/probar-logica.sh` 254 de 254 pruebas pasan en `feature/h5-pueblo`. GitHub Actions: `Pruebas` y `APK` en verde en `feature/h5-pueblo` (confirmación 8b19a99, antes de este ajuste de documentos).
 
 ## Notas
 - `ExampleUnitTest` y `ExampleInstrumentedTest` son de la plantilla y se reemplazarán.
