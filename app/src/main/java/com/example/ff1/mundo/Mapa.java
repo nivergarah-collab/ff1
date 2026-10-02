@@ -27,12 +27,15 @@ public final class Mapa {
         public final boolean pasable;
         /** Zona de encuentros (ver {@link TablaEncuentros}); {@code null} si aquí no hay. */
         public final String zona;
+        /** Color de dibujo {@code #RRGGBB}; {@code null} si la presentación elige uno. */
+        public final String color;
 
-        Casilla(char simbolo, String nombre, boolean pasable, String zona) {
+        Casilla(char simbolo, String nombre, boolean pasable, String zona, String color) {
             this.simbolo = simbolo;
             this.nombre = nombre;
             this.pasable = pasable;
             this.zona = zona;
+            this.color = color;
         }
     }
 
@@ -73,8 +76,12 @@ public final class Mapa {
                 throw new ErrorDeDatos(nl.ruta() + "." + clave + ": la clave debe ser un solo carácter");
             }
             Nodo c = nl.objeto(clave);
+            String color = c.textoO("color", null);
+            if (color != null && !color.matches("#[0-9A-Fa-f]{6}")) {
+                throw new ErrorDeDatos(c.ruta() + ".color: se esperaba #RRGGBB y vino \"" + color + "\"");
+            }
             leyenda.put(clave.charAt(0), new Casilla(clave.charAt(0), c.texto("nombre"), c.booleano("pasable"),
-                    c.textoO("zona", null)));
+                    c.textoO("zona", null), color));
         }
 
         List<Nodo> nf = doc.lista("filas");

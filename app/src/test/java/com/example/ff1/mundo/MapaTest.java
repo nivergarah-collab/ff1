@@ -3,6 +3,7 @@ package com.example.ff1.mundo;
 import com.example.ff1.PaqueteDelJuego;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -62,6 +63,14 @@ public class MapaTest {
     public void rechazaInicioNoPasable() {
         rechaza(PEQUENO.replace("\"x\":1,\"y\":1", "\"x\":2,\"y\":1"), "no es una casilla pasable");
         rechaza(PEQUENO.replace("\"x\":1,\"y\":1", "\"x\":9,\"y\":1"), "no es una casilla pasable");
+    }
+
+    @Test
+    public void colorDeCasillaOpcionalYValidado() {
+        assertNull(pequeno().casilla(1, 1).color);
+        Mapa m = Mapa.desde(LectorJson.leer(PEQUENO.replace("\"nombre\":\"suelo\",", "\"nombre\":\"suelo\",\"color\":\"#A0B0C0\",")));
+        assertEquals("#A0B0C0", m.casilla(1, 1).color);
+        rechaza(PEQUENO.replace("\"nombre\":\"suelo\",", "\"nombre\":\"suelo\",\"color\":\"verde\","), ".color");
     }
 
     @Test
