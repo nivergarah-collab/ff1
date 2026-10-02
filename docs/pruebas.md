@@ -21,8 +21,11 @@ Prioridad de cobertura: sistema de combate (daño, orden de turnos, estados, fin
 ## Lectura eficiente de resultados
 Con `-q` Gradle solo imprime los fallos. Si hay fallos, leer únicamente las etiquetas `<failure` de los XML en `app/build/test-results/testDebugUnitTest/`, no el reporte HTML ni el registro completo.
 
+## Ciclo rápido en la nube (agentes)
+La nube no accede a Maven, Google ni Gradle. El agente prueba la lógica en Java puro con `javac` y el JUnit 4 incluido con Gradle, mediante `scripts/probar-logica.sh` (se crea en el hito H0 de `plan.md`). La compilación Android y la suite completa corren en GitHub Actions.
+
 ## Integración continua
-El borrador `pruebas.yml` (verificación de estructura y suite unitaria en cada push a `main` y en cada pull request) debe colocarse a mano en `.github/workflows/`; todavía no está en el proyecto.
+`.github/workflows/pruebas.yml` corre la verificación de estructura y la suite unitaria en cada push a `main` y en cada pull request. Aún no se ha ejecutado en GitHub.
 
 ## Último resultado
 Sin ejecutar.
