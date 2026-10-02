@@ -62,8 +62,8 @@ public final class TablaBotin {
             for (Nodo o : n.lista("objetos")) {
                 String id = o.texto("id");
                 objetos.objeto(id);
-                entradas.add(new Entrada(id, rango(o, "probabilidad", 1, 100, -1),
-                        rango(o, "cantidad", 1, 99, 1)));
+                entradas.add(new Entrada(id, Documentos.rango(o, "probabilidad", 1, 100),
+                        Documentos.rangoO(o, "cantidad", 1, 99, 1)));
             }
             mapa.put(enemigo, Collections.unmodifiableList(entradas));
         }
@@ -104,11 +104,4 @@ public final class TablaBotin {
         return sobra;
     }
 
-    private static int rango(Nodo n, String clave, int min, int max, int defecto) {
-        int v = defecto < 0 ? n.entero(clave) : n.enteroO(clave, defecto);
-        if (v < min || v > max) {
-            throw new ErrorDeDatos(n.ruta() + "." + clave + ": " + v + " fuera del rango [" + min + ", " + max + "]");
-        }
-        return v;
-    }
 }

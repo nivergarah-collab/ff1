@@ -92,10 +92,10 @@ public final class CatalogoCombate {
                 if (!estados.contiene(estado)) {
                     throw new ErrorDeDatos(e.ruta() + ".id: estado \"" + estado + "\" no registrado");
                 }
-                duracion = rango(e, "duracion", 1, 99, -1);
+                duracion = Documentos.rango(e, "duracion", 1, 99);
             }
-            mapa.put(id, new Habilidad(id, n.texto("nombre"), tipo, rango(n, "coste", 0, 999, 0),
-                    rango(n, "poder", 0, 9999, 0), objetivo(n), estado, duracion));
+            mapa.put(id, new Habilidad(id, n.texto("nombre"), tipo, Documentos.rangoO(n, "coste", 0, 999, 0),
+                    Documentos.rangoO(n, "poder", 0, 9999, 0), objetivo(n), estado, duracion));
         }
         return mapa;
     }
@@ -118,10 +118,10 @@ public final class CatalogoCombate {
             }
             mapa.put(id, new DefinicionCombatiente(id, n.texto("nombre"),
                     Bando.desde(n.texto("bando"), n.ruta() + ".bando"),
-                    rango(n, "vida", 1, 99999, -1), rango(n, "magia", 0, 9999, 0),
-                    rango(n, "ataque", 0, 999, -1), rango(n, "defensa", 0, 999, -1),
-                    rango(n, "poder", 0, 999, 0), rango(n, "velocidad", 1, 255, -1),
-                    propias, rango(n, "experiencia", 0, 999999, 0), rango(n, "oro", 0, 999999, 0)));
+                    Documentos.rango(n, "vida", 1, 99999), Documentos.rangoO(n, "magia", 0, 9999, 0),
+                    Documentos.rango(n, "ataque", 0, 999), Documentos.rango(n, "defensa", 0, 999),
+                    Documentos.rangoO(n, "poder", 0, 999, 0), Documentos.rango(n, "velocidad", 1, 255),
+                    propias, Documentos.rangoO(n, "experiencia", 0, 999999, 0), Documentos.rangoO(n, "oro", 0, 999999, 0)));
         }
         return mapa;
     }
@@ -137,15 +137,6 @@ public final class CatalogoCombate {
         return id;
     }
 
-    /** Entero en [min, max]; si {@code defecto} es -1 el campo es obligatorio. */
-    private static int rango(Nodo n, String clave, int min, int max, int defecto) {
-        int v = defecto < 0 ? n.entero(clave) : n.enteroO(clave, defecto);
-        if (v < min || v > max) {
-            throw new ErrorDeDatos(n.ruta() + "." + clave + ": " + v
-                    + " fuera del rango [" + min + ", " + max + "]");
-        }
-        return v;
-    }
 
     private static Habilidad.Objetivo objetivo(Nodo n) {
         String texto = n.textoO("objetivo", "enemigo");

@@ -62,10 +62,7 @@ public final class CatalogoObjetos {
                 throw new ErrorDeDatos(n.ruta() + ".id: \"" + id + "\" repetido");
             }
             DefinicionObjeto.Categoria cat = categoria(n);
-            int precio = n.enteroO("precio", 0);
-            if (precio < 0 || precio > 999999) {
-                throw new ErrorDeDatos(n.ruta() + ".precio: " + precio + " fuera del rango [0, 999999]");
-            }
+            int precio = Documentos.rangoO(n, "precio", 0, 999999, 0);
             Habilidad efecto = null;
             String ranura = null;
             Bonos bonos = Bonos.NINGUNO;
@@ -131,10 +128,7 @@ public final class CatalogoObjetos {
         if (!tipos.contiene(tipo)) {
             throw new ErrorDeDatos(e.ruta() + ".tipo: tipo de habilidad \"" + tipo + "\" no registrado");
         }
-        int poder = e.enteroO("poder", 0);
-        if (poder < 0 || poder > 9999) {
-            throw new ErrorDeDatos(e.ruta() + ".poder: " + poder + " fuera del rango [0, 9999]");
-        }
+        int poder = Documentos.rangoO(e, "poder", 0, 9999, 0);
         String objetivo = e.textoO("objetivo", "aliado");
         Habilidad.Objetivo obj;
         if ("aliado".equals(objetivo)) {
@@ -152,10 +146,7 @@ public final class CatalogoObjetos {
             if (!estados.contiene(estado)) {
                 throw new ErrorDeDatos(s.ruta() + ".id: estado \"" + estado + "\" no registrado");
             }
-            duracion = s.entero("duracion");
-            if (duracion < 1 || duracion > 99) {
-                throw new ErrorDeDatos(s.ruta() + ".duracion: " + duracion + " fuera del rango [1, 99]");
-            }
+            duracion = Documentos.rango(s, "duracion", 1, 99);
         }
         return new Habilidad(id, nombre, tipo, 0, poder, obj, estado, duracion);
     }

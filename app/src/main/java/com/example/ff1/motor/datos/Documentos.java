@@ -25,4 +25,23 @@ public final class Documentos {
         }
         return version;
     }
+
+    /** Entero obligatorio de {@code n.clave} dentro de [min, max]. */
+    public static int rango(Nodo n, String clave, int min, int max) {
+        return dentro(n, clave, n.entero(clave), min, max);
+    }
+
+    /** Entero opcional (con {@code defecto}) de {@code n.clave} dentro de [min, max]. */
+    public static int rangoO(Nodo n, String clave, int min, int max, int defecto) {
+        return dentro(n, clave, n.enteroO(clave, defecto), min, max);
+    }
+
+    /** Comprueba que {@code valor} (de {@code n.clave}) esté en [min, max]. */
+    public static int dentro(Nodo n, String clave, int valor, int min, int max) {
+        if (valor < min || valor > max) {
+            throw new ErrorDeDatos(n.ruta() + "." + clave + ": " + valor
+                    + " fuera del rango [" + min + ", " + max + "]");
+        }
+        return valor;
+    }
 }
