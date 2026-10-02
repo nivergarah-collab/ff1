@@ -2,6 +2,9 @@
 
 Más reciente primero.
 
+## 2026-10-02 (bloque 7)
+- **Hito H3.5 "Primera versión jugable" (usuario):** se inserta entre H3 y H4 para tener cuanto antes un APK que se pueda jugar en el celular. Lo hace Opus; al terminarlo, pausa para pasar a Sonnet (H4 a H7).
+
 ## 2026-10-02 (bloque 6)
 - **Los objetos pueden apuntar a `si-mismo`:** al compartir la lectura del efecto con las habilidades (`CatalogoCombate.leerHabilidad`), un objeto acepta los mismos objetivos que una habilidad. Motivo: una sola regla de lectura; el único cambio visible es el mensaje de error de un objetivo desconocido (ahora lista tres opciones).
 - **Rangos comunes en el motor:** `Documentos.rango`/`rangoO` (mensaje `ruta.campo: valor fuera del rango [min, max]`) reemplazan las copias privadas de cada catálogo.
