@@ -2,6 +2,11 @@
 
 Formato: más reciente primero, con fecha en `AAAA-MM-DD`.
 
+## 2026-10-02
+
+### Añadido
+- El agente autónomo puede abrir pull requests (sin fusionarlos ni cerrarlos), con reglas para ramas encadenadas y fusión con "Merge commit". Lista "Ramas y pull requests pendientes" en `docs/estado.md`.
+
 ## 2026-10-01
 
 ### Añadido

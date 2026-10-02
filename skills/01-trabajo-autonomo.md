@@ -1,6 +1,6 @@
 # Trabajo autónomo · ff1
 
-Sobrescribe: 06-git-y-repositorios.md (solo las confirmaciones de commit y push en ramas de trabajo, según la sección "Autorización previa")
+Sobrescribe: 06-git-y-repositorios.md (solo las confirmaciones de commit, push y apertura de pull requests en ramas de trabajo, según la sección "Autorización previa")
 
 ## Propósito
 Guiar a un agente que trabaja por bloques, sin supervisión, para construir el MVP descrito en `docs/mision-mvp.md` siguiendo `docs/plan.md`.
@@ -18,9 +18,16 @@ Sin preguntar, el agente puede:
 - Crear ramas `feature/<hito>-<tema>` y `fix/<tema>`.
 - Hacer commits atómicos en ellas, con el formato de `06`.
 - Hacer push de esas ramas, sin forzar.
+- Abrir pull requests hacia `main`: uno por hito terminado, o al detenerse si queda trabajo sin fusionar. Título `tipo(alcance): resumen` y cuerpo breve con qué cambia y cómo se probó.
+
+Reglas de los pull requests:
+- El agente nunca fusiona, aprueba ni cierra pull requests.
+- Si no dispone de una herramienta para abrirlos, deja en "Preguntas pendientes" de `docs/estado.md` una nota con el enlace `https://github.com/nivergarah-collab/ff1/pull/new/<rama>`.
+- Las ramas del agente se encadenan: cada una parte de la última rama pendiente de fusión, o de `main` si no hay ninguna. Por eso el usuario fusiona con "Merge commit" y no con "Squash", en orden, de la más antigua a la más nueva. Esto sobrescribe la preferencia de `06` solo para los pull requests del agente.
+- En `docs/estado.md` se mantiene la lista "Ramas y pull requests pendientes".
 
 Sigue requiriendo confirmación (se deja anotado en `docs/estado.md`, en "Preguntas pendientes", y el agente continúa con otra tarea independiente):
-- Merge a `main`, abrir o cerrar pull requests.
+- Merge a `main` y cerrar pull requests.
 - Borrar ramas, etiquetas o archivos versionados.
 - `push --force` y cualquier reescritura del historial.
 - Modificar `build.gradle.kts`, `settings.gradle.kts`, `gradle/`, `CMakeLists.txt`, `.github/` o `local.properties`, y añadir dependencias.

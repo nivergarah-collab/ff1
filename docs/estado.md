@@ -19,12 +19,17 @@
 - Copia de las skills maestras en `skills/maestras/`, fusionada en `main` (pull request #2).
 - Tarea programada creada: una sesión cada 3 horas, con notificación al celular.
 - Definición de hecho, límites de parada y diseño adaptable en `main` (pull request #3).
+- APK descargable y flujos `Pruebas` y `APK` en `main` (pull requests #4 y #5); el APK #1 se construyó bien.
+- Autorización para que el agente abra pull requests, en la rama `feature/autorizar-pull-requests`.
 
 ## Siguiente
-1. **Usuario:** fusionar la rama `feature/apk-descargable` y colocar en `.github/workflows/` los dos flujos que envió Claude (`pruebas.yml` actualizado y `apk.yml` nuevo).
+1. **Usuario:** fusionar la rama `feature/autorizar-pull-requests` (autorización para que el agente abra pull requests).
 2. Primer bloque del agente: hito H0 de `docs/plan.md`.
 
 La ruta completa está en `docs/plan.md`.
+
+## Ramas y pull requests pendientes
+Ninguna. (Orden de fusión: de la más antigua a la más nueva, con "Merge commit".)
 
 ## Preguntas pendientes
 Ninguna.
