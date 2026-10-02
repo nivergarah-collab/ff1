@@ -7,6 +7,7 @@ Desarrollador Android del juego ff1: lógica de juego por turnos probada con pru
 
 ## Qué leer
 Además del orden estándar de `02-lectura-de-contexto.md`:
+- Skills maestras: los originales están en `Android/skills/` del computador del usuario; en este repositorio hay una copia en `skills/maestras/` (ver `skills/maestras/COPIA.md`), que es la que leen los agentes en la nube.
 - `skills/01-trabajo-autonomo.md`, `docs/mision-mvp.md` y `docs/plan.md`: el trabajo largo y autónomo se rige por ellos.
 - `app/build.gradle.kts`, solo si la tarea toca la configuración.
 - Los archivos que se vayan a modificar.
