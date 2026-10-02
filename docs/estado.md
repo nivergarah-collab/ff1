@@ -41,13 +41,13 @@ La ruta completa está en `docs/plan.md`.
 
 ## Ramas y pull requests pendientes
 Orden de fusión: de la más antigua a la más nueva, con "Merge commit".
-1. `chore/limpieza-h1-h3` (parte de `main`): limpieza tras H1–H3, pull request PR_L
+1. `chore/limpieza-h1-h3` (parte de `main`): limpieza tras H1–H3, pull request #10 https://github.com/nivergarah-collab/ff1/pull/10
 
 ## Preguntas pendientes
 Ninguna.
 
 ## Pruebas
-Nube, 2026-10-02 (bloque 6): `scripts/probar-logica.sh` 149 de 149 pruebas pasan en `chore/limpieza-h1-h3`. GitHub Actions: ACTIONS_L.
+Nube, 2026-10-02 (bloque 6): `scripts/probar-logica.sh` 149 de 149 pruebas pasan en `chore/limpieza-h1-h3`. GitHub Actions: `Pruebas` en verde en el pull request #10 (la rama `chore/*` no dispara ningún flujo al hacer push, y `APK` solo corre en `main`, `feature/**` y `fix/**`, así que no se construyó el APK de esta rama; el cambio no toca Gradle ni código Android).
 
 ## Notas
 - `ExampleUnitTest` y `ExampleInstrumentedTest` son de la plantilla y se reemplazarán.
