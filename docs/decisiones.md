@@ -2,6 +2,14 @@
 
 Más reciente primero.
 
+## 2026-10-02 (bloque 10)
+- **Salidas y lugares como campos opcionales del mapa (v1 sin cambiar de versión):** los mapas antiguos siguen valiendo. Los lugares (tienda, posada, vecino, jefe) se describen en un `servicios.json` aparte; el motor no conoce ids. `FuenteContenido.existe` se añadió como método por defecto para que los documentos opcionales no obliguen a cambiar las implementaciones existentes.
+- **Puerta con llave por objeto (`requiere`):** el grupo empieza con la Llave de cantera (la apertura dice que Bruna la recibe), así que la puerta no bloquea el avance, pero el motor ya sabe cerrar un paso por objeto. Si se quiere que la llave se consiga en el juego, hará falta un tipo de recompensa o de vecino que entregue objetos (no se inventó fuera del plan).
+- **Golpe fuerte de jefe, solo con habilidades sin coste:** `golpeFuerte` evita una IA general de enemigos con magia (queda fuera del MVP). Es opcional y no cambia a los enemigos que no lo declaran.
+- **`regreso` del jefe:** tras la escena de cierre el grupo reaparece en Pozaluz. Cada jefe se vence una sola vez por partida y queda guardado.
+- **Una ranura de guardado (`partida1`), cargada sobre una partida nueva:** el guardado solo lleva lo que cambia (grupo, inventario, oro, posición, jefes, ajustes); el contenido sale del paquete. No se guarda la semilla del azar. Ajustes ahora sí se conservan entre sesiones, dentro del guardado.
+- **Pruebas después de la lógica en este bloque:** por el tiempo del bloque, varias pruebas se escribieron justo tras la lógica (en el mismo commit) y no antes; la cobertura es la misma.
+
 ## 2026-10-02 (usuario)
 - **Hito H3.6 "Menú del grupo" (usuario):** se inserta entre H3.5 y H4. El juego debe tener el menú de grupo de los RPG clásicos: Objetos, Magia, Equipo, Estado, Formación, Ajustes, Guardar (se conecta en H7) y Salir al título. Se hace con Sonnet porque son pantallas sobre lógica que ya existe y sobre el patrón de la receta; si exige cambios incompatibles en el sistema de pantallas, se pausa para volver a Opus. Tras probar el APK de H3.5, el usuario pasó la tarea a Sonnet y reanudó (`EN CURSO`).
 

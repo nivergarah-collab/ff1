@@ -81,3 +81,6 @@ Registrar aquí lo que se deja pendiente de refactorizar o limpiar.
 - Mundo: el mapa v1 no tiene salidas entre mapas; añadirlas en H5–H6.
 - H3.5: los textos de la interfaz (menús, mensajes de combate en `juego.Mensajes`) están en el código; pasarlos a datos si se quiere traducir o reutilizar (H8). Los héroes caídos siguen caídos tras ganar un combate hasta que exista la posada (H5).
 - Limpieza tras H3.6 y H4 hecha en el bloque 9 (`Menu.vuelta`, `Estilo.marcador`). Pendiente para H8: unificar el dibujo de listas con ventana y los textos de las pantallas del menú (siguen en el código).
+- Limpieza tras H5–H7 (pendiente, la hace el siguiente bloque con Opus antes de H8): `Partida` ya pasa de 600 líneas (separar el guardado en `juego/Guardado`), `PantallaExploracion.hablar` y los `if` por tipo de lugar podrían ser un registro de lugares, y los textos de `PantallaTienda`/`PantallaPosada` siguen en el código.
+- Enemigos con habilidades: solo el jefe usa `golpeFuerte`; los demás atacan (la IA general queda fuera del MVP).
+- Guardado: una sola ranura y no se guarda dentro de un combate.

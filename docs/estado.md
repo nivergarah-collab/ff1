@@ -1,11 +1,11 @@
 # Estado · ff1
 
 ## Control
-- Estado del MVP: EN CURSO
-- Bloques ejecutados: 9 de 50
-- Bloques seguidos sin avance: 1
+- Estado del MVP: PAUSA: cambio de modelo (volver a Opus para H8)
+- Bloques ejecutados: 10 de 50
+- Bloques seguidos sin avance: 0
 
-Última actualización: 2026-10-02 (bloque 9, Sonnet: limpieza tras H3.6 y H4)
+Última actualización: 2026-10-02 (bloque 10, Sonnet: H5, H6 y H7 terminados)
 
 ## Hecho
 - Proyecto movido a `Desktop\Android\ff1`.
@@ -37,20 +37,24 @@
 - Bloque 8 (H4 "Narrativa" terminado, rama `feature/h4-narrativa` desde `feature/h36-menu-del-grupo`): `docs/historia.md` (historia original: Pozaluz, la Cantera Hundida y el Soterrado) y escenas de texto (documento `escena` v1, `guion.Guion`, `PantallaEscena`, marcadores `{heroe:<clase>}`); la apertura se muestra al empezar una partida nueva (`introduccion` en `inicio.json`). 220 pruebas.
 - Pull requests #14 (H3.6) y #15 (H4) fusionados en `main` por el usuario.
 - Bloque 9 (Sonnet, limpieza tras H3.6 y H4, rama `chore/limpieza-h36-h4` desde `main`): `Menu.vuelta` y `Estilo.marcador` sustituyen el giro de cursor y el `>` repetidos; prueba `MenuCursorTest`. 222 pruebas.
+- Bloque 10 (Sonnet, H5, H6 y H7 terminados, rama `feature/h5-pueblo` desde `chore/limpieza-h36-h4`): Pozaluz (mapa con tienda de Lupe, posada de Casilda y dos vecinos; la partida empieza ahí) con salidas entre mapas (`Mapa.Salida`, `requiere` para puertas con llave) y lugares (`Mapa.Lugar`), `servicios.json` (`pueblo.Servicios`), compra y venta (`pueblo.ventaPorCiento`), posada y escenas de vecinos; la Cantera Hundida (puerta de hierro con la Llave de cantera, galerías alta y baja con escalera y tres enemigos nuevos); el Soterrado (jefe con `golpeFuerte` cada 3 turnos, escena previa, combate sin huida y escena `cierre` que devuelve al grupo a Pozaluz); guardado y carga (`Partida.guardar/cargar`, documento `partida` v1, `AlmacenArchivos`, Guardar en el menú y Continuar en el título). 254 pruebas.
 - Autorizado por el usuario el 2026-10-02: límite de 50 bloques (antes 24), quitar el código nativo de la plantilla (ver `skills/01-trabajo-autonomo.md`) y bloques de hasta unos 25 minutos, una sesión por hora.
 
 ## Siguiente
-1. **H5** (tienda, posada y personajes con diálogo; usa `PantallaEscena`), rama `feature/h5-pueblo` desde `chore/limpieza-h36-h4`; luego H6 y H7. Siguiente limpieza tras H6.
-2. Reglas para Sonnet: no cambiar de forma incompatible las interfaces del motor, `Pantalla`, `Escena` ni el contrato de datos (si hace falta, anotarlo en "Preguntas pendientes"); con 2 bloques sin avance o `Pruebas` en rojo 2 bloques seguidos, poner `PAUSA: volver a Opus (motivo)`; al marcar la última tarea de H7, abrir el pull request y poner `PAUSA: cambio de modelo (volver a Opus para H8)`.
+1. **Pausa para volver a Opus:** H5, H6 y H7 están terminados. Queda **H8** (segundo paquete de contenido mínimo que pruebe el motor sin cambiar código, y contrato al día) y, antes, una **limpieza tras H5–H7** (ver "Deuda técnica" de `docs/plan.md`).
+2. El usuario prueba el APK de `feature/h5-pueblo` (ver abajo), fusiona en orden los pull requests pendientes y pone el Control en `EN CURSO` para seguir.
 
 La ruta completa está en `docs/plan.md`.
 
 ## Cómo probar el APK
-1. **Bajarlo:** en GitHub, pestaña **Actions** del repositorio → ejecución **APK** de la rama (`feature/h36-menu-del-grupo`, o `main` cuando esté fusionada) → sección **Artifacts** → **ff1-debug-apk** (un .zip con el .apk; dura 14 días). Enlace directo a las ejecuciones: https://github.com/nivergarah-collab/ff1/actions/workflows/apk.yml
+1. **Bajarlo:** en GitHub, pestaña **Actions** del repositorio → ejecución **APK** de la rama (`feature/h5-pueblo`, o `main` cuando esté fusionada) → sección **Artifacts** → **ff1-debug-apk** (un .zip con el .apk; dura 14 días). Enlace directo a las ejecuciones: https://github.com/nivergarah-collab/ff1/actions/workflows/apk.yml
 2. **Instalarlo:** pasar el .apk al celular (Android 11 o superior), abrirlo y permitir "instalar apps de origen desconocido" para la app con que se abrió. Si había una versión anterior de ff1 instalada con otra firma, desinstalarla primero.
 3. **Qué probar** (unos 8 minutos, en vertical):
-   - Título "Crónica de la Cantera": "Continuar" aparece apagado; "Aceptar" en "Nueva partida".
+   - Título "Crónica de la Cantera": "Continuar" aparece apagado hasta que exista un guardado; "Aceptar" en "Nueva partida".
    - **Apertura:** una escena de texto de 7 líneas (Aceptar avanza; los personajes usan los nombres del grupo) y después el mapa.
+   - **Pozaluz (H5):** tras la apertura el grupo está en la plaza (la fuente azul no se pisa). Mirando al mostrador amarillo de arriba a la derecha, "Aceptar" abre la **Tienda de Lupe**: izquierda/derecha cambian entre Comprar y Vender, "Aceptar" compra o vende una unidad (se vende a la mitad del precio). El mostrador rojo de la izquierda es la **Posada de Casilda** (15 de oro: cura a todos y levanta a los caídos; no cobra si nadie lo necesita). Los dos vecinos (violeta y turquesa) tienen su escena. El camino de arriba lleva al campo.
+   - **La Cantera Hundida (H6):** en el campo, la puerta de hierro oscura de arriba (centro) se abre porque el grupo lleva la Llave de cantera. Dos galerías con escalera entre ellas y enemigos nuevos (murciélagos de cal, escarabajos de roca, sombras de sal). Al fondo de la galería baja, a la izquierda, está la grieta: "Aceptar" frente a ella lanza la escena previa y el combate contra el Soterrado (no se puede huir; cada 3 turnos da una sacudida fuerte). Al vencerlo, escena de cierre y el grupo vuelve a Pozaluz.
+   - **Guardar (H7):** Menú → Guardar escribe la partida ("Partida guardada."). Al cerrar y abrir la app, "Continuar" en el título la retoma en el mismo sitio, con el grupo, el oro, los objetos, el equipo, la formación, los jefes vencidos y los ajustes.
    - Mapa: la cruceta mueve al grupo (cuadro amarillo); mantenerla pulsada lo hace caminar. Los riscos, la laguna y la arboleda no se pueden pisar. Por el sendero no hay encuentros; por la pradera y el matorral salta uno cada 15–30 pasos.
    - **Menú del grupo:** en el mapa, "Cancelar" abre el menú; "Cancelar" otra vez vuelve al mismo sitio. "Guardar" está apagado (llega en H7).
    - **Objetos:** elegir un Tónico de raíz y un héroe herido (tras algún combate): cura y gasta una unidad; con la vida llena avisa y no gasta. La Pluma de alba levanta a un héroe caído con un tercio de vida.
@@ -63,17 +67,18 @@ La ruta completa está en `docs/plan.md`.
    - En emulador también sirven las flechas, Intro/Z (aceptar), X/Escape (cancelar) y F (rápido).
 4. Anotar en "Preguntas pendientes" (o decírselo al agente) lo que se vea mal: tamaño de letra, botones difíciles de tocar, ritmo del combate o cualquier pantalla del menú que quede apretada.
 
-Limitaciones conocidas de esta versión: no hay guardado (H7), ni pueblo, posada o tienda (H5): los héroes caídos se levantan con la Pluma de alba (solo hay una) o al volver al título. Los ajustes no se guardan en disco hasta H7.
+Limitaciones conocidas: una sola ranura de guardado; no se guarda a mitad de un combate ni dentro de las escenas; los enemigos (salvo el jefe) solo atacan; no hay cofres. La semilla del azar no se guarda.
 
 ## Ramas y pull requests pendientes
 Orden de fusión: de la más antigua a la más nueva, con "Merge commit".
 1. `chore/limpieza-h36-h4` (parte de `main`): limpieza de las pantallas del menú. Pull request #16 https://github.com/nivergarah-collab/ff1/pull/16
+2. `feature/h5-pueblo` (parte de `chore/limpieza-h36-h4`): H5 Pozaluz, H6 Cantera y jefe, H7 guardado. PULL_REQUEST_AQUI
 
 ## Preguntas pendientes
 - `gradle/libs.versions.toml` conserva la entrada `games-activity`, ya sin uso; quitarla es opcional y lo decide el usuario (`gradle/` no lo toca el agente).
 
 ## Pruebas
-Nube, 2026-10-02 (bloque 9): `scripts/probar-logica.sh` 222 de 222 pruebas pasan en `chore/limpieza-h36-h4`. GitHub Actions: `Pruebas` en verde en `chore/limpieza-h36-h4`; `APK` no corre en ramas `chore/**` (solo `main`, `feature/**`, `fix/**`). Antes (bloque 8): 220 de 220 en `feature/h4-narrativa`. GitHub Actions: `feature/h36-menu-del-grupo` con `Pruebas` y `APK` en verde; `feature/h4-narrativa` con `Pruebas` (push y pull request) y `APK` en verde.
+Nube, 2026-10-02 (bloque 10): `scripts/probar-logica.sh` 254 de 254 pruebas pasan en `feature/h5-pueblo`. GitHub Actions: ACTIONS_AQUI
 
 ## Notas
 - `ExampleUnitTest` y `ExampleInstrumentedTest` son de la plantilla y se reemplazarán.
