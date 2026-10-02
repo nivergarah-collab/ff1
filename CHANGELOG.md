@@ -4,6 +4,13 @@ Formato: más reciente primero, con fecha en `AAAA-MM-DD`.
 
 ## 2026-10-02
 
+### Añadido (bloque 8, H3.6 menú del grupo)
+- Pila de pantallas en `Juego` (`apilar`, `cerrar`, `profundidad`) y menú del grupo (`PantallaMenu`) que se abre desde el mapa con Cancelar: Objetos, Magia, Equipo, Estado, Formación, Ajustes, Guardar (apagado hasta H7) y Salir al título (con confirmación).
+- Objetos y magia de curación fuera de combate (`Partida.usarObjeto`, `usarHabilidad`; si no hay efecto no se gasta nada); tipo de habilidad `revivir` y objeto "Pluma de alba", solo fuera de combate (`TipoHabilidad.actuaSobreCaidos`, `Combatiente.revivir`).
+- Equipo con comparación de estadísticas (`Partida.equipar`, `quitarEquipo`, `Heroe.estadisticasCon`), ficha de estado, formación (`Partida.intercambiarHeroes`, el combate usa ese orden) y ajustes en caliente (`juego.msMensaje`, `juego.rapidoAlEmpezar`, `combate.ticksPorPaso`).
+- El grupo empieza con una pieza de cada ranura y una Pluma de alba en el inventario (`inicio.json`).
+
+
 ### Añadido (usuario)
 - Hito H3.6 "Menú del grupo" en `docs/plan.md` (objetos, magia, equipo, estado, formación, ajustes, guardar y salir) antes de H4. Tarea reanudada con Sonnet.
 

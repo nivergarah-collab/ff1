@@ -27,7 +27,7 @@ Entrada en `objetos.json`. Consumible (su `efecto` usa los mismos tipos que las 
 { "id": "tonico-de-raiz", "nombre": "Tónico de raíz", "categoria": "consumible", "precio": 20,
   "efecto": { "tipo": "curacion", "poder": 30, "objetivo": "aliado" } }
 ```
-Equipo: `"categoria": "equipo"`, `"ranura"` y `"bonos"`; clave: `"categoria": "clave"` (ver el contrato).
+Equipo: `"categoria": "equipo"`, `"ranura"` y `"bonos"`; clave: `"categoria": "clave"` (ver el contrato). Un consumible con `"tipo": "revivir"` (`poder` = por ciento de la vida máxima con que vuelve el caído) solo se ve en Menú → Objetos, no en el combate.
 - **Prueba:** en `inventario/InventarioTest`, cargar el catálogo del paquete y comprobar que el objeto se usa o equipa como se espera (por ejemplo, cuánto cura con `Acciones.usarObjeto`, o los bonos con `Equipo`).
 
 ## 3. Una habilidad
@@ -99,9 +99,16 @@ Desde H3.5 el juego es una máquina de pantallas en Java puro (`com.example.ff1.
   }
   ```
 - Se dibuja **solo** con órdenes de `dibujo.Escena` (rectángulo, marco, texto, casilla) en la rejilla virtual de 360 × 640, por encima de `Estilo.ALTO_UTIL` (450; debajo van los controles). Usar `Estilo` para ventanas, menús (`Estilo.menu` + `Menu.mover`, que salta opciones deshabilitadas), barras y cortar texto (`Estilo.partir`). No tocar `android/LienzoCanvas`: traduce cualquier escena.
-- Para volver a la pantalla anterior, guardarla y pasarla (como `PantallaCombate` recibe el mapa en `regreso`).
+- Para volver a la pantalla anterior hay dos caminos: `juego.apilar(pantalla)` abre una pantalla encima y `juego.cerrar()` vuelve a la de abajo (es lo que usa el menú del grupo; `juego.profundidad()` dice cuántas hay guardadas), o guardarla y pasarla con `irA` (como `PantallaCombate` recibe el mapa en `regreso`). `volverAlTitulo()` y una partida nueva vacían la pila.
 - Las pantallas leen y cambian la `Partida` (grupo, inventario, oro, explorador, encuentros); no conocen ids concretos.
 - **Prueba:** en `juego/`, crear el juego con `JuegoTest.nuevo(semilla)` o `enExploracion(semilla)`, pulsar con `j.pulsar(Boton.X)`, avanzar con `j.avanzar(Juego.MS_POR_PASO)` y comprobar la pantalla actual (`instanceof`) y lo dibujado con `Escena.contieneTexto` o `Escena.de(Tipo)`. No se prueban píxeles.
+
+## 8b. Una sección del menú del grupo
+El menú (`PantallaMenu`) se abre desde el mapa con Cancelar y apila una pantalla por sección. Para añadir una:
+1. Escribir la pantalla (patrón de la receta 8): recibe `Juego` y `Partida`, usa `Menu`/`Estilo` y se cierra con `juego.cerrar()` al pulsar Cancelar. La lógica con reglas va en `Partida` (como `usarObjeto`, `usarHabilidad`, `equipar`, `intercambiarHeroes`), no en la pantalla, y devuelve un enum (`Uso`, `Cambio`) para que la pantalla elija el mensaje.
+2. Añadir el valor al enum `PantallaMenu.Seccion` (su etiqueta es el texto del menú), devolverlo en `habilitada(...)` (Guardar sigue apagado hasta H7) y construir la pantalla en `abrir(...)`.
+3. Si la sección cambia un parámetro, declararlo en un `Configuracion*.declarar` y documentarlo en el contrato; se cambia con `config.reemplazar(config.actual().con(nombre, valor))` y un valor fuera de rango lanza `ErrorDeDatos` (ver `PantallaAjustes`).
+- **Prueba:** abrir el menú con `j.pulsar(Boton.CANCELAR)`, bajar hasta la sección, `ACEPTAR`, y comprobar el efecto en la `Partida` y lo dibujado (ejemplos en `MenuGrupoTest`, `EquipoMenuTest`, `EstadoFormacionTest` y `AjustesTest`). Los héroes de prueba se hieren con `Heroe.entrarEnCombate()` + `recibirDanio` + `salirDeCombate`.
 
 ## 9. La capa Android
 Son cuatro clases y no deberían cambiar al añadir contenido: `MainActivity` (crea el `Juego` con los assets), `android/VistaJuego` (bucle, toques y teclas), `android/LienzoCanvas` (escena → Canvas) y `android/LectorAssets`. No se pueden probar en la nube: las compila el flujo `Pruebas` y el APK lo construye el flujo `APK`.
