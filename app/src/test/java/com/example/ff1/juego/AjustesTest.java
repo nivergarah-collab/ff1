@@ -78,8 +78,7 @@ public class AjustesTest {
 
     @Test
     public void elAvanceRapidoAlEmpezarSeAplicaEnLaPartidaNueva() {
-        Juego j = JuegoTest.nuevo(1);
-        j.pulsar(Boton.ACEPTAR);
+        Juego j = JuegoTest.enExploracion(1);
         assertFalse(j.rapido());
         PantallaAjustes p = abrir(j);
         j.pulsar(Boton.ABAJO);

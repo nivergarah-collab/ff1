@@ -52,8 +52,8 @@ Hito insertado por el usuario el 2026-10-02 (ver `decisiones.md`): el juego nece
 - [x] Actualizar `docs/receta-de-extension.md` (cómo añadir una sección al menú) y `docs/estado.md` ("Cómo probar el APK" con el menú).
 
 ## H4 · Narrativa
-- [ ] Historia original en `docs/historia.md`, con las mismas etapas de un RPG clásico.
-- [ ] Motor de escenas de texto y diálogos.
+- [x] Historia original en `docs/historia.md`, con las mismas etapas de un RPG clásico.
+- [x] Motor de escenas de texto y diálogos. (Escena de apertura enganchada a la partida nueva; las escenas del jefe y del cierre se escriben con H6.)
 
 ## H5 · Pueblo y servicios
 - [ ] Tienda, posada y personajes con diálogo.

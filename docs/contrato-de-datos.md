@@ -248,9 +248,26 @@ Partida nueva (`juego.Partida.nueva`), en `inicio.json`. Valida que el mapa exis
 | `grupo` | lista | 1–6 héroes: `clase` (id de combatiente con `bando` `heroe`) y `nombre`. |
 | `objetos` | lista | Opcional. `id` de `objetos` y `cantidad` 1–999 (limitada por `inventario.maximoPorObjeto`). |
 | `oro` | entero | Opcional, 0–999999, defecto 0. |
+| `introduccion` | texto | Opcional. Id de una escena de `escenas/` que se muestra al empezar la partida nueva, antes del mapa. Si no existe o no es válida, se muestra la pantalla de error. |
 
 ### Guardado de partida
 Pendiente (H7). Será un documento JSON con `tipo` `"partida"` y `version`, escrito con `EscritorJson` y guardado en un `Almacen`. Incluirá la semilla del azar.
 
+### `escena` · versión 1
+Escena de texto (`guion.Guion`), en `escenas/<id>.json`; el `id` interno debe coincidir con el nombre del archivo. Se muestra con `PantallaEscena`, que avanza una línea por cada Aceptar.
+```json
+{ "tipo": "escena", "version": 1, "id": "apertura",
+  "lineas": [ { "texto": "Amanece en Pozaluz." },
+              { "quien": "{heroe:herbolaria}", "texto": "Las ovejas ya no beben." } ] }
+```
+| Campo | Tipo | Regla |
+|---|---|---|
+| `id` | texto | Obligatorio; igual al nombre del archivo sin extensión. |
+| `lineas` | lista | 1–300 líneas. |
+| `lineas[].texto` | texto | Obligatorio, 1–300 caracteres (se corta en líneas de 34 columnas al dibujar). |
+| `lineas[].quien` | texto | Opcional, hasta 40 caracteres; vacío o ausente = narrador. |
+
+Marcadores: en `texto` y `quien`, `{heroe:<clase>}` se sustituye por el nombre que el jugador puso al héroe de esa clase (si no hay uno, se muestra el id de la clase). Cualquier otra llave se rechaza al cargar.
+
 ### Tipos de contenido de juego
-Pendientes: `escena` (H4), `tienda` (H5). Cada uno se documenta aquí con su versión, sus campos y un ejemplo al implementarlo.
+Pendiente: `tienda` (H5). Se documenta aquí con su versión, sus campos y un ejemplo al implementarlo.

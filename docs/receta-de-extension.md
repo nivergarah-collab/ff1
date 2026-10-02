@@ -72,11 +72,18 @@ Cada `zona` usada debe existir en `encuentros.json`; las casillas sin `zona` son
 - **Prueba:** en `mundo/MapaTest`, cargar el mapa del paquete y comprobar que el inicio es pasable; en `mundo/EncuentrosTest`, `tabla.validarMapa(mapa)`. Si el mapa tiene un camino obligatorio, una prueba que lo recorra con `Explorador.mover` y verifique la posición final.
 
 ## 6. Una escena de texto
-Pendiente: el motor de escenas llega en H4. La forma prevista, coherente con el resto: documento `escena` en `escenas/<id>.json`, con una lista de líneas (quién habla y texto) que avanzan por toque, cargado con `FuenteContenido.cargar("escenas/<id>", "escena", 1)` y validado al cargar. Al implementarlo, sustituir esta sección por un ejemplo real y documentar el tipo en el contrato.
-- **Prueba prevista:** cargar la escena del paquete, avanzar línea a línea y comprobar el orden y el final; y que una escena con un campo inválido se rechaza con la ruta del campo en el mensaje.
+Archivo `escenas/<id>.json` (el `id` interno igual al nombre). Ejemplo real abreviado de `escenas/apertura.json`:
+```json
+{ "tipo": "escena", "version": 1, "id": "apertura",
+  "lineas": [ { "texto": "Amanece en Pozaluz. La fuente de la plaza apenas gotea." },
+              { "quien": "{heroe:herbolaria}", "texto": "Las ovejas ya no beben." },
+              { "quien": "Ofelia", "texto": "{heroe:guardian}, la llave ahora es tuya." } ] }
+```
+Sin `quien` habla el narrador. `{heroe:<clase>}` pone el nombre que el jugador dio al héroe de esa clase (los textos no deben llevar los nombres de ejemplo). Para mostrarla: `new PantallaEscena(juego, Guion.cargar(fuente, "id"), partida.nombresPorClase(), pantallaSiguiente)` y `juego.irA(...)`; al terminar la última línea pasa a `pantallaSiguiente`. La apertura se engancha con el campo opcional `introduccion` de `inicio.json`.
+- **Prueba:** en `juego/EscenaDeTextoTest`: cargar la escena del paquete (`Guion.cargar(PaqueteDelJuego.fuente(), "id")`), avanzar con `j.pulsar(Boton.ACEPTAR)` y comprobar la línea con `Escena.contieneTexto`; y que una escena con un campo inválido se rechaza con la ruta del campo en el mensaje (`Guion.desde(LectorJson.leer(...))`).
 
 ## 7. La partida nueva
-`inicio.json` dice con qué empieza el jugador (grupo, objetos, oro, mapa y título de la portada); ver el contrato. Ejemplo real abreviado:
+`inicio.json` dice con qué empieza el jugador (grupo, objetos, oro, mapa, título de la portada y, opcional, la escena de apertura); ver el contrato. Ejemplo real abreviado:
 ```json
 { "tipo": "inicio", "version": 1, "titulo": "Crónica de la Cantera", "mapa": "campo",
   "grupo": [ { "clase": "guardian", "nombre": "Bruna" } ],
