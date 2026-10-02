@@ -38,7 +38,7 @@ Orden de fusión: de la más antigua a la más nueva, con "Merge commit".
 Ninguna.
 
 ## Pruebas
-Nube, 2026-10-02: `scripts/probar-logica.sh` 1 de 1 pruebas pasan. GitHub Actions de `feature/h0-preparacion`: ver abajo.
+Nube, 2026-10-02: `scripts/probar-logica.sh` 1 de 1 pruebas pasan. GitHub Actions en `feature/h0-preparacion` (commit `efeee36`): `Pruebas` #14 en verde y `APK` #4 en verde.
 
 ## Notas
 - `ExampleUnitTest` y `ExampleInstrumentedTest` son de la plantilla y se reemplazarán.
