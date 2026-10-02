@@ -1,11 +1,11 @@
 # Estado · ff1
 
 ## Control
-- Estado del MVP: PAUSA: cambio de modelo (pasar a Sonnet para H4 a H7)
+- Estado del MVP: EN CURSO
 - Bloques ejecutados: 7 de 50
 - Bloques seguidos sin avance: 0
 
-Última actualización: 2026-10-02 (bloque 7)
+Última actualización: 2026-10-02 (usuario: reanudado con Sonnet, hito H3.6 añadido)
 
 ## Hecho
 - Proyecto movido a `Desktop\Android\ff1`.
@@ -35,10 +35,9 @@
 - Autorizado por el usuario el 2026-10-02: límite de 50 bloques (antes 24), quitar el código nativo de la plantilla (ver `skills/01-trabajo-autonomo.md`) y bloques de hasta unos 25 minutos, una sesión por hora.
 
 ## Siguiente
-1. **Usuario:** fusionar con "Merge commit", en este orden, #11 y luego #12 (ver abajo). Instalar el APK y probar el recorrido (ver "Cómo probar el APK").
-2. **Usuario:** pasar la tarea programada a Sonnet y poner el estado en `EN CURSO`.
-3. Sonnet, bloque 8: H4, primera tarea: historia original en `docs/historia.md`. Luego el motor de escenas de texto como una `Pantalla` nueva (ver `docs/receta-de-extension.md`, secciones 6 y 8). Rama `feature/h4-narrativa` desde `chore/quitar-codigo-nativo` (o `main` si ya está fusionada).
-4. Reglas para Sonnet: seguir `docs/receta-de-extension.md`; no cambiar de forma incompatible las interfaces del motor, `Pantalla`, `Escena` ni el contrato de datos (si hace falta, anotarlo en "Preguntas pendientes"); con 2 bloques sin avance o `Pruebas` en rojo 2 bloques seguidos, poner `PAUSA: volver a Opus (motivo)`; al marcar la última tarea de H7, abrir el pull request y poner `PAUSA: cambio de modelo (volver a Opus para H8)`.
+1. **Sonnet, bloque 8:** hito H3.6 "Menú del grupo" (ver `docs/plan.md`), antes de H4. Rama `feature/h36-menu-del-grupo` desde `main`. Seguir `docs/receta-de-extension.md`.
+2. Después: H4 (historia en `docs/historia.md` y motor de escenas de texto como `Pantalla` nueva), H5, H6 y H7.
+3. Reglas para Sonnet: no cambiar de forma incompatible las interfaces del motor, `Pantalla`, `Escena` ni el contrato de datos (si hace falta, anotarlo en "Preguntas pendientes"); con 2 bloques sin avance o `Pruebas` en rojo 2 bloques seguidos, poner `PAUSA: volver a Opus (motivo)`; al marcar la última tarea de H7, abrir el pull request y poner `PAUSA: cambio de modelo (volver a Opus para H8)`.
 
 La ruta completa está en `docs/plan.md`.
 

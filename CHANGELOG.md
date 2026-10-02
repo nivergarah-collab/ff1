@@ -4,6 +4,9 @@ Formato: más reciente primero, con fecha en `AAAA-MM-DD`.
 
 ## 2026-10-02
 
+### Añadido (usuario)
+- Hito H3.6 "Menú del grupo" en `docs/plan.md` (objetos, magia, equipo, estado, formación, ajustes, guardar y salir) antes de H4. Tarea reanudada con Sonnet.
+
 ### Añadido (bloque 7, H3.5 primera versión jugable)
 - Escena de dibujo en Java puro (`dibujo.Escena`, `Escalado`) y traductor único a `Canvas` (`android.LienzoCanvas`).
 - Controles táctiles en pantalla, entrada con repetición y bucle de paso fijo (`entrada`).
