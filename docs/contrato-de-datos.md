@@ -2,7 +2,7 @@
 
 Describe cómo el motor recibe contenido, configuración, azar, tiempo y guardado, y el formato de cada documento. Es la base del futuro molde del motor (ver "Diseño adaptable" en `mision-mvp.md`). Se actualiza en cada hito que añada o cambie un tipo de dato.
 
-Estado: H1 en curso (`combatientes` y `habilidades` v1). Los demás tipos de contenido se completan en sus hitos.
+Estado: H3 terminado (`configuracion`, `habilidades`, `combatientes`, `progresion`, `objetos`, `botin`, `mapa` y `encuentros` v1). Los demás tipos de contenido se completan en sus hitos. Cómo añadir contenido: `docs/receta-de-extension.md`.
 
 ## Formato
 - **JSON** (RFC 8259), en UTF-8, leído con `motor.datos.LectorJson`, escrito en Java puro sin librerías. Funciona igual en la JVM de pruebas y en Android, y es el formato natural de una API futura.
@@ -41,7 +41,10 @@ contenido/
 ├── configuracion.json   ← tipo "configuracion"
 ├── combatientes.json    ← héroes y enemigos (H1)
 ├── habilidades.json     ← (H1)
+├── progresion.json      ← (H2)
 ├── objetos.json         ← (H2)
+├── botin.json           ← (H2)
+├── encuentros.json      ← (H3)
 ├── mapas/<id>.json      ← (H3)
 └── escenas/<id>.json    ← (H4)
 ```
