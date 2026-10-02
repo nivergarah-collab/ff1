@@ -1,0 +1,39 @@
+# Construye el APK de depuracion de ff1 y lo deja como archivo descargable.
+# Para bajarlo: pestana Actions > ejecucion "APK" de la rama > seccion Artifacts > ff1-debug-apk.
+# Sin verificar todavia: la plantilla nativa necesita CMake y el NDK, y el primer intento puede fallar.
+name: APK
+
+on:
+  push:
+    branches: [main, 'feature/**', 'fix/**']
+  workflow_dispatch:
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Aceptar licencias e instalar CMake
+        run: |
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "cmake;3.22.1"
+
+      - name: Construir APK de depuracion
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug --console=plain -q
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ff1-debug-apk
+          path: app/build/outputs/apk/debug/*.apk
+          retention-days: 14
+          if-no-files-found: error
