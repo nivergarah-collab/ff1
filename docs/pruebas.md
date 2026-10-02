@@ -35,4 +35,4 @@ El script compila los `.java` de `app/src/main/java` y `app/src/test/java` que n
 `.github/workflows/apk.yml` (flujo `APK`) construye el APK de depuración en cada push a `main`, `feature/**` y `fix/**`, y lo guarda 14 días como archivo `ff1-debug-apk`. Se descarga desde la pestaña Actions de GitHub: abrir la ejecución `APK` de la rama y bajarlo desde "Artifacts". Es un APK de depuración, que se instala en el celular permitiendo aplicaciones de origen desconocido. Una versión firmada de lanzamiento queda fuera del MVP, porque exige guardar una clave como secreto. El flujo `APK` no está verificado: la plantilla nativa necesita CMake y el NDK.
 
 ## Último resultado
-2026-10-02, nube (bloque 2): `scripts/probar-logica.sh` 40 de 40 pruebas pasan. GitHub Actions en `feature/h0-preparacion`: `Pruebas` y `APK` en verde.
+2026-10-02, nube (bloque 3): `scripts/probar-logica.sh` 72 de 72 pruebas pasan. GitHub Actions en `feature/h1-combate`: `Pruebas` y `APK` en verde.

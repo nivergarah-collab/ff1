@@ -11,12 +11,12 @@ Lo mantiene el agente. Marcar `[x]` al terminar y anotar aquí cualquier cambio 
 - **Salida:** el script corre una prueba de ejemplo, el resumen de ritmo existe y el contrato de datos está escrito.
 
 ## H1 · Núcleo del combate ATB
-- [ ] Modelo: personaje, enemigo, habilidad, estados.
-- [ ] Barra de tiempo por ticks simulados.
-- [ ] Acciones: atacar, magia, objeto, huir. Cálculo de daño.
-- [ ] Fin del combate y recompensas.
-- [ ] Interruptor de avance rápido como multiplicador de ticks.
-- [ ] Los parámetros del combate (velocidad de la barra, daño, avance rápido) vienen de la configuración, no de constantes en el código.
+- [x] Modelo: personaje, enemigo, habilidad, estados.
+- [x] Barra de tiempo por ticks simulados.
+- [x] Acciones: atacar, magia, objeto, huir. Cálculo de daño.
+- [x] Fin del combate y recompensas.
+- [x] Interruptor de avance rápido como multiplicador de ticks.
+- [x] Los parámetros del combate (velocidad de la barra, daño, avance rápido) vienen de la configuración, no de constantes en el código.
 - **Salida:** un combate completo se simula en pruebas, con y sin avance rápido, y cambiando la configuración cambia el resultado.
 
 ## H2 · Progresión e inventario
@@ -50,3 +50,5 @@ Lo mantiene el agente. Marcar `[x]` al terminar y anotar aquí cualquier cambio 
 
 ## Deuda técnica
 Registrar aquí lo que se deja pendiente de refactorizar o limpiar.
+- Combate: los factores estructurales de las fórmulas (defensa / 2 y / 4, el 2 × de la huida y sus límites 5–95 %) son constantes en `Acciones`; pasarlos a la configuración si el balance lo pide (H8).
+- Combate: `turnoAutomatico` solo ataca; una IA de enemigos que use habilidades queda para H6 (jefe).

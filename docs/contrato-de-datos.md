@@ -2,7 +2,7 @@
 
 Describe cómo el motor recibe contenido, configuración, azar, tiempo y guardado, y el formato de cada documento. Es la base del futuro molde del motor (ver "Diseño adaptable" en `mision-mvp.md`). Se actualiza en cada hito que añada o cambie un tipo de dato.
 
-Estado: versión inicial (H0). Los tipos de contenido de juego se completan en sus hitos.
+Estado: H1 en curso (`combatientes` y `habilidades` v1). Los demás tipos de contenido se completan en sus hitos.
 
 ## Formato
 - **JSON** (RFC 8259), en UTF-8, leído con `motor.datos.LectorJson`, escrito en Java puro sin librerías. Funciona igual en la JVM de pruebas y en Android, y es el formato natural de una API futura.
@@ -70,10 +70,70 @@ Parámetros declarados: se listan aquí a medida que cada hito los añade.
 
 | Parámetro | Tipo | Rango | Defecto | Hito |
 |---|---|---|---|---|
-| (ninguno todavía) | | | | |
+| `combate.velocidadBarra` | entero | 1–100 | 10 | H1 |
+| `combate.cargaLlena` | entero | 100–100000 | 1000 | H1 |
+| `combate.avanceRapido` | entero | 1–8 | 2 | H1 |
+| `combate.ticksPorPaso` | entero | 1–100 | 1 | H1 |
+| `combate.fuerzaFisica` | entero | 1–100 | 10 | H1 |
+| `combate.fuerzaMagica` | entero | 1–100 | 10 | H1 |
+| `combate.varianza` | entero | 0–50 | 10 | H1 |
+| `combate.huidaBase` | entero | 0–100 | 50 | H1 |
+| `combate.venenoPorCiento` | entero | 1–50 | 8 | H1 |
+| `combate.proteccionPorCiento` | entero | 0–100 | 50 | H1 |
+
+Barra de tiempo: en cada tick, cada combatiente vivo que no espera turno suma `max(1, velocidad × velocidadBarra / 10)`; con la carga llena entra en la cola de turnos. Empates en un mismo tick: primero el que más se pasó y, a igualdad, el inscrito antes.
+
+Acciones (`combate.Acciones`; fuerzas en décimas, 10 = ×1):
+- Físico: `max(1, ataque × fuerzaFisica / 10 − defensa / 2)`.
+- Mágico: `max(1, poderHabilidad + poderActor × fuerzaMagica / 10 − defensa / 4)`.
+- Curación: `poderHabilidad + poderActor × fuerzaMagica / 10`, sin pasar de la vida máxima.
+- Daño y curación se multiplican por `(100 + r) / 100`, con `r` al azar en `[−varianza, +varianza]`.
+- Objeto: su efecto se resuelve como una habilidad, sin coste de magia y con `poderActor` 0.
+- Paso de animación (`Combate.avanzarPaso`): avanza `ticksPorPaso` ticks (× `avanceRapido` con el interruptor encendido), tick a tick, y se detiene en cuanto a alguien le toca actuar; mientras alguien tiene el turno, el tiempo espera. El orden de turnos es el mismo con y sin avance rápido.
+- Huida: `huidaBase + 2 × (velocidad − velocidad media de los enemigos vivos)`, limitada a 5–95 %; un combate puede prohibirla (jefe).
+
+### `habilidades` · versión 1
+```json
+{ "tipo": "habilidades", "version": 1, "lista": [
+  { "id": "chispa", "nombre": "Chispa", "tipo": "danio", "coste": 4, "poder": 14, "objetivo": "enemigo" },
+  { "id": "dardo-amargo", "nombre": "Dardo amargo", "tipo": "alteracion", "coste": 3, "poder": 4,
+    "estado": { "id": "veneno", "duracion": 3 } }
+] }
+```
+| Campo | Tipo | Regla |
+|---|---|---|
+| `id` | texto | Obligatorio, minúsculas con guiones, único. |
+| `nombre` | texto | Obligatorio. Texto visible. |
+| `tipo` | texto | Obligatorio. Clave registrada en el registro de tipos de habilidad (`ReglasCombate`): `danio` (daño mágico), `curacion` (vida al objetivo) y `alteracion` (aplica su estado y, si tiene poder, hace daño mágico). |
+| `coste` | entero | 0–999, defecto 0. Magia que gasta. |
+| `poder` | entero | 0–9999, defecto 0. |
+| `objetivo` | texto | `enemigo` (defecto), `aliado` o `si-mismo`. |
+| `estado` | objeto | Opcional: `id` (registrado en el registro de estados de `ReglasCombate`) y `duracion` (1–99 turnos, obligatorio). `veneno` quita `venenoPorCiento` de la vida máxima (mínimo 1) al terminar cada turno; `sueno` hace perder los turnos y se quita al recibir daño; `proteccion` deja pasar solo `proteccionPorCiento` del daño (mínimo 1). |
+
+### `combatientes` · versión 1
+Clases de héroe y tipos de enemigo. El nombre del héroe lo elige el jugador; `nombre` es el de la clase.
+```json
+{ "tipo": "combatientes", "version": 1, "lista": [
+  { "id": "arcanista", "nombre": "Arcanista", "bando": "heroe", "vida": 28, "magia": 24,
+    "ataque": 5, "defensa": 4, "poder": 11, "velocidad": 9, "habilidades": ["chispa"] },
+  { "id": "musgoso", "nombre": "Musgoso", "bando": "enemigo", "vida": 14, "ataque": 6,
+    "defensa": 2, "velocidad": 6, "experiencia": 4, "oro": 3 }
+] }
+```
+| Campo | Tipo | Regla |
+|---|---|---|
+| `id`, `nombre` | texto | Como en `habilidades`. |
+| `bando` | texto | `heroe` o `enemigo`. |
+| `vida` | entero | Obligatorio, 1–99999. |
+| `magia` | entero | 0–9999, defecto 0. |
+| `ataque`, `defensa` | entero | Obligatorios, 0–999. |
+| `poder` | entero | 0–999, defecto 0. Potencia mágica. |
+| `velocidad` | entero | Obligatorio, 1–255. Ritmo de la barra de tiempo. |
+| `habilidades` | lista de texto | Opcional. Cada `id` debe existir en `habilidades`. |
+| `experiencia`, `oro` | entero | 0–999999, defecto 0. Recompensa al vencerlo. |
 
 ### Guardado de partida
 Pendiente (H7). Será un documento JSON con `tipo` `"partida"` y `version`, escrito con `EscritorJson` y guardado en un `Almacen`. Incluirá la semilla del azar.
 
 ### Tipos de contenido de juego
-Pendientes: `combatientes` y `habilidades` (H1), `objetos` (H2), `mapa` (H3), `escena` (H4), `tienda` (H5). Cada uno se documenta aquí con su versión, sus campos y un ejemplo al implementarlo.
+Pendientes: `objetos` (H2), `mapa` (H3), `escena` (H4), `tienda` (H5). Cada uno se documenta aquí con su versión, sus campos y un ejemplo al implementarlo.

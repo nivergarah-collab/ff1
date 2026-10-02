@@ -18,7 +18,7 @@ No leer `app/build/`, `app/.cxx/`, `.gradle/` ni `app/src/main/cpp/` completa, s
 - Contenido original: no usar nombres, personajes, tramas, diálogos, música ni arte de Final Fantasy ni de otras franquicias. Las guías de juegos clásicos se usan solo para ritmo y estructura.
 - Java para la lógica y la actividad; C++ solo para el dibujo nativo. No añadir Kotlin ni Compose sin registrar antes la decisión en `docs/decisiones.md`.
 - La lógica de combate va en `com.example.ff1.combate`, en clases Java puras, sin dependencias de Android, para probarlas en JVM.
-- Confirmar con el usuario antes de modificar `build.gradle.kts`, `settings.gradle.kts`, `gradle/` o `CMakeLists.txt`. `local.properties` no se toca ni se versiona.
+- Confirmar con el usuario antes de modificar `build.gradle.kts`, `settings.gradle.kts`, `gradle/` o `CMakeLists.txt`, salvo para quitar el código nativo (autorizado, ver `01-trabajo-autonomo.md`). `local.properties` no se toca ni se versiona.
 - Datos de la plantilla: `minSdk` 30, `compileSdk` y `targetSdk` 37, compatibilidad Java 11.
 - El juego debe tener un interruptor de avance rápido (ver `docs/decisiones.md`), con pruebas.
 - Diseño adaptable: el motor se separa del contenido y de la configuración, que llegan por interfaces intercambiables (ver `docs/mision-mvp.md`, apartado "Diseño adaptable"). No poner contenido ni constantes de balance dentro del código.
