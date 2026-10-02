@@ -22,7 +22,7 @@ Lo mantiene el agente. Marcar `[x]` al terminar y anotar aquí cualquier cambio 
 ## H2 · Progresión e inventario
 - [x] Experiencia y niveles.
 - [x] Inventario, objetos y equipamiento.
-- [ ] Botín.
+- [x] Botín.
 
 ## H3 · Mundo
 - [ ] Mapa por casillas, movimiento y colisiones.

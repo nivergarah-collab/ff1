@@ -174,6 +174,23 @@ Consumibles, equipo y objetos clave (`inventario.CatalogoObjetos`).
 
 Inventario: cada objeto se acumula hasta `inventario.maximoPorObjeto` unidades. Al cambiar el equipo, la vida y la magia actuales no pasan del nuevo máximo.
 
+### `botin` · versión 1
+Objetos que suelta cada enemigo al caer (`inventario.TablaBotin`).
+```json
+{ "tipo": "botin", "version": 1, "lista": [
+  { "enemigo": "lagarto-de-cantera", "objetos": [
+    { "id": "tonico-de-raiz", "probabilidad": 40, "cantidad": 2 } ] }
+] }
+```
+| Campo | Tipo | Regla |
+|---|---|---|
+| `enemigo` | texto | `id` de un combatiente con `bando` `enemigo`, sin repetir. |
+| `objetos[].id` | texto | Debe existir en `objetos`. |
+| `objetos[].probabilidad` | entero | Obligatorio, 1–100 (por ciento). Cada entrada se tira por separado. |
+| `objetos[].cantidad` | entero | 1–99, defecto 1. |
+
+Lo que no cabe en el inventario se informa como sobrante y no se guarda.
+
 ### Guardado de partida
 Pendiente (H7). Será un documento JSON con `tipo` `"partida"` y `version`, escrito con `EscritorJson` y guardado en un `Almacen`. Incluirá la semilla del azar.
 
