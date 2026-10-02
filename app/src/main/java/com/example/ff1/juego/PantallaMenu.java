@@ -47,6 +47,7 @@ public final class PantallaMenu implements Pantalla {
         switch (s) {
             case OBJETOS:
             case MAGIA:
+            case EQUIPO:
             case SALIR:
                 return true;
             default:
@@ -73,6 +74,8 @@ public final class PantallaMenu implements Pantalla {
                 return new PantallaObjetos(juego, partida);
             case MAGIA:
                 return new PantallaMagia(juego, partida);
+            case EQUIPO:
+                return new PantallaEquipo(juego, partida);
             default:
                 return null;
         }

@@ -184,6 +184,64 @@ public final class Partida {
         SIN_MAGIA
     }
 
+    /** Resultado de cambiar el equipo de un héroe. */
+    public enum Cambio {
+        HECHO,
+        /** No es equipo, o la clase del héroe no lo puede llevar, o no hay nada en esa ranura. */
+        NO_PUEDE,
+        /** El grupo no lleva esa pieza. */
+        NO_LLEVA,
+        /** La pieza que se devuelve no cabe en el inventario. */
+        SIN_ESPACIO
+    }
+
+    /** Pone una pieza del inventario a un héroe; la que llevaba vuelve al inventario. */
+    public Cambio equipar(Heroe h, String idPieza) {
+        DefinicionObjeto o = objetos.objeto(idPieza);
+        if (!o.equipablePor(h.clase().id)) {
+            return Cambio.NO_PUEDE;
+        }
+        if (inventario.cantidad(idPieza) < 1) {
+            return Cambio.NO_LLEVA;
+        }
+        DefinicionObjeto puesta = h.equipo().get(o.ranura);
+        if (puesta != null && !puesta.id.equals(idPieza) && inventario.espacio(puesta.id) < 1) {
+            return Cambio.SIN_ESPACIO;
+        }
+        inventario.quitar(idPieza, 1);
+        DefinicionObjeto anterior = h.equipar(o);
+        if (anterior != null) {
+            inventario.agregar(anterior.id, 1);
+        }
+        return Cambio.HECHO;
+    }
+
+    /** Quita la pieza de una ranura y la guarda en el inventario. */
+    public Cambio quitarEquipo(Heroe h, String ranura) {
+        DefinicionObjeto puesta = h.equipo().get(ranura);
+        if (puesta == null) {
+            return Cambio.NO_PUEDE;
+        }
+        if (inventario.espacio(puesta.id) < 1) {
+            return Cambio.SIN_ESPACIO;
+        }
+        h.desequipar(ranura);
+        inventario.agregar(puesta.id, 1);
+        return Cambio.HECHO;
+    }
+
+    /** Piezas del inventario que {@code h} puede ponerse en {@code ranura}. */
+    public List<DefinicionObjeto> piezasPara(Heroe h, String ranura) {
+        List<DefinicionObjeto> r = new ArrayList<>();
+        for (String id : inventario.contenido().keySet()) {
+            DefinicionObjeto o = objetos.objeto(id);
+            if (o.equipablePor(h.clase().id) && ranura.equals(o.ranura)) {
+                r.add(o);
+            }
+        }
+        return r;
+    }
+
     /** Si una habilidad se puede lanzar fuera de combate: va a aliados y no aplica estados. */
     public static boolean sirveFueraDeCombate(Habilidad h) {
         return h.objetivo != Habilidad.Objetivo.ENEMIGO && h.estado == null;

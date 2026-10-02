@@ -11,7 +11,11 @@
   ],
   "objetos": [
     { "id": "tonico-de-raiz", "cantidad": 3 },
-    { "id": "agua-de-roca", "cantidad": 1 }
+    { "id": "agua-de-roca", "cantidad": 1 },
+    { "id": "hoja-de-ensayo", "cantidad": 1 },
+    { "id": "vara-de-sauce", "cantidad": 1 },
+    { "id": "jubon-acolchado", "cantidad": 2 },
+    { "id": "cordel-de-viento", "cantidad": 1 }
   ],
   "oro": 50
 }
