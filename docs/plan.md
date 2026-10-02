@@ -40,16 +40,16 @@ Hito insertado por el usuario el 2026-10-02 (ver `decisiones.md`): un APK instal
 
 ## H3.6 · Menú del grupo
 Hito insertado por el usuario el 2026-10-02 (ver `decisiones.md`): el juego necesita el menú de grupo propio de los RPG clásicos. Se abre desde el mapa con un botón y se maneja con la misma cruceta y los botones aceptar/cancelar. Cada sección es una `Pantalla` nueva sobre el patrón de `receta-de-extension.md`; la lógica va en Java puro con pruebas y los datos (héroes, objetos, equipo, habilidades) salen de los JSON, sin números fijos en el código.
-- [ ] Pila de pantallas: abrir el menú desde la exploración y volver al mapa sin perder la posición, con pruebas. Si hace falta cambiar `Pantalla`, `Juego` o `Escena` de forma incompatible, anotarlo en "Preguntas pendientes" y poner `PAUSA: volver a Opus`.
-- [ ] Menú principal con las secciones: Objetos, Magia, Equipo, Estado, Formación, Ajustes, Guardar y Salir al título.
-- [ ] Objetos: ver el inventario y usar objetos consumibles fuera de combate sobre un héroe (curar, revivir), con pruebas.
-- [ ] Magia: ver las habilidades de cada héroe y lanzar las de curación fuera de combate gastando magia, con pruebas.
-- [ ] Equipo: ranuras de arma, armadura y accesorio por héroe, equipar y quitar con comparación de estadísticas antes de confirmar, con pruebas (el motor de equipo ya existe en `inventario`).
-- [ ] Estado: nivel, experiencia, estadísticas y estados alterados de cada héroe.
-- [ ] Formación: cambiar el orden del grupo y que el combate respete el nuevo orden, con pruebas.
-- [ ] Ajustes: velocidad del texto y del combate y avance rápido por defecto, guardados en la configuración (en caliente), con pruebas.
-- [ ] Guardar: la opción aparece, pero desactivada hasta H7 (ahí se conecta).
-- [ ] Actualizar `docs/receta-de-extension.md` (cómo añadir una sección al menú) y `docs/estado.md` ("Cómo probar el APK" con el menú).
+- [x] Pila de pantallas: abrir el menú desde la exploración y volver al mapa sin perder la posición, con pruebas. Si hace falta cambiar `Pantalla`, `Juego` o `Escena` de forma incompatible, anotarlo en "Preguntas pendientes" y poner `PAUSA: volver a Opus`.
+- [x] Menú principal con las secciones: Objetos, Magia, Equipo, Estado, Formación, Ajustes, Guardar y Salir al título. (Las secciones aún sin pantalla aparecen apagadas; se habilitan al terminar cada tarea. El menú se abre con Cancelar en el mapa; no se añadió un botón nuevo para no tocar `Controles`.)
+- [x] Objetos: ver el inventario y usar objetos consumibles fuera de combate sobre un héroe (curar, revivir), con pruebas. (Curar y revivir hechos: el tipo `revivir` solo actúa sobre caídos y por eso solo se usa fuera de combate.)
+- [x] Magia: ver las habilidades de cada héroe y lanzar las de curación fuera de combate gastando magia, con pruebas.
+- [x] Equipo: ranuras de arma, armadura y accesorio por héroe, equipar y quitar con comparación de estadísticas antes de confirmar, con pruebas (el motor de equipo ya existe en `inventario`).
+- [x] Estado: nivel, experiencia, estadísticas y estados alterados de cada héroe. (Fuera de combate los estados no se conservan: la ficha muestra la condición "en pie" o "caído"; ver `decisiones.md`.)
+- [x] Formación: cambiar el orden del grupo y que el combate respete el nuevo orden, con pruebas.
+- [x] Ajustes: velocidad del texto y del combate y avance rápido por defecto, guardados en la configuración (en caliente), con pruebas. (Se cambian en la configuración vigente al instante; escribirlos a disco queda para H7, con el guardado.)
+- [x] Guardar: la opción aparece, pero desactivada hasta H7 (ahí se conecta).
+- [x] Actualizar `docs/receta-de-extension.md` (cómo añadir una sección al menú) y `docs/estado.md` ("Cómo probar el APK" con el menú).
 
 ## H4 · Narrativa
 - [ ] Historia original en `docs/historia.md`, con las mismas etapas de un RPG clásico.

@@ -76,4 +76,15 @@ public class CombatienteTest {
     public void danioNegativoEsUnError() {
         nuevo().recibirDanio(-1);
     }
+
+    @Test
+    public void revivirSoloLevantaAUnCaidoYRespetaLosLimites() {
+        Combatiente c = nuevo();
+        assertEquals(0, c.revivir(10)); // en pie: nada
+        c.recibirDanio(99);
+        assertEquals(1, c.revivir(0)); // mínimo 1
+        assertTrue(c.vivo());
+        c.recibirDanio(99);
+        assertEquals(30, c.revivir(500)); // máximo la vida máxima
+    }
 }

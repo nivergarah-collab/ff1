@@ -10,6 +10,8 @@ import com.example.ff1.motor.config.Registro;
  * <ul>
  * <li>{@code danio}: daño mágico al objetivo.</li>
  * <li>{@code curacion}: devuelve vida al objetivo.</li>
+ * <li>{@code revivir}: levanta a un caído con {@code poder} por ciento de su vida máxima (mínimo 1);
+ * solo fuera de combate.</li>
  * <li>{@code alteracion}: aplica su estado; si tiene poder, además hace daño mágico.</li>
  * <li>{@code veneno}: quita {@code venenoPorCiento} de la vida máxima (mínimo 1) al terminar cada turno.</li>
  * <li>{@code sueno}: pierde sus turnos; se despierta al recibir daño.</li>
@@ -28,6 +30,17 @@ public final class ReglasCombate {
                 .registrar("danio", danio)
                 .registrar("curacion", (acc, poderActor, h, obj) ->
                         obj.curar(acc.curacion(h.poder, poderActor)))
+                .registrar("revivir", new TipoHabilidad() {
+                    @Override
+                    public int resolver(Acciones acc, int poderActor, Habilidad h, Combatiente obj) {
+                        return obj.revivir(obj.vidaMaxima() * h.poder / 100);
+                    }
+
+                    @Override
+                    public boolean actuaSobreCaidos() {
+                        return true;
+                    }
+                })
                 .registrar("alteracion", (acc, poderActor, h, obj) ->
                         h.poder > 0 ? danio.resolver(acc, poderActor, h, obj) : 0);
     }

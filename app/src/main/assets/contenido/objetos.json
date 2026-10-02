@@ -7,6 +7,8 @@
       "efecto": { "tipo": "curacion", "poder": 30, "objetivo": "aliado" } },
     { "id": "agua-de-roca", "nombre": "Agua de roca", "categoria": "consumible", "precio": 60,
       "efecto": { "tipo": "curacion", "poder": 80, "objetivo": "aliado" } },
+    { "id": "pluma-de-alba", "nombre": "Pluma de alba", "categoria": "consumible", "precio": 90,
+      "efecto": { "tipo": "revivir", "poder": 30, "objetivo": "aliado" } },
     { "id": "frasco-de-brasas", "nombre": "Frasco de brasas", "categoria": "consumible", "precio": 40,
       "efecto": { "tipo": "danio", "poder": 25, "objetivo": "enemigo" } },
     { "id": "hoja-de-ensayo", "nombre": "Hoja de ensayo", "categoria": "equipo", "precio": 50,

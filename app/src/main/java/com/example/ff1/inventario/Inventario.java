@@ -33,6 +33,11 @@ public final class Inventario {
         return caben;
     }
 
+    /** Cuántas unidades más de {@code id} caben. */
+    public int espacio(String id) {
+        return maximo - cantidad(id);
+    }
+
     /** Quita unidades si las hay todas; devuelve {@code false} sin cambiar nada si no. */
     public boolean quitar(String id, int cantidad) {
         if (cantidad < 1) {

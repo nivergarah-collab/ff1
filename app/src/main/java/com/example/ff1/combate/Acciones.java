@@ -173,7 +173,7 @@ public final class Acciones {
             Combatiente objetivo, boolean esHabilidad) {
         exigirObjetivo(actor, h, objetivo);
         TipoHabilidad tipo = tipos.obtener(h.tipo);
-        if (!objetivo.vivo()) {
+        if (!objetivo.vivo() && !tipo.actuaSobreCaidos()) {
             return fallo(accion, actor, objetivo, h, ResultadoAccion.Fallo.OBJETIVO_CAIDO);
         }
         if (esHabilidad && !actor.gastarMagia(h.coste)) {

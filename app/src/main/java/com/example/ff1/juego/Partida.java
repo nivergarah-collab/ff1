@@ -8,11 +8,14 @@ import com.example.ff1.combate.Combatiente;
 import com.example.ff1.combate.ConfiguracionCombate;
 import com.example.ff1.combate.DefinicionCombatiente;
 import com.example.ff1.combate.EfectoEstado;
+import com.example.ff1.combate.Habilidad;
 import com.example.ff1.combate.Recompensa;
+import com.example.ff1.combate.ResultadoAccion;
 import com.example.ff1.combate.ReglasCombate;
 import com.example.ff1.combate.TipoHabilidad;
 import com.example.ff1.inventario.CatalogoObjetos;
 import com.example.ff1.inventario.ConfiguracionInventario;
+import com.example.ff1.inventario.DefinicionObjeto;
 import com.example.ff1.inventario.Inventario;
 import com.example.ff1.inventario.TablaBotin;
 import com.example.ff1.motor.config.EsquemaConfiguracion;
@@ -71,14 +74,16 @@ public final class Partida {
     private final CatalogoObjetos objetos;
     private final TablaBotin botin;
     private final Acciones acciones;
+    private final Registro<TipoHabilidad> tipos;
     private final List<Heroe> grupo;
+    private final List<Heroe> orden;
     private final Inventario inventario;
     private final Explorador explorador;
     private final Encuentros encuentros;
     private int oro;
 
     private Partida(ProveedorConfiguracion config, Azar azar, CatalogoCombate catalogo, CatalogoObjetos objetos,
-            TablaBotin botin, Acciones acciones, List<Heroe> grupo, Inventario inventario, Explorador explorador,
+            TablaBotin botin, Acciones acciones, Registro<TipoHabilidad> tipos, List<Heroe> grupo, Inventario inventario, Explorador explorador,
             Encuentros encuentros, int oro) {
         this.config = config;
         this.azar = azar;
@@ -86,7 +91,9 @@ public final class Partida {
         this.objetos = objetos;
         this.botin = botin;
         this.acciones = acciones;
-        this.grupo = grupo;
+        this.tipos = tipos;
+        this.orden = grupo;
+        this.grupo = Collections.unmodifiableList(grupo);
         this.inventario = inventario;
         this.explorador = explorador;
         this.encuentros = encuentros;
@@ -95,8 +102,8 @@ public final class Partida {
 
     /** Parámetros que declaran los módulos del juego. */
     public static EsquemaConfiguracion esquema() {
-        return ConfiguracionMundo.declarar(ConfiguracionInventario.declarar(
-                ConfiguracionCombate.declarar(new EsquemaConfiguracion())));
+        return ConfiguracionJuego.declarar(ConfiguracionMundo.declarar(ConfiguracionInventario.declarar(
+                ConfiguracionCombate.declarar(new EsquemaConfiguracion()))));
     }
 
     /** Partida nueva según {@code inicio.json}; lanza {@link ErrorDeDatos} si el paquete no es válido. */
@@ -133,7 +140,7 @@ public final class Partida {
         }
         int oro = Documentos.rangoO(inicio, "oro", 0, 999_999, 0);
         Acciones acciones = new Acciones(config, azar, tipos, estados);
-        return new Partida(config, azar, catalogo, objetos, botin, acciones, Collections.unmodifiableList(grupo),
+        return new Partida(config, azar, catalogo, objetos, botin, acciones, tipos, grupo,
                 inventario, new Explorador(mapa), new Encuentros(config, tabla, azar), oro);
     }
 
@@ -147,6 +154,11 @@ public final class Partida {
 
     public List<Heroe> grupo() {
         return grupo;
+    }
+
+    /** Cambia de sitio a dos héroes del grupo (formación); el combate usa este orden. */
+    public void intercambiarHeroes(int a, int b) {
+        Collections.swap(orden, a, b);
     }
 
     public Inventario inventario() {
@@ -167,6 +179,133 @@ public final class Partida {
 
     public int oro() {
         return oro;
+    }
+
+    /** Si el objeto se puede usar en combate (revivir, por ejemplo, solo vale fuera de él). */
+    public boolean sirveEnCombate(DefinicionObjeto o) {
+        return o.efecto != null && !tipos.obtener(o.efecto.tipo).actuaSobreCaidos();
+    }
+
+    /** Resultado de usar un objeto fuera de combate. */
+    public enum Uso {
+        /** Hizo efecto y se gastó una unidad. */
+        USADO,
+        /** No habría efecto (vida llena, héroe caído...): no se gasta nada. */
+        SIN_EFECTO,
+        /** No es un consumible aplicable al grupo, o no quedan unidades. */
+        NO_USABLE,
+        /** El héroe no tiene magia suficiente. */
+        SIN_MAGIA
+    }
+
+    /** Resultado de cambiar el equipo de un héroe. */
+    public enum Cambio {
+        HECHO,
+        /** No es equipo, o la clase del héroe no lo puede llevar, o no hay nada en esa ranura. */
+        NO_PUEDE,
+        /** El grupo no lleva esa pieza. */
+        NO_LLEVA,
+        /** La pieza que se devuelve no cabe en el inventario. */
+        SIN_ESPACIO
+    }
+
+    /** Pone una pieza del inventario a un héroe; la que llevaba vuelve al inventario. */
+    public Cambio equipar(Heroe h, String idPieza) {
+        DefinicionObjeto o = objetos.objeto(idPieza);
+        if (!o.equipablePor(h.clase().id)) {
+            return Cambio.NO_PUEDE;
+        }
+        if (inventario.cantidad(idPieza) < 1) {
+            return Cambio.NO_LLEVA;
+        }
+        DefinicionObjeto puesta = h.equipo().get(o.ranura);
+        if (puesta != null && !puesta.id.equals(idPieza) && inventario.espacio(puesta.id) < 1) {
+            return Cambio.SIN_ESPACIO;
+        }
+        inventario.quitar(idPieza, 1);
+        DefinicionObjeto anterior = h.equipar(o);
+        if (anterior != null) {
+            inventario.agregar(anterior.id, 1);
+        }
+        return Cambio.HECHO;
+    }
+
+    /** Quita la pieza de una ranura y la guarda en el inventario. */
+    public Cambio quitarEquipo(Heroe h, String ranura) {
+        DefinicionObjeto puesta = h.equipo().get(ranura);
+        if (puesta == null) {
+            return Cambio.NO_PUEDE;
+        }
+        if (inventario.espacio(puesta.id) < 1) {
+            return Cambio.SIN_ESPACIO;
+        }
+        h.desequipar(ranura);
+        inventario.agregar(puesta.id, 1);
+        return Cambio.HECHO;
+    }
+
+    /** Piezas del inventario que {@code h} puede ponerse en {@code ranura}. */
+    public List<DefinicionObjeto> piezasPara(Heroe h, String ranura) {
+        List<DefinicionObjeto> r = new ArrayList<>();
+        for (String id : inventario.contenido().keySet()) {
+            DefinicionObjeto o = objetos.objeto(id);
+            if (o.equipablePor(h.clase().id) && ranura.equals(o.ranura)) {
+                r.add(o);
+            }
+        }
+        return r;
+    }
+
+    /** Si una habilidad se puede lanzar fuera de combate: va a aliados y no aplica estados. */
+    public static boolean sirveFueraDeCombate(Habilidad h) {
+        return h.objetivo != Habilidad.Objetivo.ENEMIGO && h.estado == null;
+    }
+
+    /**
+     * Lanza una habilidad de {@code lanzador} sobre {@code objetivo} fuera de combate, gastando
+     * magia. Si no tendría efecto (vida llena, objetivo caído) no se gasta nada. Las habilidades
+     * dirigidas a uno mismo ignoran el objetivo recibido.
+     */
+    public Uso usarHabilidad(Heroe lanzador, Habilidad h, Heroe objetivo) {
+        Heroe destino = h.objetivo == Habilidad.Objetivo.SI_MISMO ? lanzador : objetivo;
+        if (!sirveFueraDeCombate(h) || lanzador.vida() <= 0) {
+            return Uso.NO_USABLE;
+        }
+        Combatiente quien = lanzador.entrarEnCombate();
+        Combatiente sobre = destino == lanzador ? quien : destino.entrarEnCombate();
+        ResultadoAccion r = acciones.usarHabilidad(quien, h, sobre);
+        if (r.fallo == ResultadoAccion.Fallo.SIN_MAGIA) {
+            return Uso.SIN_MAGIA;
+        }
+        if (!r.exito() || sobre.vida() == destino.vida()) {
+            return Uso.SIN_EFECTO;
+        }
+        lanzador.salirDeCombate(quien);
+        if (destino != lanzador) {
+            destino.salirDeCombate(sobre);
+        }
+        return Uso.USADO;
+    }
+
+    /**
+     * Usa un consumible sobre un héroe fuera de combate, con las mismas reglas que en combate
+     * (el efecto del objeto es el de {@code objetos.json}). Solo sirven los efectos dirigidos a
+     * aliados o a uno mismo; si no cambia nada, no se gasta la unidad.
+     */
+    public Uso usarObjeto(String id, Heroe objetivo) {
+        DefinicionObjeto o = objetos.objeto(id);
+        if (o.categoria != DefinicionObjeto.Categoria.CONSUMIBLE || o.efecto == null
+                || o.efecto.objetivo == Habilidad.Objetivo.ENEMIGO || inventario.cantidad(id) < 1) {
+            return Uso.NO_USABLE;
+        }
+        Combatiente c = objetivo.entrarEnCombate();
+        ResultadoAccion r = acciones.usarObjeto(c, o.efecto, c);
+        if (!r.exito() || (c.vida() == objetivo.vida() && c.estados().isEmpty())) {
+            return Uso.SIN_EFECTO;
+        }
+        objetivo.salirDeCombate(c);
+        inventario.quitar(id, 1);
+        return Uso.USADO;
     }
 
     /** Combate contra los enemigos de un encuentro; los héroes entran con su vida y magia actuales. */

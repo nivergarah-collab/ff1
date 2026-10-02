@@ -39,6 +39,17 @@ public final class Equipo {
         return Collections.unmodifiableMap(puestas);
     }
 
+    /** Bonos que habría si {@code ranura} llevara {@code pieza} ({@code null} = vacía). */
+    public Bonos bonosCon(String ranura, DefinicionObjeto pieza) {
+        Bonos total = pieza == null ? Bonos.NINGUNO : pieza.bonos;
+        for (Map.Entry<String, DefinicionObjeto> p : puestas.entrySet()) {
+            if (!p.getKey().equals(ranura)) {
+                total = total.mas(p.getValue().bonos);
+            }
+        }
+        return total;
+    }
+
     /** Suma de los bonos de todas las piezas puestas. */
     public Bonos bonos() {
         Bonos total = Bonos.NINGUNO;

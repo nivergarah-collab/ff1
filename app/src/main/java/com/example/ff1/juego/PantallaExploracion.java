@@ -19,7 +19,7 @@ public final class PantallaExploracion implements Pantalla {
     static final int MAPA_Y = 30;
     static final int COLUMNAS = Escena.ANCHO / LADO;
     static final int FILAS = 13;
-    private static final int PANEL_Y = MAPA_Y + FILAS * LADO + 4;
+    static final int PANEL_Y = MAPA_Y + FILAS * LADO + 4;
     private static final int PASABLE = 0xFF5C7F4A;
     private static final int BLOQUEO = 0xFF5A5A5A;
 
@@ -33,6 +33,10 @@ public final class PantallaExploracion implements Pantalla {
 
     @Override
     public void pulsar(Boton b) {
+        if (b == Boton.CANCELAR) {
+            juego.apilar(new PantallaMenu(juego, partida));
+            return;
+        }
         Direccion d = direccion(b);
         if (d == null) {
             return;

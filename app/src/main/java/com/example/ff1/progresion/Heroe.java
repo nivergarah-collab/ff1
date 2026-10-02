@@ -62,8 +62,16 @@ public final class Heroe {
 
     /** Estadísticas máximas del nivel actual, con los bonos del equipo puesto. */
     public DefinicionCombatiente estadisticas() {
+        return con(equipo.bonos());
+    }
+
+    /** Estadísticas máximas que tendría con {@code pieza} en {@code ranura} ({@code null} = vacía). */
+    public DefinicionCombatiente estadisticasCon(String ranura, DefinicionObjeto pieza) {
+        return con(equipo.bonosCon(ranura, pieza));
+    }
+
+    private DefinicionCombatiente con(Bonos b) {
         DefinicionCombatiente d = tabla.enNivel(clase, nivel);
-        Bonos b = equipo.bonos();
         return new DefinicionCombatiente(d.id, d.nombre, d.bando,
                 Math.min(99999, d.vida + b.vida), Math.min(9999, d.magia + b.magia),
                 Math.min(999, d.ataque + b.ataque), Math.min(999, d.defensa + b.defensa),
