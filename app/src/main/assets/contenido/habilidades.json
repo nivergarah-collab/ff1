@@ -1,0 +1,16 @@
+{
+  "tipo": "habilidades",
+  "version": 1,
+  "lista": [
+    { "id": "chispa", "nombre": "Chispa", "tipo": "danio", "coste": 4, "poder": 14, "objetivo": "enemigo" },
+    { "id": "escarcha", "nombre": "Escarcha", "tipo": "danio", "coste": 7, "poder": 22, "objetivo": "enemigo" },
+    { "id": "balsamo", "nombre": "Bálsamo", "tipo": "curacion", "coste": 5, "poder": 18, "objetivo": "aliado" },
+    { "id": "dardo-amargo", "nombre": "Dardo amargo", "tipo": "alteracion", "coste": 3, "poder": 4, "objetivo": "enemigo",
+      "estado": { "id": "veneno", "duracion": 3 } },
+    { "id": "cancion-de-cuna", "nombre": "Canción de cuna", "tipo": "alteracion", "coste": 5, "objetivo": "enemigo",
+      "estado": { "id": "sueno", "duracion": 2 } },
+    { "id": "muro-de-ramas", "nombre": "Muro de ramas", "tipo": "alteracion", "coste": 4, "objetivo": "aliado",
+      "estado": { "id": "proteccion", "duracion": 3 } },
+    { "id": "aliento-de-ceniza", "nombre": "Aliento de ceniza", "tipo": "danio", "coste": 3, "poder": 10, "objetivo": "enemigo" }
+  ]
+}

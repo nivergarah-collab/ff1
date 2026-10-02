@@ -1,0 +1,24 @@
+{
+  "tipo": "combatientes",
+  "version": 1,
+  "lista": [
+    { "id": "guardian", "nombre": "Guardián", "bando": "heroe",
+      "vida": 48, "magia": 0, "ataque": 12, "defensa": 9, "poder": 1, "velocidad": 8 },
+    { "id": "arcanista", "nombre": "Arcanista", "bando": "heroe",
+      "vida": 28, "magia": 24, "ataque": 5, "defensa": 4, "poder": 11, "velocidad": 9,
+      "habilidades": ["chispa", "escarcha", "cancion-de-cuna"] },
+    { "id": "rastreador", "nombre": "Rastreador", "bando": "heroe",
+      "vida": 36, "magia": 8, "ataque": 9, "defensa": 6, "poder": 3, "velocidad": 13,
+      "habilidades": ["dardo-amargo"] },
+    { "id": "herbolaria", "nombre": "Herbolaria", "bando": "heroe",
+      "vida": 30, "magia": 22, "ataque": 6, "defensa": 5, "poder": 10, "velocidad": 10,
+      "habilidades": ["balsamo", "muro-de-ramas"] },
+    { "id": "musgoso", "nombre": "Musgoso", "bando": "enemigo",
+      "vida": 14, "ataque": 6, "defensa": 2, "velocidad": 6, "experiencia": 4, "oro": 3 },
+    { "id": "ala-de-hollin", "nombre": "Ala de hollín", "bando": "enemigo",
+      "vida": 10, "magia": 6, "ataque": 5, "defensa": 1, "poder": 4, "velocidad": 14,
+      "habilidades": ["aliento-de-ceniza"], "experiencia": 5, "oro": 4 },
+    { "id": "lagarto-de-cantera", "nombre": "Lagarto de cantera", "bando": "enemigo",
+      "vida": 26, "ataque": 9, "defensa": 6, "velocidad": 7, "experiencia": 9, "oro": 8 }
+  ]
+}
