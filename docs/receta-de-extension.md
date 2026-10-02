@@ -68,12 +68,43 @@ Archivo `mapas/<id>.json` (el `id` interno igual al nombre). Ejemplo real abrevi
   "filas": [ "^^^^^", "^.=.^", "^^^^^" ],
   "inicio": { "x": 2, "y": 1 } }
 ```
-Cada `zona` usada debe existir en `encuentros.json`; las casillas sin `zona` son seguras. Se carga con `Mapa.cargar(fuente, "campo")` y se recorre con `Explorador` y `Encuentros.mover`. Las salidas entre mapas aún no existen (llegan con el pueblo y la mazmorra, H5–H6); cuando se añadan, documentar el campo en el contrato.
+Cada `zona` usada debe existir en `encuentros.json`; las casillas sin `zona` son seguras. `color` (`#RRGGBB`) es opcional: es el color con que se dibuja la casilla; sin él se usa un verde (pasable) o gris (no pasable) con el símbolo encima. Se carga con `Mapa.cargar(fuente, "campo")` y se recorre con `Explorador` y `Encuentros.mover`. Las salidas entre mapas aún no existen (llegan con el pueblo y la mazmorra, H5–H6); cuando se añadan, documentar el campo en el contrato.
 - **Prueba:** en `mundo/MapaTest`, cargar el mapa del paquete y comprobar que el inicio es pasable; en `mundo/EncuentrosTest`, `tabla.validarMapa(mapa)`. Si el mapa tiene un camino obligatorio, una prueba que lo recorra con `Explorador.mover` y verifique la posición final.
 
 ## 6. Una escena de texto
 Pendiente: el motor de escenas llega en H4. La forma prevista, coherente con el resto: documento `escena` en `escenas/<id>.json`, con una lista de líneas (quién habla y texto) que avanzan por toque, cargado con `FuenteContenido.cargar("escenas/<id>", "escena", 1)` y validado al cargar. Al implementarlo, sustituir esta sección por un ejemplo real y documentar el tipo en el contrato.
 - **Prueba prevista:** cargar la escena del paquete, avanzar línea a línea y comprobar el orden y el final; y que una escena con un campo inválido se rechaza con la ruta del campo en el mensaje.
 
+## 7. La partida nueva
+`inicio.json` dice con qué empieza el jugador (grupo, objetos, oro, mapa y título de la portada); ver el contrato. Ejemplo real abreviado:
+```json
+{ "tipo": "inicio", "version": 1, "titulo": "Crónica de la Cantera", "mapa": "campo",
+  "grupo": [ { "clase": "guardian", "nombre": "Bruna" } ],
+  "objetos": [ { "id": "tonico-de-raiz", "cantidad": 3 } ], "oro": 50 }
+```
+El ritmo del combate en pantalla se ajusta en `configuracion.json` (por ejemplo `combate.ticksPorPaso`, hoy 4: cuántos ticks de la barra avanzan en cada paso de 50 ms).
+- **Prueba:** `juego/JuegoTest.nuevaPartidaLlevaALaExploracionConElGrupoInicial`; si cambias el grupo o los objetos iniciales, actualiza esa prueba.
+
+## 8. Una pantalla nueva (escena de texto, tienda, posada, menú...)
+Desde H3.5 el juego es una máquina de pantallas en Java puro (`com.example.ff1.juego`). Cómo está armado:
+- `Juego` guarda la pantalla actual, le pasa las pulsaciones (`Boton`: cruceta, `ACEPTAR`, `CANCELAR`; `RAPIDO` lo atiende `Juego`) y un paso de tiempo de 50 ms (`Juego.MS_POR_PASO`), y dibuja la pantalla y debajo los controles.
+- Una pantalla implementa `Pantalla` (`pulsar`, `avanzar`, `dibujar`) y cambia a otra con `juego.irA(...)`. Ejemplo real mínimo, `PantallaError`:
+  ```java
+  public void pulsar(Boton b) {
+      if (b == Boton.ACEPTAR || b == Boton.CANCELAR) { juego.volverAlTitulo(); }
+  }
+  public void dibujar(Escena e) {
+      Estilo.ventana(e, 10, 40, Escena.ANCHO - 20, 360);
+      e.texto(20, 52, "Los datos del juego no son válidos:", Estilo.LETRA, Estilo.VIDA_BAJA);
+  }
+  ```
+- Se dibuja **solo** con órdenes de `dibujo.Escena` (rectángulo, marco, texto, casilla) en la rejilla virtual de 360 × 640, por encima de `Estilo.ALTO_UTIL` (450; debajo van los controles). Usar `Estilo` para ventanas, menús (`Estilo.menu` + `Menu.mover`, que salta opciones deshabilitadas), barras y cortar texto (`Estilo.partir`). No tocar `android/LienzoCanvas`: traduce cualquier escena.
+- Para volver a la pantalla anterior, guardarla y pasarla (como `PantallaCombate` recibe el mapa en `regreso`).
+- Las pantallas leen y cambian la `Partida` (grupo, inventario, oro, explorador, encuentros); no conocen ids concretos.
+- **Prueba:** en `juego/`, crear el juego con `JuegoTest.nuevo(semilla)` o `enExploracion(semilla)`, pulsar con `j.pulsar(Boton.X)`, avanzar con `j.avanzar(Juego.MS_POR_PASO)` y comprobar la pantalla actual (`instanceof`) y lo dibujado con `Escena.contieneTexto` o `Escena.de(Tipo)`. No se prueban píxeles.
+
+## 9. La capa Android
+Son cuatro clases y no deberían cambiar al añadir contenido: `MainActivity` (crea el `Juego` con los assets), `android/VistaJuego` (bucle, toques y teclas), `android/LienzoCanvas` (escena → Canvas) y `android/LectorAssets`. No se pueden probar en la nube: las compila el flujo `Pruebas` y el APK lo construye el flujo `APK`.
+
 ## Comprobar un paquete nuevo
-Para otro juego, copiar la carpeta `contenido/` con sus propios datos y cargarla con `new FuenteContenidoJson(new LectorArchivos(carpeta))` (o `LectorMemoria` en pruebas). Ningún cargador conoce ids concretos: si los datos son válidos, el motor funciona sin cambiar código (lo verificará H8 con un segundo paquete mínimo).
+Para otro juego, copiar la carpeta `contenido/` con sus propios datos y cargarla con `new FuenteContenidoJson(new LectorArchivos(carpeta))` (o `LectorMemoria` en pruebas). Desde H3.5 un paquete necesita además `configuracion.json` e `inicio.json`; si falta algo, el juego muestra `PantallaError` en lugar de cerrarse. Ningún cargador conoce ids concretos: si los datos son válidos, el motor funciona sin cambiar código (lo verificará H8 con un segundo paquete mínimo).
