@@ -41,7 +41,7 @@ Orden de fusión: de la más antigua a la más nueva, con "Merge commit".
 - **Renderizador nativo de la plantilla:** con la decisión de dibujar con `Canvas` en Java, el código C++ de `app/src/main/cpp/` y la `GameActivity` quedarán sin uso. Quitarlos exige tocar `CMakeLists.txt` y `build.gradle.kts` (y quitar la dependencia `games-activity`), lo que requiere tu confirmación. Mientras tanto, el agente los deja como están y la actividad nueva convivirá con ellos.
 
 ## Pruebas
-Nube, 2026-10-02 (bloque 3): `scripts/probar-logica.sh` 72 de 72 pruebas pasan. GitHub Actions en `feature/h1-combate`: ver el cierre del bloque más abajo.
+Nube, 2026-10-02 (bloque 3): `scripts/probar-logica.sh` 72 de 72 pruebas pasan. GitHub Actions en `feature/h1-combate` (commit `8f2c8e5`): `Pruebas` #23 en verde y `APK` #11 en verde.
 
 ## Notas
 - `ExampleUnitTest` y `ExampleInstrumentedTest` son de la plantilla y se reemplazarán.
