@@ -29,7 +29,7 @@
 - Autorizado por el usuario el 2026-10-02: límite de 50 bloques (antes 24), quitar el código nativo de la plantilla (ver `skills/01-trabajo-autonomo.md`) y bloques de hasta unos 25 minutos, una sesión por hora.
 
 ## Siguiente
-1. **Usuario:** fusionar con "Merge commit", en orden, el pull request #7 (H1) y luego el de H2 (`feature/h2-progresion`).
+1. **Usuario:** fusionar con "Merge commit", en orden, el pull request #7 (H1) y luego el #8 (H2).
 2. Bloque 5 del agente: bloque de refactorización y limpieza tras dos hitos (H1 y H2), según `skills/01-trabajo-autonomo.md`. Candidatos: helper común de pruebas para cargar el paquete de contenido (hoy repetido en `ProgresionTest`, `InventarioTest`, `BotinTest` y `combate.Datos`), validación de rangos e ids repetida en los catálogos (`CatalogoCombate`, `CatalogoObjetos`, `TablaBotin`, `TablaProgresion`) y lectura de `efecto`/`estado` duplicada entre habilidades y objetos. Rama `chore/limpieza-h1-h2` desde `feature/h2-progresion`.
 3. Después: H3 (mapa por casillas y encuentros aleatorios). Al marcar la última tarea de H3 toca escribir `docs/receta-de-extension.md` y pausar para el cambio de modelo.
 
@@ -38,13 +38,13 @@ La ruta completa está en `docs/plan.md`.
 ## Ramas y pull requests pendientes
 Orden de fusión: de la más antigua a la más nueva, con "Merge commit".
 1. `feature/h1-combate` (parte de `main`): H1 terminado, pull request #7 https://github.com/nivergarah-collab/ff1/pull/7
-2. `feature/h2-progresion` (parte de `feature/h1-combate`): H2 terminado, pull request abierto en este bloque (ver lista de pull requests).
+2. `feature/h2-progresion` (parte de `feature/h1-combate`): H2 terminado, pull request #8 https://github.com/nivergarah-collab/ff1/pull/8
 
 ## Preguntas pendientes
 Ninguna.
 
 ## Pruebas
-Nube, 2026-10-02 (bloque 4): `scripts/probar-logica.sh` 129 de 129 pruebas pasan en `feature/h2-progresion` (107 en `feature/h1-combate`). GitHub Actions en `feature/h1-combate` (`e767abe`): `Pruebas` #27 y `APK` #15 en verde. En `feature/h2-progresion`: ver el pull request de H2.
+Nube, 2026-10-02 (bloque 4): `scripts/probar-logica.sh` 129 de 129 pruebas pasan en `feature/h2-progresion` (107 en `feature/h1-combate`). GitHub Actions en `feature/h1-combate` (`e767abe`): `Pruebas` #27 y `APK` #15 en verde. En `feature/h2-progresion` (`05a9eb0`): `Pruebas` #32 y `APK` #19 en verde.
 
 ## Notas
 - `ExampleUnitTest` y `ExampleInstrumentedTest` son de la plantilla y se reemplazarán.
