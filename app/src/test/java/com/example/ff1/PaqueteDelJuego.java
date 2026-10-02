@@ -27,6 +27,22 @@ public final class PaqueteDelJuego {
         });
     }
 
+    /** El paquete del juego, pero con otro texto para un recurso (ruta con extensión, p. ej. {@code mapas/campo.json}). */
+    public static FuenteContenidoJson fuenteCambiando(final String rutaRecurso, final String json) {
+        final LectorArchivos base = new LectorArchivos(carpeta());
+        return new FuenteContenidoJson(new LectorTexto() {
+            @Override
+            public String leer(String ruta) throws java.io.IOException {
+                return ruta.equals(rutaRecurso) ? json : base.leer(ruta);
+            }
+        });
+    }
+
+    /** Texto original de un recurso del paquete. */
+    public static String texto(String ruta) throws java.io.IOException {
+        return new LectorArchivos(carpeta()).leer(ruta);
+    }
+
     private static File carpeta() {
         File carpeta = new File("app/src/main/assets/contenido");
         if (!carpeta.isDirectory()) {

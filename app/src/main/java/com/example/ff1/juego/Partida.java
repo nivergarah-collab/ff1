@@ -157,6 +157,7 @@ public final class Partida {
         Partida p = new Partida(fuente, tabla, servicios, config, azar, catalogo, objetos, botin, acciones, tipos, grupo,
                 inventario, new Explorador(mapa), new Encuentros(config, tabla, azar), introduccion, oro);
         p.mapas.put(mapa.id, mapa);
+        p.validarMundo(mapa);
         return p;
     }
 
@@ -187,14 +188,45 @@ public final class Partida {
         encuentros.reiniciar();
     }
 
-    /** Cruza la salida si la casilla del grupo tiene una; devuelve si cambió de mapa. */
-    public boolean cruzarSalida() {
+    /** Recorre los mapas enlazados desde {@code inicial}: cada salida debe llevar a un mapa y una casilla válidos. */
+    private void validarMundo(Mapa inicial) {
+        List<Mapa> pendientes = new ArrayList<>();
+        pendientes.add(inicial);
+        for (int i = 0; i < pendientes.size(); i++) {
+            Mapa m = pendientes.get(i);
+            for (Mapa.Salida sal : m.salidas()) {
+                boolean nuevo = !mapas.containsKey(sal.mapa);
+                Mapa destino = mapa(sal.mapa);
+                if (!destino.pasable(sal.destinoX, sal.destinoY)) {
+                    throw new ErrorDeDatos("mapas/" + m.id + ".salidas: (" + sal.destinoX + ", " + sal.destinoY
+                            + ") no es una casilla pasable de " + sal.mapa);
+                }
+                if (sal.requiere != null) {
+                    objetos.objeto(sal.requiere);
+                }
+                if (nuevo) {
+                    pendientes.add(destino);
+                }
+            }
+        }
+    }
+
+    public enum Cruce { NINGUNO, CRUZO, CERRADA }
+
+    /**
+     * Cruza la salida si la casilla del grupo tiene una. Si pide un objeto que el grupo no lleva,
+     * no se cruza y devuelve {@link Cruce#CERRADA}.
+     */
+    public Cruce cruzarSalida() {
         Mapa.Salida s = explorador.mapa().salidaEn(explorador.x(), explorador.y());
         if (s == null) {
-            return false;
+            return Cruce.NINGUNO;
+        }
+        if (s.requiere != null && inventario.cantidad(s.requiere) < 1) {
+            return Cruce.CERRADA;
         }
         irAMapa(s.mapa, s.destinoX, s.destinoY);
-        return true;
+        return Cruce.CRUZO;
     }
 
     /** Lugar (tienda, posada, vecino) justo delante del grupo, o {@code null}. */

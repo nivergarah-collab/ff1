@@ -60,7 +60,8 @@ Hito insertado por el usuario el 2026-10-02 (ver `decisiones.md`): el juego nece
 - [x] Tienda (comprar y vender), posada y personajes con diálogo en Pozaluz; la partida empieza en el pueblo.
 
 ## H6 · Mazmorra y jefe
-- [ ] Mapa de la mazmorra, enemigos y jefe.
+- [x] Cantera Hundida: puerta de hierro con llave, dos galerías enlazadas con escalera y enemigos propios (`cantera-alta`, `cantera-baja`).
+- [ ] Jefe (el Soterrado): combatiente, golpe fuerte cada pocos turnos, escena previa y encuentro al final de la galería baja.
 - [ ] Escena de cierre.
 
 ## H7 · Guardado y carga

@@ -1,0 +1,64 @@
+{
+  "tipo": "mapa",
+  "version": 1,
+  "id": "cantera-baja",
+  "leyenda": {
+    "#": {
+      "nombre": "roca",
+      "color": "#4A4440",
+      "pasable": false
+    },
+    ",": {
+      "nombre": "galería",
+      "color": "#7C7468",
+      "pasable": true,
+      "zona": "galeria-baja"
+    },
+    "=": {
+      "nombre": "tramo despejado",
+      "color": "#9A8F7C",
+      "pasable": true
+    },
+    "D": {
+      "nombre": "puerta de hierro",
+      "color": "#3A3F4A",
+      "pasable": true
+    },
+    "v": {
+      "nombre": "escalera hacia abajo",
+      "color": "#B59A62",
+      "pasable": true
+    },
+    "u": {
+      "nombre": "escalera hacia arriba",
+      "color": "#B59A62",
+      "pasable": true
+    }
+  },
+  "filas": [
+    "############",
+    "#u,,,,,,,,,#",
+    "#########,##",
+    "#,,,,,,,,,,#",
+    "#,##########",
+    "#,,,,,,,,,,#",
+    "##########,#",
+    "#,,,,,,,,,,#",
+    "############"
+  ],
+  "inicio": {
+    "x": 2,
+    "y": 1
+  },
+  "salidas": [
+    {
+      "x": 1,
+      "y": 1,
+      "mapa": "cantera-alta",
+      "destino": {
+        "x": 10,
+        "y": 2
+      }
+    }
+  ]
+}

@@ -50,6 +50,10 @@
     {
       "id": "cordel-de-viento",
       "cantidad": 1
+    },
+    {
+      "id": "llave-de-cantera",
+      "cantidad": 1
     }
   ],
   "oro": 50

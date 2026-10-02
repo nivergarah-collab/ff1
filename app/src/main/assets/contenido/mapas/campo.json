@@ -34,10 +34,15 @@
       "nombre": "arboleda",
       "color": "#2C5A2A",
       "pasable": false
+    },
+    "D": {
+      "nombre": "puerta de hierro",
+      "color": "#3A3F4A",
+      "pasable": true
     }
   },
   "filas": [
-    "^^=^^^^^^^^^^^^^",
+    "^^=^^^^^^D^^^^^^",
     "^..,,,....TT...^",
     "^.==========,,.^",
     "^.=..~~~...=,,.^",
@@ -61,6 +66,16 @@
         "x": 6,
         "y": 1
       }
+    },
+    {
+      "x": 9,
+      "y": 0,
+      "mapa": "cantera-alta",
+      "destino": {
+        "x": 5,
+        "y": 7
+      },
+      "requiere": "llave-de-cantera"
     }
   ]
 }

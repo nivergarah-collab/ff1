@@ -46,8 +46,11 @@ public final class Mapa {
         public final String mapa;
         public final int destinoX;
         public final int destinoY;
+        /** Id del objeto que hace falta llevar para cruzar; {@code null} si la salida está abierta. */
+        public final String requiere;
 
-        Salida(int x, int y, String mapa, int destinoX, int destinoY) {
+        Salida(int x, int y, String mapa, int destinoX, int destinoY, String requiere) {
+            this.requiere = requiere;
             this.x = x;
             this.y = y;
             this.mapa = mapa;
@@ -156,7 +159,7 @@ public final class Mapa {
                 if (!m.pasable(sx, sy)) {
                     throw new ErrorDeDatos(n.ruta() + ": (" + sx + ", " + sy + ") no es una casilla pasable del mapa");
                 }
-                m.salidas.add(new Salida(sx, sy, n.texto("mapa"), d.entero("x"), d.entero("y")));
+                m.salidas.add(new Salida(sx, sy, n.texto("mapa"), d.entero("x"), d.entero("y"), n.textoO("requiere", null)));
             }
         }
         if (doc.tiene("lugares")) {

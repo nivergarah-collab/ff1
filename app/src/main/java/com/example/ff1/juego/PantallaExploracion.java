@@ -26,6 +26,7 @@ public final class PantallaExploracion implements Pantalla {
 
     private final Juego juego;
     private final Partida partida;
+    private String mensaje = "";
 
     PantallaExploracion(Juego juego, Partida partida) {
         this.juego = juego;
@@ -46,11 +47,16 @@ public final class PantallaExploracion implements Pantalla {
         if (d == null) {
             return;
         }
-        List<String> enemigos = partida.encuentros().mover(partida.explorador(), d);
+        mensaje = "";
+        Explorador ex = partida.explorador();
+        int antesX = ex.x();
+        int antesY = ex.y();
+        List<String> enemigos = partida.encuentros().mover(ex, d);
         if (enemigos != null) {
             juego.irA(new PantallaCombate(juego, partida, partida.empezarCombate(enemigos), this));
-        } else {
-            partida.cruzarSalida();
+        } else if (partida.cruzarSalida() == Partida.Cruce.CERRADA) {
+            ex.colocar(ex.mapa(), antesX, antesY);
+            mensaje = "Está cerrado: hace falta una llave.";
         }
     }
 
@@ -93,6 +99,10 @@ public final class PantallaExploracion implements Pantalla {
     public void avanzar(int ms) {
     }
 
+    public String mensaje() {
+        return mensaje;
+    }
+
     /** Primera columna (o fila) visible: centra al grupo sin salirse del mapa. */
     static int origen(int posicion, int tamanoMapa, int visibles) {
         return Math.max(0, Math.min(posicion - visibles / 2, tamanoMapa - visibles));
@@ -125,8 +135,11 @@ public final class PantallaExploracion implements Pantalla {
         e.texto(jx + LADO / 2, jy + 5, flecha(ex.mirando()), 12, Estilo.FONDO, Escena.Alineacion.CENTRO);
 
         dibujarGrupo(e, partida.grupo(), PANEL_Y);
+        if (!mensaje.isEmpty()) {
+            e.texto(Escena.ANCHO / 2, 6, mensaje, Estilo.LETRA, Estilo.RESALTE, Escena.Alineacion.CENTRO);
+        }
         Mapa.Lugar l = partida.lugarDelante();
-        if (l != null) {
+        if (mensaje.isEmpty() && l != null) {
             Servicios sv = partida.servicios();
             String nombre = l.tipo.equals(Mapa.LUGAR_TIENDA) ? sv.tienda(l.ref).nombre
                     : l.tipo.equals(Mapa.LUGAR_POSADA) ? sv.posada(l.ref).nombre : sv.vecino(l.ref).nombre;
