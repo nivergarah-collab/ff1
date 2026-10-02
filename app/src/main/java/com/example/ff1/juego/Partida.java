@@ -13,6 +13,7 @@ import com.example.ff1.combate.Recompensa;
 import com.example.ff1.combate.ResultadoAccion;
 import com.example.ff1.combate.ReglasCombate;
 import com.example.ff1.combate.TipoHabilidad;
+import com.example.ff1.guion.Guion;
 import com.example.ff1.inventario.CatalogoObjetos;
 import com.example.ff1.inventario.ConfiguracionInventario;
 import com.example.ff1.inventario.DefinicionObjeto;
@@ -80,11 +81,12 @@ public final class Partida {
     private final Inventario inventario;
     private final Explorador explorador;
     private final Encuentros encuentros;
+    private final Guion introduccion;
     private int oro;
 
     private Partida(ProveedorConfiguracion config, Azar azar, CatalogoCombate catalogo, CatalogoObjetos objetos,
             TablaBotin botin, Acciones acciones, Registro<TipoHabilidad> tipos, List<Heroe> grupo, Inventario inventario, Explorador explorador,
-            Encuentros encuentros, int oro) {
+            Encuentros encuentros, Guion introduccion, int oro) {
         this.config = config;
         this.azar = azar;
         this.catalogo = catalogo;
@@ -97,6 +99,7 @@ public final class Partida {
         this.inventario = inventario;
         this.explorador = explorador;
         this.encuentros = encuentros;
+        this.introduccion = introduccion;
         this.oro = oro;
     }
 
@@ -138,10 +141,11 @@ public final class Partida {
                 inventario.agregar(n.texto("id"), Documentos.rango(n, "cantidad", 1, 999));
             }
         }
+        Guion introduccion = inicio.tiene("introduccion") ? Guion.cargar(fuente, inicio.texto("introduccion")) : null;
         int oro = Documentos.rangoO(inicio, "oro", 0, 999_999, 0);
         Acciones acciones = new Acciones(config, azar, tipos, estados);
         return new Partida(config, azar, catalogo, objetos, botin, acciones, tipos, grupo,
-                inventario, new Explorador(mapa), new Encuentros(config, tabla, azar), oro);
+                inventario, new Explorador(mapa), new Encuentros(config, tabla, azar), introduccion, oro);
     }
 
     public ProveedorConfiguracion config() {
@@ -175,6 +179,22 @@ public final class Partida {
 
     public CatalogoCombate catalogo() {
         return catalogo;
+    }
+
+    /** Escena de apertura de la partida nueva, o {@code null} si el paquete no trae una. */
+    public Guion introduccion() {
+        return introduccion;
+    }
+
+    /** Nombre que el jugador puso a cada héroe, por id de clase (para los marcadores de las escenas). */
+    public Map<String, String> nombresPorClase() {
+        Map<String, String> r = new LinkedHashMap<>();
+        for (Heroe h : grupo) {
+            if (!r.containsKey(h.clase().id)) {
+                r.put(h.clase().id, h.nombre());
+            }
+        }
+        return r;
     }
 
     public int oro() {

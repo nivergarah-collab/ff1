@@ -4,6 +4,10 @@ Formato: más reciente primero, con fecha en `AAAA-MM-DD`.
 
 ## 2026-10-02
 
+### Añadido (bloque 8, H4 narrativa)
+- `docs/historia.md`: historia original de "Crónica de la Cantera" (Pozaluz, la cantera hundida y el Soterrado) con escenas por etapa.
+- Escenas de texto: documento `escena` v1 (`guion.Guion`, marcadores `{heroe:<clase>}`), `PantallaEscena` y escena `apertura` enganchada a la partida nueva con el campo opcional `introduccion` de `inicio.json`. 6 pruebas nuevas.
+
 ### Añadido (bloque 8, H3.6 menú del grupo)
 - Pila de pantallas en `Juego` (`apilar`, `cerrar`, `profundidad`) y menú del grupo (`PantallaMenu`) que se abre desde el mapa con Cancelar: Objetos, Magia, Equipo, Estado, Formación, Ajustes, Guardar (apagado hasta H7) y Salir al título (con confirmación).
 - Objetos y magia de curación fuera de combate (`Partida.usarObjeto`, `usarHabilidad`; si no hay efecto no se gasta nada); tipo de habilidad `revivir` y objeto "Pluma de alba", solo fuera de combate (`TipoHabilidad.actuaSobreCaidos`, `Combatiente.revivir`).

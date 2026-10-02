@@ -27,7 +27,11 @@ public class JuegoTest {
 
     static Juego enExploracion(long semilla) {
         Juego j = nuevo(semilla);
-        j.pulsar(Boton.ACEPTAR);
+        j.pulsar(Boton.ACEPTAR); // Nueva partida
+        for (int i = 0; i < 400 && j.pantalla() instanceof PantallaEscena; i++) {
+            j.pulsar(Boton.ACEPTAR); // salta la escena de apertura
+        }
+        assertTrue(j.pantalla() instanceof PantallaExploracion);
         return j;
     }
 
@@ -110,7 +114,7 @@ public class JuegoTest {
         j.entrada().presionar(Boton.ACEPTAR);
         j.entrada().soltar();
         j.avanzar(Juego.MS_POR_PASO);
-        assertTrue(j.pantalla() instanceof PantallaExploracion);
+        assertTrue(j.pantalla() instanceof PantallaEscena); // la apertura
     }
 
     @Test

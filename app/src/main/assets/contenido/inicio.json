@@ -3,6 +3,7 @@
   "version": 1,
   "titulo": "Crónica de la Cantera",
   "mapa": "campo",
+  "introduccion": "apertura",
   "grupo": [
     { "clase": "guardian", "nombre": "Bruna" },
     { "clase": "arcanista", "nombre": "Tadeo" },
