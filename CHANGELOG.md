@@ -5,6 +5,14 @@ Formato: más reciente primero, con fecha en `AAAA-MM-DD`.
 ## 2026-10-02
 
 ### Añadido
+- Motor (H0): `motor.datos` (lector y escritor JSON en Java puro, errores con ruta del campo, tipo y versión de documentos), `motor.fuentes` (interfaces de contenido, azar, tiempo y guardado, con implementaciones de memoria y archivos) y `motor.config` (configuración validada y reemplazable en caliente, registro de extensiones). 39 pruebas nuevas.
+- `docs/contrato-de-datos.md`: formato, reglas comunes, interfaces del motor y documento `configuracion` v1.
+
+### Decisiones
+- Menús, texto y mapa se dibujan con `Canvas` en Java desde una escena de dibujo probada en JVM; el renderizador C++ queda sin uso.
+- Formato de datos: JSON con lector propio, sin dependencias.
+
+### Añadido (bloque 1)
 - `scripts/probar-logica.sh` y `scripts/EjecutorLogica.java`: compilan y ejecutan la lógica en Java puro con JUnit 4, una línea por clase y detalle solo de los fallos (H0).
 - `docs/investigacion-ritmo.md`: resumen de ritmo y estructura de RPG clásicos, sin contenido de terceros (H0).
 - El agente autónomo puede abrir pull requests (sin fusionarlos ni cerrarlos), con reglas para ramas encadenadas y fusión con "Merge commit". Lista "Ramas y pull requests pendientes" en `docs/estado.md`.
