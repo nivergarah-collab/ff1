@@ -125,6 +125,25 @@ public final class Heroe {
         return subidos;
     }
 
+    /**
+     * Pone al héroe como estaba al guardar: experiencia (de ella sale el nivel), vida y magia. Hay que
+     * llamarlo con el equipo ya puesto, porque los máximos dependen de él; lanza
+     * {@link IllegalArgumentException} si vida o magia pasan del máximo.
+     */
+    public void restaurarEstado(int experiencia, int vida, int magia) {
+        if (experiencia < 0) {
+            throw new IllegalArgumentException("experiencia negativa: " + experiencia);
+        }
+        this.experiencia = experiencia;
+        this.nivel = tabla.nivelCon(experiencia);
+        DefinicionCombatiente s = estadisticas();
+        if (vida < 0 || vida > s.vida || magia < 0 || magia > s.magia) {
+            throw new IllegalArgumentException("vida o magia fuera de rango para " + nombre);
+        }
+        this.vida = vida;
+        this.magia = magia;
+    }
+
     /** Vida y magia al máximo (posada). */
     public void restaurar() {
         DefinicionCombatiente s = estadisticas();

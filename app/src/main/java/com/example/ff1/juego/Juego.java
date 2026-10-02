@@ -6,6 +6,8 @@ import com.example.ff1.entrada.Controles;
 import com.example.ff1.entrada.Entrada;
 import com.example.ff1.motor.datos.ErrorDeDatos;
 import com.example.ff1.motor.fuentes.Azar;
+import com.example.ff1.motor.fuentes.Almacen;
+import com.example.ff1.motor.fuentes.AlmacenMemoria;
 import com.example.ff1.motor.fuentes.FuenteContenido;
 
 import java.util.ArrayDeque;
@@ -30,9 +32,20 @@ public final class Juego {
     private Partida partida;
     private boolean rapido;
 
+    /** Ranura única de guardado del MVP. */
+    public static final String RANURA = "partida1";
+
+    private final Almacen almacen;
+
+    /** Juego con un almacén en memoria (no sobrevive al cierre); para pruebas y herramientas. */
     public Juego(FuenteContenido fuente, Azar azar) {
+        this(fuente, azar, new AlmacenMemoria());
+    }
+
+    public Juego(FuenteContenido fuente, Azar azar, Almacen almacen) {
         this.fuente = fuente;
         this.azar = azar;
+        this.almacen = almacen;
         this.pantalla = new PantallaTitulo(this, titulo(fuente));
     }
 
@@ -115,6 +128,41 @@ public final class Juego {
             irA(partida.introduccion() == null ? mapa
                     : new PantallaEscena(this, partida.introduccion(), partida.nombresPorClase(), mapa));
         } catch (ErrorDeDatos e) {
+            irA(new PantallaError(this, e.getMessage()));
+        }
+    }
+
+    /** Si hay una partida guardada que continuar. */
+    public boolean hayGuardado() {
+        return almacen.existe(RANURA);
+    }
+
+    /** Guarda la partida en curso; devuelve false si no hay partida o el almacén falla. */
+    public boolean guardar() {
+        if (partida == null) {
+            return false;
+        }
+        try {
+            almacen.guardar(RANURA, partida.guardar());
+            return true;
+        } catch (RuntimeException e) {
+            return false;
+        }
+    }
+
+    /** Carga la partida guardada; si falta o no es válida, muestra el error en lugar de cerrar el juego. */
+    void continuarPartida() {
+        try {
+            String texto = almacen.cargar(RANURA);
+            if (texto == null) {
+                throw new ErrorDeDatos("no hay una partida guardada");
+            }
+            partida = Partida.cargar(fuente, azar, texto);
+            pila.clear();
+            rapido = partida.config().actual().entero(ConfiguracionJuego.RAPIDO_AL_EMPEZAR) == 1;
+            irA(new PantallaExploracion(this, partida));
+        } catch (ErrorDeDatos e) {
+            partida = null;
             irA(new PantallaError(this, e.getMessage()));
         }
     }

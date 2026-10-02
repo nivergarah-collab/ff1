@@ -65,7 +65,7 @@ Hito insertado por el usuario el 2026-10-02 (ver `decisiones.md`): el juego nece
 - [x] Escena de cierre (`cierre`, tras vencer al jefe; el grupo vuelve a Pozaluz).
 
 ## H7 · Guardado y carga
-- [ ] Guardar y cargar partida, con pruebas de ida y vuelta.
+- [x] Guardar y cargar partida, con pruebas de ida y vuelta (`Partida.guardar/cargar`, `AlmacenArchivos`, Guardar en el menú y Continuar en el título).
 
 ## H8 · Integración y limpieza
 - [ ] Prueba con un segundo paquete de contenido mínimo: el motor funciona sin cambiar código.
