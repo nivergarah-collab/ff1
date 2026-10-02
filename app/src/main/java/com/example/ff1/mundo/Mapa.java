@@ -25,11 +25,14 @@ public final class Mapa {
         public final char simbolo;
         public final String nombre;
         public final boolean pasable;
+        /** Zona de encuentros (ver {@link TablaEncuentros}); {@code null} si aquí no hay. */
+        public final String zona;
 
-        Casilla(char simbolo, String nombre, boolean pasable) {
+        Casilla(char simbolo, String nombre, boolean pasable, String zona) {
             this.simbolo = simbolo;
             this.nombre = nombre;
             this.pasable = pasable;
+            this.zona = zona;
         }
     }
 
@@ -70,7 +73,8 @@ public final class Mapa {
                 throw new ErrorDeDatos(nl.ruta() + "." + clave + ": la clave debe ser un solo carácter");
             }
             Nodo c = nl.objeto(clave);
-            leyenda.put(clave.charAt(0), new Casilla(clave.charAt(0), c.texto("nombre"), c.booleano("pasable")));
+            leyenda.put(clave.charAt(0), new Casilla(clave.charAt(0), c.texto("nombre"), c.booleano("pasable"),
+                    c.textoO("zona", null)));
         }
 
         List<Nodo> nf = doc.lista("filas");

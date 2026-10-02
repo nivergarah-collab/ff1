@@ -81,6 +81,8 @@ Parámetros declarados: se listan aquí a medida que cada hito los añade.
 | `combate.venenoPorCiento` | entero | 1–50 | 8 | H1 |
 | `combate.proteccionPorCiento` | entero | 0–100 | 50 | H1 |
 | `inventario.maximoPorObjeto` | entero | 1–999 | 99 | H2 |
+| `mundo.pasosMinimos` | entero | 1–999 | 15 | H3 |
+| `mundo.pasosMaximos` | entero | 1–999 | 30 (si es menor que el mínimo, se usa el mínimo) | H3 |
 
 Barra de tiempo: en cada tick, cada combatiente vivo que no espera turno suma `max(1, velocidad × velocidadBarra / 10)`; con la carga llena entra en la cola de turnos. Empates en un mismo tick: primero el que más se pasó y, a igualdad, el inscrito antes.
 
@@ -203,11 +205,27 @@ Mapa por casillas (`mundo.Mapa`), un archivo por mapa en `mapas/<id>.json`. El g
 | Campo | Tipo | Regla |
 |---|---|---|
 | `id` | texto | Igual al nombre del archivo. |
-| `leyenda` | objeto | Clave de un solo carácter → `nombre` (texto) y `pasable` (booleano). |
+| `leyenda` | objeto | Clave de un solo carácter → `nombre` (texto), `pasable` (booleano) y `zona` (texto, opcional: zona de `encuentros`; sin zona no hay encuentros en esa casilla). |
 | `filas` | lista de textos | Al menos una; todas con el mismo ancho; cada carácter debe estar en la leyenda. La fila 0 es la de arriba. |
 | `inicio` | objeto `x`, `y` | Casilla pasable dentro del mapa donde aparece el grupo. |
 
 Fuera del mapa nada es pasable. Un paso hacia una casilla no pasable no mueve al grupo, solo lo gira.
+
+### `encuentros` · versión 1
+Grupos de enemigos por zona (`mundo.TablaEncuentros`), en `encuentros.json`. `mundo.Encuentros` lleva una cuenta atrás tirada entre `mundo.pasosMinimos` y `mundo.pasosMaximos`; solo baja con los pasos sobre casillas con `zona`, y al llegar a cero elige un grupo de esa zona por peso y vuelve a tirar.
+```json
+{ "tipo": "encuentros", "version": 1, "zonas": [
+  { "zona": "llanura", "grupos": [
+    { "enemigos": [ "musgoso" ], "peso": 3 },
+    { "enemigos": [ "musgoso", "musgoso" ], "peso": 2 } ] }
+] }
+```
+| Campo | Tipo | Regla |
+|---|---|---|
+| `zona` | texto | Sin repetir. Toda zona usada por un mapa debe estar aquí (`validarMapa`). |
+| `grupos` | lista | Al menos uno. |
+| `grupos[].enemigos` | lista de textos | 1–6 ids de combatientes con `bando` `enemigo`; se pueden repetir. |
+| `grupos[].peso` | entero | 1–100, defecto 1. Probabilidad relativa dentro de la zona. |
 
 ### Guardado de partida
 Pendiente (H7). Será un documento JSON con `tipo` `"partida"` y `version`, escrito con `EscritorJson` y guardado en un `Almacen`. Incluirá la semilla del azar.

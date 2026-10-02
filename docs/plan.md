@@ -26,7 +26,7 @@ Lo mantiene el agente. Marcar `[x]` al terminar y anotar aquí cualquier cambio 
 
 ## H3 · Mundo
 - [x] Mapa por casillas, movimiento y colisiones.
-- [ ] Encuentros aleatorios que conectan con el combate.
+- [x] Encuentros aleatorios que conectan con el combate.
 
 ## H4 · Narrativa
 - [ ] Historia original en `docs/historia.md`, con las mismas etapas de un RPG clásico.

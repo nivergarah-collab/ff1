@@ -3,8 +3,8 @@
   "version": 1,
   "id": "campo",
   "leyenda": {
-    ".": { "nombre": "pradera", "pasable": true },
-    ",": { "nombre": "matorral", "pasable": true },
+    ".": { "nombre": "pradera", "pasable": true, "zona": "llanura" },
+    ",": { "nombre": "matorral", "pasable": true, "zona": "maleza" },
     "=": { "nombre": "sendero", "pasable": true },
     "^": { "nombre": "risco", "pasable": false },
     "~": { "nombre": "laguna", "pasable": false },
