@@ -13,7 +13,7 @@ Lo mantiene el agente. Marcar `[x]` al terminar y anotar aquí cualquier cambio 
 ## H1 · Núcleo del combate ATB
 - [x] Modelo: personaje, enemigo, habilidad, estados.
 - [x] Barra de tiempo por ticks simulados.
-- [ ] Acciones: atacar, magia, objeto, huir. Cálculo de daño.
+- [x] Acciones: atacar, magia, objeto, huir. Cálculo de daño.
 - [ ] Fin del combate y recompensas.
 - [ ] Interruptor de avance rápido como multiplicador de ticks.
 - [ ] Los parámetros del combate (velocidad de la barra, daño, avance rápido) vienen de la configuración, no de constantes en el código.

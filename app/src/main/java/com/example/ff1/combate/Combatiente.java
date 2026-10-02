@@ -57,6 +57,18 @@ public final class Combatiente {
         return definicion.magia;
     }
 
+    public int ataque() {
+        return definicion.ataque;
+    }
+
+    public int defensa() {
+        return definicion.defensa;
+    }
+
+    public int poder() {
+        return definicion.poder;
+    }
+
     public int velocidad() {
         return definicion.velocidad;
     }

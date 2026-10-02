@@ -72,8 +72,22 @@ Parámetros declarados: se listan aquí a medida que cada hito los añade.
 |---|---|---|---|---|
 | `combate.velocidadBarra` | entero | 1–100 | 10 | H1 |
 | `combate.cargaLlena` | entero | 100–100000 | 1000 | H1 |
+| `combate.fuerzaFisica` | entero | 1–100 | 10 | H1 |
+| `combate.fuerzaMagica` | entero | 1–100 | 10 | H1 |
+| `combate.varianza` | entero | 0–50 | 10 | H1 |
+| `combate.huidaBase` | entero | 0–100 | 50 | H1 |
+| `combate.venenoPorCiento` | entero | 1–50 | 8 | H1 |
+| `combate.proteccionPorCiento` | entero | 0–100 | 50 | H1 |
 
 Barra de tiempo: en cada tick, cada combatiente vivo que no espera turno suma `max(1, velocidad × velocidadBarra / 10)`; con la carga llena entra en la cola de turnos. Empates en un mismo tick: primero el que más se pasó y, a igualdad, el inscrito antes.
+
+Acciones (`combate.Acciones`; fuerzas en décimas, 10 = ×1):
+- Físico: `max(1, ataque × fuerzaFisica / 10 − defensa / 2)`.
+- Mágico: `max(1, poderHabilidad + poderActor × fuerzaMagica / 10 − defensa / 4)`.
+- Curación: `poderHabilidad + poderActor × fuerzaMagica / 10`, sin pasar de la vida máxima.
+- Daño y curación se multiplican por `(100 + r) / 100`, con `r` al azar en `[−varianza, +varianza]`.
+- Objeto: su efecto se resuelve como una habilidad, sin coste de magia y con `poderActor` 0.
+- Huida: `huidaBase + 2 × (velocidad − velocidad media de los enemigos vivos)`, limitada a 5–95 %; un combate puede prohibirla (jefe).
 
 ### `habilidades` · versión 1
 ```json
@@ -87,11 +101,11 @@ Barra de tiempo: en cada tick, cada combatiente vivo que no espera turno suma `m
 |---|---|---|
 | `id` | texto | Obligatorio, minúsculas con guiones, único. |
 | `nombre` | texto | Obligatorio. Texto visible. |
-| `tipo` | texto | Obligatorio. Clave registrada en el registro de tipos de habilidad del motor (por ahora `danio`, `curacion`, `alteracion`; su regla se define en H1, acciones). |
+| `tipo` | texto | Obligatorio. Clave registrada en el registro de tipos de habilidad (`ReglasCombate`): `danio` (daño mágico), `curacion` (vida al objetivo) y `alteracion` (aplica su estado y, si tiene poder, hace daño mágico). |
 | `coste` | entero | 0–999, defecto 0. Magia que gasta. |
 | `poder` | entero | 0–9999, defecto 0. |
 | `objetivo` | texto | `enemigo` (defecto), `aliado` o `si-mismo`. |
-| `estado` | objeto | Opcional: `id` (registrado en el registro de estados; por ahora `veneno`, `sueno`, `proteccion`) y `duracion` (1–99 turnos, obligatorio). |
+| `estado` | objeto | Opcional: `id` (registrado en el registro de estados de `ReglasCombate`) y `duracion` (1–99 turnos, obligatorio). `veneno` quita `venenoPorCiento` de la vida máxima (mínimo 1) al terminar cada turno; `sueno` hace perder los turnos y se quita al recibir daño; `proteccion` deja pasar solo `proteccionPorCiento` del daño (mínimo 1). |
 
 ### `combatientes` · versión 1
 Clases de héroe y tipos de enemigo. El nombre del héroe lo elige el jugador; `nombre` es el de la clase.

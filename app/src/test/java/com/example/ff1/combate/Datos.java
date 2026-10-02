@@ -1,6 +1,5 @@
 package com.example.ff1.combate;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 import com.example.ff1.motor.config.EsquemaConfiguracion;
@@ -13,20 +12,19 @@ final class Datos {
     private Datos() {
     }
 
-    static Registro<Object> tiposHabilidad() {
-        Registro<Object> r = new Registro<>("tipo de habilidad");
-        for (String t : Arrays.asList("danio", "curacion", "alteracion")) {
-            r.registrar(t, t);
-        }
-        return r;
+    static Registro<TipoHabilidad> tiposHabilidad() {
+        return ReglasCombate.tiposHabilidad();
     }
 
-    static Registro<Object> estados() {
-        Registro<Object> r = new Registro<>("estado");
-        for (String e : Arrays.asList("veneno", "sueno", "proteccion")) {
-            r.registrar(e, e);
-        }
-        return r;
+    static Registro<EfectoEstado> estados() {
+        return ReglasCombate.estados();
+    }
+
+    /** Definición con ataque, defensa y poder dados. */
+    static DefinicionCombatiente definicion(String id, Bando bando, int vida, int magia,
+            int ataque, int defensa, int poder, int velocidad) {
+        return new DefinicionCombatiente(id, id, bando, vida, magia, ataque, defensa, poder,
+                velocidad, Collections.<String>emptyList(), 0, 0);
     }
 
     static DefinicionCombatiente definicion(String id, Bando bando, int vida, int magia, int velocidad) {
