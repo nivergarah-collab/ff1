@@ -28,6 +28,16 @@ Lo mantiene el agente. Marcar `[x]` al terminar y anotar aquí cualquier cambio 
 - [x] Mapa por casillas, movimiento y colisiones.
 - [x] Encuentros aleatorios que conectan con el combate.
 
+## H3.5 · Primera versión jugable
+Hito insertado por el usuario el 2026-10-02 (ver `decisiones.md`): un APK instalable con un recorrido corto (título, mapa, encuentro, combate con menú, vuelta al mapa). Lo hace Opus porque define cómo se dibuja y se maneja todo el juego.
+- [x] Escena de dibujo en Java puro (órdenes rectángulo, texto y casilla sobre una rejilla virtual fija) y una clase Android que la traduce a `Canvas` y escala a la pantalla. Pruebas de las órdenes.
+- [x] Entrada táctil: cruceta y botones aceptar/cancelar en pantalla, traducidos a una entrada en Java puro. Bucle de juego con la interfaz `Tiempo` y una `MainActivity` nueva con vista propia como actividad de lanzamiento.
+- [x] Máquina de pantallas en Java puro, con pruebas: título (Nueva partida; Continuar deshabilitado hasta H7), exploración y combate.
+- [x] Exploración: dibujar el mapa de `mapas/campo.json`, mover al jugador con colisiones y encuentros aleatorios que abren el combate.
+- [x] Combate con menú (Atacar, Magia, Objeto, Huir), barras de tiempo y de vida, interruptor de avance rápido visible, fin con recompensas y regreso al mapa.
+- [ ] Quitar el código nativo (rama `chore/quitar-codigo-nativo`), con `Pruebas` y `APK` en verde.
+- [ ] Dejar en `docs/estado.md` cómo bajar, instalar y probar el APK.
+
 ## H4 · Narrativa
 - [ ] Historia original en `docs/historia.md`, con las mismas etapas de un RPG clásico.
 - [ ] Motor de escenas de texto y diálogos.

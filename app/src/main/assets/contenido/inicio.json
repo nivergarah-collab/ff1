@@ -1,0 +1,17 @@
+{
+  "tipo": "inicio",
+  "version": 1,
+  "titulo": "Crónica de la Cantera",
+  "mapa": "campo",
+  "grupo": [
+    { "clase": "guardian", "nombre": "Bruna" },
+    { "clase": "arcanista", "nombre": "Tadeo" },
+    { "clase": "rastreador", "nombre": "Ilke" },
+    { "clase": "herbolaria", "nombre": "Mirta" }
+  ],
+  "objetos": [
+    { "id": "tonico-de-raiz", "cantidad": 3 },
+    { "id": "agua-de-roca", "cantidad": 1 }
+  ],
+  "oro": 50
+}

@@ -38,7 +38,8 @@ Un paquete es una carpeta (en el juego, `app/src/main/assets/contenido/`) con un
 
 ```
 contenido/
-├── configuracion.json   ← tipo "configuracion"
+├── configuracion.json   ← tipo "configuracion" (obligatorio desde H3.5)
+├── inicio.json          ← tipo "inicio": partida nueva (H3.5)
 ├── combatientes.json    ← héroes y enemigos (H1)
 ├── habilidades.json     ← (H1)
 ├── progresion.json      ← (H2)
@@ -208,7 +209,7 @@ Mapa por casillas (`mundo.Mapa`), un archivo por mapa en `mapas/<id>.json`. El g
 | Campo | Tipo | Regla |
 |---|---|---|
 | `id` | texto | Igual al nombre del archivo. |
-| `leyenda` | objeto | Clave de un solo carácter → `nombre` (texto), `pasable` (booleano) y `zona` (texto, opcional: zona de `encuentros`; sin zona no hay encuentros en esa casilla). |
+| `leyenda` | objeto | Clave de un solo carácter → `nombre` (texto), `pasable` (booleano), `zona` (texto, opcional: zona de `encuentros`; sin zona no hay encuentros en esa casilla) y `color` (texto `#RRGGBB`, opcional desde H3.5: color de dibujo; sin él, la presentación usa uno genérico y muestra el símbolo). |
 | `filas` | lista de textos | Al menos una; todas con el mismo ancho; cada carácter debe estar en la leyenda. La fila 0 es la de arriba. |
 | `inicio` | objeto `x`, `y` | Casilla pasable dentro del mapa donde aparece el grupo. |
 
@@ -229,6 +230,22 @@ Grupos de enemigos por zona (`mundo.TablaEncuentros`), en `encuentros.json`. `mu
 | `grupos` | lista | Al menos uno. |
 | `grupos[].enemigos` | lista de textos | 1–6 ids de combatientes con `bando` `enemigo`; se pueden repetir. |
 | `grupos[].peso` | entero | 1–100, defecto 1. Probabilidad relativa dentro de la zona. |
+
+### `inicio` · versión 1
+Partida nueva (`juego.Partida.nueva`), en `inicio.json`. Valida que el mapa exista y que sus zonas estén en `encuentros`.
+```json
+{ "tipo": "inicio", "version": 1, "titulo": "Crónica de la Cantera", "mapa": "campo",
+  "grupo": [ { "clase": "guardian", "nombre": "Bruna" } ],
+  "objetos": [ { "id": "tonico-de-raiz", "cantidad": 3 } ],
+  "oro": 50 }
+```
+| Campo | Tipo | Regla |
+|---|---|---|
+| `titulo` | texto | Opcional. Se muestra en la pantalla de título. |
+| `mapa` | texto | Id de un archivo de `mapas/`. El grupo aparece en su `inicio`. |
+| `grupo` | lista | 1–6 héroes: `clase` (id de combatiente con `bando` `heroe`) y `nombre`. |
+| `objetos` | lista | Opcional. `id` de `objetos` y `cantidad` 1–999 (limitada por `inventario.maximoPorObjeto`). |
+| `oro` | entero | Opcional, 0–999999, defecto 0. |
 
 ### Guardado de partida
 Pendiente (H7). Será un documento JSON con `tipo` `"partida"` y `version`, escrito con `EscritorJson` y guardado en un `Almacen`. Incluirá la semilla del azar.

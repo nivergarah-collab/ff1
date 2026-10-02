@@ -3,12 +3,12 @@
   "version": 1,
   "id": "campo",
   "leyenda": {
-    ".": { "nombre": "pradera", "pasable": true, "zona": "llanura" },
-    ",": { "nombre": "matorral", "pasable": true, "zona": "maleza" },
-    "=": { "nombre": "sendero", "pasable": true },
-    "^": { "nombre": "risco", "pasable": false },
-    "~": { "nombre": "laguna", "pasable": false },
-    "T": { "nombre": "arboleda", "pasable": false }
+    ".": { "nombre": "pradera", "color": "#4E8B3A", "pasable": true, "zona": "llanura" },
+    ",": { "nombre": "matorral", "color": "#6B7F2A", "pasable": true, "zona": "maleza" },
+    "=": { "nombre": "sendero", "color": "#B59A62", "pasable": true },
+    "^": { "nombre": "risco", "color": "#6E6A66", "pasable": false },
+    "~": { "nombre": "laguna", "color": "#2F5D8C", "pasable": false },
+    "T": { "nombre": "arboleda", "color": "#2C5A2A", "pasable": false }
   },
   "filas": [
     "^^^^^^^^^^^^^^^^",

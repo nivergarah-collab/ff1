@@ -1,29 +1,58 @@
 package com.example.ff1;
 
+import android.app.Activity;
+import android.os.Bundle;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
 
-import com.google.androidgamesdk.GameActivity;
+import com.example.ff1.android.LectorAssets;
+import com.example.ff1.android.VistaJuego;
+import com.example.ff1.juego.Juego;
+import com.example.ff1.motor.fuentes.AzarSemilla;
+import com.example.ff1.motor.fuentes.FuenteContenidoJson;
 
-public class MainActivity extends GameActivity {
-    static {
-        System.loadLibrary("ff1");
+/**
+ * Actividad de lanzamiento: crea el {@link Juego} (Java puro) con el contenido de
+ * {@code assets/contenido} y lo muestra en una {@link VistaJuego} que lo dibuja con Canvas.
+ */
+public class MainActivity extends Activity {
+
+    private VistaJuego vista;
+
+    @Override
+    protected void onCreate(Bundle estado) {
+        super.onCreate(estado);
+        Juego juego = new Juego(new FuenteContenidoJson(new LectorAssets(getAssets(), "contenido")),
+                new AzarSemilla(System.nanoTime()));
+        vista = new VistaJuego(this, juego);
+        setContentView(vista);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        vista.reanudar();
+    }
+
+    @Override
+    protected void onPause() {
+        vista.pausar();
+        super.onPause();
     }
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-
         if (hasFocus) {
-            hideSystemUi();
+            ocultarBarrasDelSistema();
         }
     }
 
-    private void hideSystemUi() {
-        WindowInsetsController insetsController = getWindow().getInsetsController();
-        if (insetsController != null) {
-            insetsController.hide(WindowInsets.Type.systemBars());
-            insetsController.setSystemBarsBehavior(WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
+    private void ocultarBarrasDelSistema() {
+        WindowInsetsController controlador = getWindow().getInsetsController();
+        if (controlador != null) {
+            controlador.hide(WindowInsets.Type.systemBars());
+            controlador.setSystemBarsBehavior(WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
         }
     }
 }

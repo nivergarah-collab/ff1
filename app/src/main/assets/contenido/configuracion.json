@@ -1,0 +1,7 @@
+{
+  "tipo": "configuracion",
+  "version": 1,
+  "valores": {
+    "combate.ticksPorPaso": 4
+  }
+}
