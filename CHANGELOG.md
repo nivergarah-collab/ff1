@@ -4,6 +4,11 @@ Formato: más reciente primero, con fecha en `AAAA-MM-DD`.
 
 ## 2026-10-02
 
+### Añadido (bloque 4)
+- Combate (H1 terminado): acciones atacar, habilidad, objeto y huir con cálculo de daño físico, mágico y curación; tipos de habilidad y estados registrados en `ReglasCombate`; fin del combate, turnos automáticos y recompensas; interruptor de avance rápido por pasos. Parámetros nuevos `combate.*` en la configuración.
+- Progresión (H2): experiencia por nivel y crecimiento por clase (`progresion.json`), héroe persistente con vida y magia entre combates, reparto de experiencia.
+- Inventario (H2): objetos consumibles, equipo con ranuras y bonos, objetos clave (`objetos.json`), inventario con máximo por objeto y botín por enemigo (`botin.json`). 57 pruebas nuevas.
+
 ### Cambiado
 - Límite de bloques 24 a 50, bloques de hasta unos 25 minutos y autorización para quitar el código nativo de la plantilla.
 
