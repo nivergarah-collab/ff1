@@ -191,8 +191,26 @@ Objetos que suelta cada enemigo al caer (`inventario.TablaBotin`).
 
 Lo que no cabe en el inventario se informa como sobrante y no se guarda.
 
+### `mapa` · versión 1
+Mapa por casillas (`mundo.Mapa`), un archivo por mapa en `mapas/<id>.json`. El grupo se mueve con `mundo.Explorador`.
+```json
+{ "tipo": "mapa", "version": 1, "id": "campo",
+  "leyenda": { ".": { "nombre": "pradera", "pasable": true },
+               "^": { "nombre": "risco", "pasable": false } },
+  "filas": [ "^^^^", "^..^", "^^^^" ],
+  "inicio": { "x": 1, "y": 1 } }
+```
+| Campo | Tipo | Regla |
+|---|---|---|
+| `id` | texto | Igual al nombre del archivo. |
+| `leyenda` | objeto | Clave de un solo carácter → `nombre` (texto) y `pasable` (booleano). |
+| `filas` | lista de textos | Al menos una; todas con el mismo ancho; cada carácter debe estar en la leyenda. La fila 0 es la de arriba. |
+| `inicio` | objeto `x`, `y` | Casilla pasable dentro del mapa donde aparece el grupo. |
+
+Fuera del mapa nada es pasable. Un paso hacia una casilla no pasable no mueve al grupo, solo lo gira.
+
 ### Guardado de partida
 Pendiente (H7). Será un documento JSON con `tipo` `"partida"` y `version`, escrito con `EscritorJson` y guardado en un `Almacen`. Incluirá la semilla del azar.
 
 ### Tipos de contenido de juego
-Pendientes: `mapa` (H3), `escena` (H4), `tienda` (H5). Cada uno se documenta aquí con su versión, sus campos y un ejemplo al implementarlo.
+Pendientes: `escena` (H4), `tienda` (H5). Cada uno se documenta aquí con su versión, sus campos y un ejemplo al implementarlo.

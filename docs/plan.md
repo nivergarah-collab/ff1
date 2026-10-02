@@ -25,7 +25,7 @@ Lo mantiene el agente. Marcar `[x]` al terminar y anotar aquí cualquier cambio 
 - [x] Botín.
 
 ## H3 · Mundo
-- [ ] Mapa por casillas, movimiento y colisiones.
+- [x] Mapa por casillas, movimiento y colisiones.
 - [ ] Encuentros aleatorios que conectan con el combate.
 
 ## H4 · Narrativa
