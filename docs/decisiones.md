@@ -2,6 +2,9 @@
 
 Más reciente primero.
 
+## 2026-10-02 (usuario)
+- **Hito H3.6 "Menú del grupo" (usuario):** se inserta entre H3.5 y H4. El juego debe tener el menú de grupo de los RPG clásicos: Objetos, Magia, Equipo, Estado, Formación, Ajustes, Guardar (se conecta en H7) y Salir al título. Se hace con Sonnet porque son pantallas sobre lógica que ya existe y sobre el patrón de la receta; si exige cambios incompatibles en el sistema de pantallas, se pausa para volver a Opus. Tras probar el APK de H3.5, el usuario pasó la tarea a Sonnet y reanudó (`EN CURSO`).
+
 ## 2026-10-02 (bloque 7)
 - **Hito H3.5 "Primera versión jugable" (usuario):** se inserta entre H3 y H4 para tener cuanto antes un APK que se pueda jugar en el celular. Lo hace Opus; al terminarlo, pausa para pasar a Sonnet (H4 a H7).
 - **Rejilla virtual de 360 × 640, vertical:** las pantallas dibujan en unidades fijas y `Escalado` ajusta a la pantalla con escala uniforme y bandas negras. La franja inferior (y ≥ 450) es de los controles táctiles. Motivo: un solo diseño para todos los teléfonos y pruebas sin píxeles. La actividad se fija en vertical.
