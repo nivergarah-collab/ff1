@@ -34,9 +34,9 @@ public final class PantallaEstado implements Pantalla {
         if (b == Boton.CANCELAR) {
             juego.cerrar();
         } else if (b == Boton.ARRIBA || b == Boton.IZQUIERDA) {
-            heroe = Math.floorMod(heroe - 1, n);
+            heroe = Menu.vuelta(heroe, -1, n);
         } else if (b == Boton.ABAJO || b == Boton.DERECHA) {
-            heroe = Math.floorMod(heroe + 1, n);
+            heroe = Menu.vuelta(heroe, 1, n);
         }
     }
 

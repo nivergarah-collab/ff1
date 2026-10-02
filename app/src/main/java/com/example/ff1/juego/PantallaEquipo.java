@@ -63,7 +63,7 @@ public final class PantallaEquipo implements Pantalla {
     }
 
     private static int vuelta(int actual, Boton b, int n) {
-        return Math.floorMod(actual + (b == Boton.ABAJO ? 1 : -1), n);
+        return Menu.vuelta(actual, b == Boton.ABAJO ? 1 : -1, n);
     }
 
     @Override
@@ -133,7 +133,7 @@ public final class PantallaEquipo implements Pantalla {
             boolean activo = i == heroe;
             int yy = 34 + i * 20;
             if (activo) {
-                e.texto(10, yy, ">", Estilo.LETRA, Estilo.RESALTE);
+                Estilo.marcador(e, 10, yy);
             }
             e.texto(24, yy, grupo.get(i).nombre(), Estilo.LETRA, activo ? Estilo.RESALTE : Estilo.TEXTO);
             e.texto(Escena.ANCHO - 12, yy, grupo.get(i).clase().nombre, Estilo.LETRA, Estilo.APAGADO,
@@ -147,7 +147,7 @@ public final class PantallaEquipo implements Pantalla {
             boolean activo = fase != Fase.HEROE && i == ranura;
             int yy = y0 + 6 + i * 20;
             if (activo) {
-                e.texto(10, yy, ">", Estilo.LETRA, Estilo.RESALTE);
+                Estilo.marcador(e, 10, yy);
             }
             e.texto(24, yy, mayuscula(r), Estilo.LETRA, activo ? Estilo.RESALTE : Estilo.TEXTO);
             e.texto(Escena.ANCHO - 12, yy, puesta == null ? "—" : puesta.nombre, Estilo.LETRA,
@@ -160,7 +160,7 @@ public final class PantallaEquipo implements Pantalla {
                 DefinicionObjeto o = opciones.get(i);
                 int yy = y1 + 6 + i * 20;
                 if (i == pieza) {
-                    e.texto(10, yy, ">", Estilo.LETRA, Estilo.RESALTE);
+                    Estilo.marcador(e, 10, yy);
                 }
                 e.texto(24, yy, o == null ? "(Quitar)" : o.nombre, Estilo.LETRA,
                         i == pieza ? Estilo.RESALTE : Estilo.TEXTO);

@@ -53,9 +53,9 @@ public final class PantallaAjustes implements Pantalla {
         if (b == Boton.CANCELAR) {
             juego.cerrar();
         } else if (b == Boton.ARRIBA) {
-            cursor = Math.floorMod(cursor - 1, n);
+            cursor = Menu.vuelta(cursor, -1, n);
         } else if (b == Boton.ABAJO) {
-            cursor = Math.floorMod(cursor + 1, n);
+            cursor = Menu.vuelta(cursor, 1, n);
         } else if (b == Boton.IZQUIERDA || b == Boton.DERECHA || b == Boton.ACEPTAR) {
             Ajuste a = Ajuste.values()[cursor];
             int paso = b == Boton.IZQUIERDA ? -a.paso : a.paso;
@@ -83,7 +83,7 @@ public final class PantallaAjustes implements Pantalla {
             int yy = 38 + i * 40;
             int color = i == cursor ? Estilo.RESALTE : Estilo.TEXTO;
             if (i == cursor) {
-                e.texto(10, yy, ">", Estilo.LETRA, Estilo.RESALTE);
+                Estilo.marcador(e, 10, yy);
             }
             e.texto(26, yy, a.etiqueta, Estilo.LETRA, color);
             e.texto(Escena.ANCHO - 14, yy + 18, a == Ajuste.RAPIDO ? (valor(a) == 1 ? "Sí" : "No") : "< " + valor(a) + " >",

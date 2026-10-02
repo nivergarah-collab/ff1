@@ -161,7 +161,7 @@ public final class PantallaCombate implements Pantalla {
                 break;
             case OBJETIVO:
                 if (paso != 0) {
-                    cursor = Math.floorMod(cursor + paso, candidatos.size());
+                    cursor = Menu.vuelta(cursor, paso, candidatos.size());
                 } else if (b == Boton.CANCELAR) {
                     volverAlMenu();
                 } else if (b == Boton.ACEPTAR) {
@@ -360,7 +360,7 @@ public final class PantallaCombate implements Pantalla {
 
     private void senalar(Escena e, Combatiente c, int x, int y) {
         if (fase == Fase.OBJETIVO && candidatos.get(cursor) == c) {
-            e.texto(x, y, ">", Estilo.LETRA, Estilo.RESALTE);
+            Estilo.marcador(e, x, y);
         }
     }
 

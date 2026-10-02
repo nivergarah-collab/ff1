@@ -35,9 +35,9 @@ public final class PantallaFormacion implements Pantalla {
     public void pulsar(Boton b) {
         int n = partida.grupo().size();
         if (b == Boton.ARRIBA) {
-            cursor = Math.floorMod(cursor - 1, n);
+            cursor = Menu.vuelta(cursor, -1, n);
         } else if (b == Boton.ABAJO) {
-            cursor = Math.floorMod(cursor + 1, n);
+            cursor = Menu.vuelta(cursor, 1, n);
         } else if (b == Boton.CANCELAR) {
             if (marcado >= 0) {
                 marcado = -1;
@@ -70,7 +70,7 @@ public final class PantallaFormacion implements Pantalla {
             int yy = 38 + i * 28;
             int color = i == marcado ? Estilo.VIDA : i == cursor ? Estilo.RESALTE : Estilo.TEXTO;
             if (i == cursor) {
-                e.texto(10, yy, ">", Estilo.LETRA, Estilo.RESALTE);
+                Estilo.marcador(e, 10, yy);
             }
             e.texto(26, yy, (i + 1) + ". " + h.nombre(), Estilo.LETRA, color);
             e.texto(Escena.ANCHO - 12, yy, h.clase().nombre + "  Nv " + h.nivel(), Estilo.LETRA, color,

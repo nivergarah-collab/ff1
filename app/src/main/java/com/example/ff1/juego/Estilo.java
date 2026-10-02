@@ -35,6 +35,11 @@ public final class Estilo {
         e.marco(x, y, ancho, alto, BORDE);
     }
 
+    /** Dibuja el marcador {@code >} junto a la opción bajo el cursor. */
+    public static void marcador(Escena e, int x, int y) {
+        e.texto(x, y, ">", LETRA, RESALTE);
+    }
+
     /**
      * Lista de opciones con cursor; las deshabilitadas se ven apagadas. {@code habilitadas} puede
      * ser {@code null} (todas habilitadas).
@@ -44,7 +49,7 @@ public final class Estilo {
             boolean activa = habilitadas == null || habilitadas.get(i);
             int yy = y + i * LINEA;
             if (i == cursor) {
-                e.texto(x, yy, ">", LETRA, RESALTE);
+                marcador(e, x, yy);
             }
             e.texto(x + 14, yy, opciones.get(i), LETRA, activa ? (i == cursor ? RESALTE : TEXTO) : APAGADO);
         }

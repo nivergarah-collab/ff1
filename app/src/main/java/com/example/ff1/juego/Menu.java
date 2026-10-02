@@ -8,6 +8,11 @@ final class Menu {
     private Menu() {
     }
 
+    /** Mueve {@code actual} {@code paso} lugares en una lista de {@code n} elementos, dando la vuelta. */
+    static int vuelta(int actual, int paso, int n) {
+        return Math.floorMod(actual + paso, n);
+    }
+
     /** Siguiente opción habilitada en el sentido {@code paso} (+1 o −1); si no hay otra, se queda. */
     static int mover(int cursor, int paso, List<Boolean> habilitadas) {
         int n = habilitadas.size();

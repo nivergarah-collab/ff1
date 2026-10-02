@@ -2,10 +2,10 @@
 
 ## Control
 - Estado del MVP: EN CURSO
-- Bloques ejecutados: 8 de 50
+- Bloques ejecutados: 9 de 50
 - Bloques seguidos sin avance: 0
 
-Última actualización: 2026-10-02 (bloque 8, Sonnet: H3.6 y H4 terminados)
+Última actualización: 2026-10-02 (bloque 9, Sonnet: limpieza tras H3.6 y H4)
 
 ## Hecho
 - Proyecto movido a `Desktop\Android\ff1`.
@@ -35,12 +35,13 @@
 - Pull requests #11, #12 (H3.5 y código nativo) y #13 (plan H3.6) fusionados en `main` por el usuario; reanudado con Sonnet (EN CURSO).
 - Bloque 8 (Sonnet, H3.6 "Menú del grupo" terminado, rama `feature/h36-menu-del-grupo` desde `main`): pila de pantallas en `Juego`; menú del grupo abierto con Cancelar en el mapa; Objetos y Magia de curación fuera de combate; revivir con la Pluma de alba (solo fuera de combate); Equipo con comparación de estadísticas; ficha de Estado; Formación que respeta el combate; Ajustes en caliente (`combate.ticksPorPaso`, `juego.msMensaje`, `juego.rapidoAlEmpezar`); Guardar apagado hasta H7; receta (sección 8b) y contrato al día. 214 pruebas.
 - Bloque 8 (H4 "Narrativa" terminado, rama `feature/h4-narrativa` desde `feature/h36-menu-del-grupo`): `docs/historia.md` (historia original: Pozaluz, la Cantera Hundida y el Soterrado) y escenas de texto (documento `escena` v1, `guion.Guion`, `PantallaEscena`, marcadores `{heroe:<clase>}`); la apertura se muestra al empezar una partida nueva (`introduccion` en `inicio.json`). 220 pruebas.
+- Pull requests #14 (H3.6) y #15 (H4) fusionados en `main` por el usuario.
+- Bloque 9 (Sonnet, limpieza tras H3.6 y H4, rama `chore/limpieza-h36-h4` desde `main`): `Menu.vuelta` y `Estilo.marcador` sustituyen el giro de cursor y el `>` repetidos; prueba `MenuCursorTest`. 222 pruebas.
 - Autorizado por el usuario el 2026-10-02: límite de 50 bloques (antes 24), quitar el código nativo de la plantilla (ver `skills/01-trabajo-autonomo.md`) y bloques de hasta unos 25 minutos, una sesión por hora.
 
 ## Siguiente
-1. **Sonnet, bloque 9: limpieza** (H3.6 y H4 son dos hitos terminados): rama `chore/limpieza-h36-h4` desde `feature/h4-narrativa`. Revisar código muerto, duplicación entre las pantallas del menú (cursor con vuelta, listas con `>`), nombres, pruebas redundantes y documentación; lo que no alcance, a "Deuda técnica" del plan.
-2. Después: H5 (tienda, posada y personajes con diálogo; usa `PantallaEscena` para los diálogos), H6 y H7. Siguiente limpieza tras H6.
-3. Reglas para Sonnet: no cambiar de forma incompatible las interfaces del motor, `Pantalla`, `Escena` ni el contrato de datos (si hace falta, anotarlo en "Preguntas pendientes"); con 2 bloques sin avance o `Pruebas` en rojo 2 bloques seguidos, poner `PAUSA: volver a Opus (motivo)`; al marcar la última tarea de H7, abrir el pull request y poner `PAUSA: cambio de modelo (volver a Opus para H8)`.
+1. **H5** (tienda, posada y personajes con diálogo; usa `PantallaEscena`), rama `feature/h5-pueblo` desde `chore/limpieza-h36-h4`; luego H6 y H7. Siguiente limpieza tras H6.
+2. Reglas para Sonnet: no cambiar de forma incompatible las interfaces del motor, `Pantalla`, `Escena` ni el contrato de datos (si hace falta, anotarlo en "Preguntas pendientes"); con 2 bloques sin avance o `Pruebas` en rojo 2 bloques seguidos, poner `PAUSA: volver a Opus (motivo)`; al marcar la última tarea de H7, abrir el pull request y poner `PAUSA: cambio de modelo (volver a Opus para H8)`.
 
 La ruta completa está en `docs/plan.md`.
 
@@ -66,14 +67,13 @@ Limitaciones conocidas de esta versión: no hay guardado (H7), ni pueblo, posada
 
 ## Ramas y pull requests pendientes
 Orden de fusión: de la más antigua a la más nueva, con "Merge commit".
-1. `feature/h36-menu-del-grupo` (parte de `main`): H3.6 menú del grupo, pull request #14 https://github.com/nivergarah-collab/ff1/pull/14
-2. `feature/h4-narrativa` (parte de `feature/h36-menu-del-grupo`): H4 historia y escenas de texto, pull request #15 https://github.com/nivergarah-collab/ff1/pull/15
+1. `chore/limpieza-h36-h4` (parte de `main`): limpieza de las pantallas del menú. Pull request: ver abajo.
 
 ## Preguntas pendientes
 - `gradle/libs.versions.toml` conserva la entrada `games-activity`, ya sin uso; quitarla es opcional y lo decide el usuario (`gradle/` no lo toca el agente).
 
 ## Pruebas
-Nube, 2026-10-02 (bloque 8): `scripts/probar-logica.sh` 220 de 220 pruebas pasan en `feature/h4-narrativa`. GitHub Actions: `feature/h36-menu-del-grupo` con `Pruebas` y `APK` en verde; `feature/h4-narrativa` con `Pruebas` (push y pull request) y `APK` en verde.
+Nube, 2026-10-02 (bloque 9): `scripts/probar-logica.sh` 222 de 222 pruebas pasan en `chore/limpieza-h36-h4`. Antes (bloque 8): 220 de 220 en `feature/h4-narrativa`. GitHub Actions: `feature/h36-menu-del-grupo` con `Pruebas` y `APK` en verde; `feature/h4-narrativa` con `Pruebas` (push y pull request) y `APK` en verde.
 
 ## Notas
 - `ExampleUnitTest` y `ExampleInstrumentedTest` son de la plantilla y se reemplazarán.
