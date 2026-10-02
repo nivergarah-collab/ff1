@@ -55,8 +55,26 @@ Sigue requiriendo confirmación (se deja anotado en `docs/estado.md`, en "Pregun
 - Hay un conflicto de merge o se necesita una acción que exige confirmación.
 - Una tarea cambia el alcance de la misión.
 
+## Control de parada
+La sección `## Control` de `docs/estado.md` (al principio del archivo) guía el trabajo:
+
+```
+## Control
+- Estado del MVP: EN CURSO
+- Bloques ejecutados: 0 de 24
+- Bloques seguidos sin avance: 0
+```
+
+El estado puede ser `EN CURSO`, `LISTO PARA REVISIÓN` o `DETENIDO: <motivo>`.
+
+1. **Lo primero de cada bloque**, tras clonar el repositorio, es leer solo esa sección. Si no existe, se crea con los valores de arriba.
+2. Si el estado no es `EN CURSO`, el bloque termina de inmediato con un resumen de una línea, sin leer nada más ni cambiar nada. Así las sesiones que sigan llegando casi no gastan tokens.
+3. Si los bloques ejecutados ya son 24 o más, el estado pasa a `DETENIDO: límite de bloques`, se escribe y el bloque termina.
+4. En cada bloque que sigue: sumar 1 a "Bloques ejecutados"; sumar 1 a "sin avance" si no se marcó ninguna tarea del plan, o ponerlo en 0 si se marcó alguna.
+5. Si "sin avance" llega a 3, o GitHub Actions queda en rojo en 2 bloques seguidos sin poder corregirlo, el estado pasa a `DETENIDO: <motivo>` y se explica en el resumen.
+
 ## Cierre del MVP
-Cuando se cumpla la definición de terminado de `docs/mision-mvp.md`, el agente lo declara en `docs/estado.md`, deja el README final y se detiene. No inventa funcionalidades nuevas.
+Cuando se cumple la definición de terminado de `docs/mision-mvp.md`, el agente pone el estado en `LISTO PARA REVISIÓN`, escribe en `docs/estado.md` qué debe revisar el usuario, deja el README final y termina. No inventa funcionalidades nuevas. Pausar la tarea programada es decisión del usuario; mientras siga activa, las sesiones salen de inmediato según el punto 2.
 
 ## Contenido y derechos
 Ver `docs/mision-mvp.md`: guías solo para ritmo y estructura; trama, personajes, nombres y diálogos originales.

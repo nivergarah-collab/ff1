@@ -21,6 +21,7 @@ No leer `app/build/`, `app/.cxx/`, `.gradle/` ni `app/src/main/cpp/` completa, s
 - Confirmar con el usuario antes de modificar `build.gradle.kts`, `settings.gradle.kts`, `gradle/` o `CMakeLists.txt`. `local.properties` no se toca ni se versiona.
 - Datos de la plantilla: `minSdk` 30, `compileSdk` y `targetSdk` 37, compatibilidad Java 11.
 - El juego debe tener un interruptor de avance rápido (ver `docs/decisiones.md`), con pruebas.
+- Diseño adaptable: el motor se separa del contenido y de la configuración, que llegan por interfaces intercambiables (ver `docs/mision-mvp.md`, apartado "Diseño adaptable"). No poner contenido ni constantes de balance dentro del código.
 - Repositorio propio de ff1, con las reglas de `06-git-y-repositorios.md` y la autorización previa de `01-trabajo-autonomo.md`.
 
 ## Cómo se trabaja aquí

@@ -17,7 +17,19 @@ Un juego de rol por turnos para Android que reproduzca el estilo y la mecánica 
 11. Escena de cierre del MVP.
 
 ## Fuera del MVP
-Videos, música o arte comerciales, multijugador, tiendas dentro de la app, más de una mazmorra.
+Videos, música o arte comerciales, multijugador, tiendas dentro de la app, más de una mazmorra, API remota e interfaz de edición de contenido (de estas dos solo se diseñan los puntos de enchufe; ver "Diseño adaptable").
+
+## Diseño adaptable
+Requisito de arquitectura: lo que se construya debe poder reutilizarse para otros juegos, alimentarse con configuración en tiempo real (por una API) o por una interfaz de edición, y combinarse con otros módulos. Para eso:
+1. **Motor y contenido separados.** Las reglas viven en el código; héroes, enemigos, habilidades, objetos, mapas, escenas, textos y balance viven en datos externos (en `app/src/main/assets/`). Cambiar de juego es cambiar los datos.
+2. **Fuentes intercambiables.** El motor obtiene contenido y configuración mediante interfaces (fuente de contenido, configuración, azar, tiempo y guardado). En el MVP hay dos implementaciones: archivos locales y memoria (para pruebas). Una fuente remota o un editor se podrían añadir después sin tocar el motor.
+3. **Parámetros ajustables en caliente.** Velocidad de la barra, multiplicador de avance rápido, balance de daño y similares viven en un objeto de configuración que se puede reemplazar mientras el juego corre, con validación.
+4. **Datos versionados y validados.** Cada tipo de dato lleva versión y validador; los datos inválidos se rechazan con un mensaje claro y no cierran el juego.
+5. **Extensible por registro.** Tipos nuevos de habilidad, efecto, condición de victoria o escena se registran sin modificar el núcleo.
+6. **Contrato de datos documentado.** `docs/contrato-de-datos.md` describe cada tipo de dato, sus campos y su versión. Es la base del futuro molde del motor.
+7. **Nombres genéricos.** El código y los datos no dependen de este juego en particular (por ejemplo "combatiente", no nombres propios).
+
+En el MVP no se implementan la API remota ni la interfaz de edición, ni se pide permiso de red. Sí se construyen las interfaces y las pruebas que lo harán posible después. No se añaden dependencias: el agente elige en H0 un formato de datos legible sin librerías externas, tanto en la JVM como en Android, y lo registra en `decisiones.md`.
 
 ## Contenido y derechos
 - Se pueden estudiar guías de juegos clásicos **solo** para el ritmo y la estructura: orden de los primeros pasos, curva de dificultad y momento en que aparece cada sistema.
@@ -25,11 +37,26 @@ Videos, música o arte comerciales, multijugador, tiendas dentro de la app, más
 - Arte y sonido: marcadores de posición simples, o recursos propios o libres de derechos. No se descargan archivos de terceros sin confirmación.
 
 ## Definición de terminado
-- Todo lo del apartado "Qué incluye" está implementado.
-- Cada funcionalidad tiene pruebas, y la suite completa pasa en GitHub Actions.
-- El juego se puede completar de inicio a fin en un emulador.
-- No queda código muerto ni duplicado evidente, y la documentación está al día.
-- `docs/estado.md` resume el resultado final.
+El MVP está **listo para revisión** cuando se cumplen todas estas condiciones:
+1. Los 11 puntos de "Qué incluye el MVP" están implementados.
+2. Todas las tareas de los hitos H0 a H8 de `plan.md` están marcadas, salvo el recorrido en emulador (lo verifica el usuario) y la "Deuda técnica" aceptada.
+3. Existe una prueba de recorrido completo que simula una partida de principio a fin (título, exploración, encuentros, combate, jefe, escena de cierre, guardado y carga) y pasa.
+4. La suite de lógica pasa y GitHub Actions está en verde en la última rama.
+5. `docs/historia.md` y las escenas de texto están completos y son originales.
+6. La pasada final de refactorización y limpieza está hecha (sin código muerto ni duplicado evidente) y el README final está escrito.
+7. El motor funciona con dos paquetes de contenido distintos (el del juego y uno mínimo de prueba) sin cambiar código, y `docs/contrato-de-datos.md` está al día.
+8. `docs/estado.md` resume el resultado y lista lo que el usuario debe revisar.
+
+"Listo para revisión" no significa "aceptado": la aceptación la da el usuario tras probar el juego en un emulador.
+
+## Límites del trabajo autónomo
+El agente se detiene, y lo declara en `docs/estado.md`, cuando ocurre lo primero de esto:
+- El MVP queda listo para revisión (ver arriba).
+- Se ejecutaron **24 bloques** (unos tres días a ocho por día), aunque falte trabajo.
+- Pasaron **3 bloques seguidos sin marcar ninguna tarea** del plan.
+- GitHub Actions queda en rojo en **2 bloques seguidos** y el agente no logra corregirlo.
+
+No añade funcionalidades fuera de esta misión. El procedimiento exacto está en `skills/01-trabajo-autonomo.md`.
 
 ## Restricciones
 - Plantilla nativa (Java + C++), `minSdk` 30. Sin Kotlin ni Compose.
