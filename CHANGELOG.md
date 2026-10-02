@@ -4,6 +4,11 @@ Formato: más reciente primero, con fecha en `AAAA-MM-DD`.
 
 ## 2026-10-02
 
+### Añadido (bloque 3)
+- Combate (H1): modelo de combatiente, habilidad y estados en `com.example.ff1.combate`, leído y validado desde `combatientes.json` y `habilidades.json` (documentos v1 en `docs/contrato-de-datos.md`).
+- Barra de tiempo (ATB) por ticks simulados, con `combate.velocidadBarra` y `combate.cargaLlena` en la configuración, ajustables en caliente.
+- Primer paquete de contenido original en `app/src/main/assets/contenido/`. 32 pruebas nuevas.
+
 ### Añadido
 - Motor (H0): `motor.datos` (lector y escritor JSON en Java puro, errores con ruta del campo, tipo y versión de documentos), `motor.fuentes` (interfaces de contenido, azar, tiempo y guardado, con implementaciones de memoria y archivos) y `motor.config` (configuración validada y reemplazable en caliente, registro de extensiones). 39 pruebas nuevas.
 - `docs/contrato-de-datos.md`: formato, reglas comunes, interfaces del motor y documento `configuracion` v1.

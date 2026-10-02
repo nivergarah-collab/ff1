@@ -11,8 +11,8 @@ Lo mantiene el agente. Marcar `[x]` al terminar y anotar aquí cualquier cambio 
 - **Salida:** el script corre una prueba de ejemplo, el resumen de ritmo existe y el contrato de datos está escrito.
 
 ## H1 · Núcleo del combate ATB
-- [ ] Modelo: personaje, enemigo, habilidad, estados.
-- [ ] Barra de tiempo por ticks simulados.
+- [x] Modelo: personaje, enemigo, habilidad, estados.
+- [x] Barra de tiempo por ticks simulados.
 - [ ] Acciones: atacar, magia, objeto, huir. Cálculo de daño.
 - [ ] Fin del combate y recompensas.
 - [ ] Interruptor de avance rápido como multiplicador de ticks.

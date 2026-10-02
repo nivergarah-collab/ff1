@@ -2,10 +2,10 @@
 
 ## Control
 - Estado del MVP: EN CURSO
-- Bloques ejecutados: 2 de 24
+- Bloques ejecutados: 3 de 24
 - Bloques seguidos sin avance: 0
 
-Última actualización: 2026-10-02 (bloque 2)
+Última actualización: 2026-10-02 (bloque 3)
 
 ## Hecho
 - Proyecto movido a `Desktop\Android\ff1`.
@@ -23,24 +23,25 @@
 - Autorización para que el agente abra pull requests, en la rama `feature/autorizar-pull-requests`.
 - Bloque 1 (H0, rama `feature/h0-preparacion`): entorno verificado (javac 21 con `--release 11`, JUnit 4.13.2 y Hamcrest 1.3 en `/opt/gradle-8.14.3/lib`); `scripts/probar-logica.sh` creado y probado; resumen de ritmo en `docs/investigacion-ritmo.md`.
 - Bloque 2 (H0 terminado, rama `feature/h0-preparacion`): menús, texto y mapa se dibujarán con `Canvas` en Java a partir de una escena de dibujo en Java puro; formato de datos JSON con lector y escritor propios (`motor.datos`); interfaces del motor para contenido, azar, tiempo y guardado (`motor.fuentes`); configuración validada y reemplazable en caliente y registro de extensiones (`motor.config`); `docs/contrato-de-datos.md` escrito.
+- Pull request #6 (H0) fusionado en `main` por el usuario.
+- Bloque 3 (H1, rama `feature/h1-combate` desde `main`): modelo de combate en `com.example.ff1.combate` (`Combatiente`, `DefinicionCombatiente`, `Habilidad`, `Bando`, `CatalogoCombate` que lee y valida `combatientes.json` y `habilidades.json`); barra de tiempo por ticks (`BarraTiempo`) con `combate.velocidadBarra` y `combate.cargaLlena` en la configuración, reemplazables en caliente; primer paquete de contenido original en `app/src/main/assets/contenido/` (4 clases de héroe, 3 enemigos, 7 habilidades).
 
 ## Siguiente
-1. **Usuario:** fusionar en orden, con "Merge commit", las ramas de "Ramas y pull requests pendientes".
-2. **Usuario:** revisar el pull request #6 de H0 (rama `feature/h0-preparacion`).
-3. Bloque 3 del agente: H1, en la rama `feature/h1-combate` que parte de `feature/h0-preparacion`. Primeras tareas: modelo de combatiente, habilidad y estados (leído desde `combatientes.json` y `habilidades.json`) y barra de tiempo por ticks con parámetros en la configuración.
+1. **Usuario:** nada que fusionar todavía; el pull request de H1 se abrirá al terminar el hito.
+2. Bloque 4 del agente: seguir en `feature/h1-combate`. Tareas: acciones (atacar, magia, objeto, huir) y cálculo de daño, con un registro de tipos de habilidad (`danio`, `curacion`, `alteracion`) y de estados (`veneno`, `sueno`, `proteccion`) que reemplace a los de prueba; luego fin del combate y recompensas.
+3. Después: avance rápido como multiplicador de ticks (declarar `combate.avanceRapido`, que ya aparece en el ejemplo de `configuracion` del contrato) y parámetros de daño en la configuración.
 
 La ruta completa está en `docs/plan.md`.
 
 ## Ramas y pull requests pendientes
 Orden de fusión: de la más antigua a la más nueva, con "Merge commit".
-1. `feature/autorizar-pull-requests` (sin pull request; la abrió el usuario).
-2. `feature/h0-preparacion` (parte de la anterior; H0 terminado, pull request #6 abierto en el bloque 2; incluye también el commit de la rama 1).
+1. `feature/h1-combate` (parte de `main`; H1 en curso, sin pull request todavía).
 
 ## Preguntas pendientes
 - **Renderizador nativo de la plantilla:** con la decisión de dibujar con `Canvas` en Java, el código C++ de `app/src/main/cpp/` y la `GameActivity` quedarán sin uso. Quitarlos exige tocar `CMakeLists.txt` y `build.gradle.kts` (y quitar la dependencia `games-activity`), lo que requiere tu confirmación. Mientras tanto, el agente los deja como están y la actividad nueva convivirá con ellos.
 
 ## Pruebas
-Nube, 2026-10-02 (bloque 2): `scripts/probar-logica.sh` 40 de 40 pruebas pasan. GitHub Actions en `feature/h0-preparacion` (commit `c714004`): `Pruebas` #16 en verde y `APK` #6 en verde.
+Nube, 2026-10-02 (bloque 3): `scripts/probar-logica.sh` 72 de 72 pruebas pasan. GitHub Actions en `feature/h1-combate`: ver el cierre del bloque más abajo.
 
 ## Notas
 - `ExampleUnitTest` y `ExampleInstrumentedTest` son de la plantilla y se reemplazarán.

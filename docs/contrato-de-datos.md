@@ -2,7 +2,7 @@
 
 Describe cómo el motor recibe contenido, configuración, azar, tiempo y guardado, y el formato de cada documento. Es la base del futuro molde del motor (ver "Diseño adaptable" en `mision-mvp.md`). Se actualiza en cada hito que añada o cambie un tipo de dato.
 
-Estado: versión inicial (H0). Los tipos de contenido de juego se completan en sus hitos.
+Estado: H1 en curso (`combatientes` y `habilidades` v1). Los demás tipos de contenido se completan en sus hitos.
 
 ## Formato
 - **JSON** (RFC 8259), en UTF-8, leído con `motor.datos.LectorJson`, escrito en Java puro sin librerías. Funciona igual en la JVM de pruebas y en Android, y es el formato natural de una API futura.
@@ -70,10 +70,53 @@ Parámetros declarados: se listan aquí a medida que cada hito los añade.
 
 | Parámetro | Tipo | Rango | Defecto | Hito |
 |---|---|---|---|---|
-| (ninguno todavía) | | | | |
+| `combate.velocidadBarra` | entero | 1–100 | 10 | H1 |
+| `combate.cargaLlena` | entero | 100–100000 | 1000 | H1 |
+
+Barra de tiempo: en cada tick, cada combatiente vivo que no espera turno suma `max(1, velocidad × velocidadBarra / 10)`; con la carga llena entra en la cola de turnos. Empates en un mismo tick: primero el que más se pasó y, a igualdad, el inscrito antes.
+
+### `habilidades` · versión 1
+```json
+{ "tipo": "habilidades", "version": 1, "lista": [
+  { "id": "chispa", "nombre": "Chispa", "tipo": "danio", "coste": 4, "poder": 14, "objetivo": "enemigo" },
+  { "id": "dardo-amargo", "nombre": "Dardo amargo", "tipo": "alteracion", "coste": 3, "poder": 4,
+    "estado": { "id": "veneno", "duracion": 3 } }
+] }
+```
+| Campo | Tipo | Regla |
+|---|---|---|
+| `id` | texto | Obligatorio, minúsculas con guiones, único. |
+| `nombre` | texto | Obligatorio. Texto visible. |
+| `tipo` | texto | Obligatorio. Clave registrada en el registro de tipos de habilidad del motor (por ahora `danio`, `curacion`, `alteracion`; su regla se define en H1, acciones). |
+| `coste` | entero | 0–999, defecto 0. Magia que gasta. |
+| `poder` | entero | 0–9999, defecto 0. |
+| `objetivo` | texto | `enemigo` (defecto), `aliado` o `si-mismo`. |
+| `estado` | objeto | Opcional: `id` (registrado en el registro de estados; por ahora `veneno`, `sueno`, `proteccion`) y `duracion` (1–99 turnos, obligatorio). |
+
+### `combatientes` · versión 1
+Clases de héroe y tipos de enemigo. El nombre del héroe lo elige el jugador; `nombre` es el de la clase.
+```json
+{ "tipo": "combatientes", "version": 1, "lista": [
+  { "id": "arcanista", "nombre": "Arcanista", "bando": "heroe", "vida": 28, "magia": 24,
+    "ataque": 5, "defensa": 4, "poder": 11, "velocidad": 9, "habilidades": ["chispa"] },
+  { "id": "musgoso", "nombre": "Musgoso", "bando": "enemigo", "vida": 14, "ataque": 6,
+    "defensa": 2, "velocidad": 6, "experiencia": 4, "oro": 3 }
+] }
+```
+| Campo | Tipo | Regla |
+|---|---|---|
+| `id`, `nombre` | texto | Como en `habilidades`. |
+| `bando` | texto | `heroe` o `enemigo`. |
+| `vida` | entero | Obligatorio, 1–99999. |
+| `magia` | entero | 0–9999, defecto 0. |
+| `ataque`, `defensa` | entero | Obligatorios, 0–999. |
+| `poder` | entero | 0–999, defecto 0. Potencia mágica. |
+| `velocidad` | entero | Obligatorio, 1–255. Ritmo de la barra de tiempo. |
+| `habilidades` | lista de texto | Opcional. Cada `id` debe existir en `habilidades`. |
+| `experiencia`, `oro` | entero | 0–999999, defecto 0. Recompensa al vencerlo. |
 
 ### Guardado de partida
 Pendiente (H7). Será un documento JSON con `tipo` `"partida"` y `version`, escrito con `EscritorJson` y guardado en un `Almacen`. Incluirá la semilla del azar.
 
 ### Tipos de contenido de juego
-Pendientes: `combatientes` y `habilidades` (H1), `objetos` (H2), `mapa` (H3), `escena` (H4), `tienda` (H5). Cada uno se documenta aquí con su versión, sus campos y un ejemplo al implementarlo.
+Pendientes: `objetos` (H2), `mapa` (H3), `escena` (H4), `tienda` (H5). Cada uno se documenta aquí con su versión, sus campos y un ejemplo al implementarlo.

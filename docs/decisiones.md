@@ -2,6 +2,10 @@
 
 Más reciente primero.
 
+## 2026-10-02 (bloque 3)
+- **Barra de tiempo:** carga entera; por tick suma `max(1, velocidad × velocidadBarra / 10)` hasta `cargaLlena`. Quien está listo deja de cargar hasta actuar (sin modo "activo" en el MVP). Empates en un tick: primero el que más se pasó y luego el orden de inscripción, para que sea determinista sin azar.
+- **Tipos de habilidad y estados por registro:** los datos solo nombran claves (`danio`, `curacion`, `alteracion`; `veneno`, `sueno`, `proteccion`) que el catálogo valida contra registros del motor; su regla se implementa al hacer las acciones. Así un juego nuevo añade tipos sin tocar el cargador.
+
 ## 2026-10-02
 - **Formato de datos: JSON con lector propio.** Contenido, configuración y partidas guardadas van en JSON, leído y escrito por `motor.datos.LectorJson` y `EscritorJson` (Java puro, sin dependencias). Motivo: es legible, es el formato natural de una API futura y funciona igual en la JVM y en Android. Se descartó `org.json` porque en la JVM de pruebas no existe (Android lo trae, pero sus pruebas unitarias lo reemplazan por un simulacro vacío) y `Properties` porque no admite listas ni anidación. Todo documento lleva `tipo` y `version`; detalle en `docs/contrato-de-datos.md`.
 - **Paquetes del motor:** `com.example.ff1.motor.datos` (JSON y validación), `motor.fuentes` (contenido, azar, tiempo, guardado) y `motor.config` (configuración en caliente y registro de extensiones). Los módulos de juego (combate, mundo, escenas) dependen de estas interfaces, nunca de Android. `com.example.ff1.combate` sigue siendo el paquete del combate (H1).
