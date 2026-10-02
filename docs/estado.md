@@ -67,7 +67,7 @@ Limitaciones conocidas de esta versión: no hay guardado (H7), ni pueblo, posada
 
 ## Ramas y pull requests pendientes
 Orden de fusión: de la más antigua a la más nueva, con "Merge commit".
-1. `chore/limpieza-h36-h4` (parte de `main`): limpieza de las pantallas del menú. Pull request abierto (ver enlace en el resumen del bloque).
+1. `chore/limpieza-h36-h4` (parte de `main`): limpieza de las pantallas del menú. Pull request #16 https://github.com/nivergarah-collab/ff1/pull/16
 
 ## Preguntas pendientes
 - `gradle/libs.versions.toml` conserva la entrada `games-activity`, ya sin uso; quitarla es opcional y lo decide el usuario (`gradle/` no lo toca el agente).
