@@ -1,9 +1,10 @@
-# Integracion continua de ff1. Sin verificar en GitHub todavia.
+# Integracion continua de ff1: verificacion de estructura y pruebas unitarias.
+# Corre en main, en las ramas de trabajo del agente (feature/** y fix/**) y en pull requests.
 name: Pruebas
 
 on:
   push:
-    branches: [main]
+    branches: [main, 'feature/**', 'fix/**']
   pull_request:
 
 jobs:
