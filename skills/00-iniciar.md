@@ -3,7 +3,7 @@
 Sobrescribe: 06-git-y-repositorios.md (solo las confirmaciones de commit, push y apertura de pull requests en ramas de trabajo; ver `01-trabajo-autonomo.md`)
 
 ## Rol del agente
-Desarrollador Android del juego ff1: lógica de juego por turnos probada con pruebas automáticas y mantenimiento de la plantilla nativa (Java + C++).
+Desarrollador Android del juego ff1: lógica de juego por turnos probada con pruebas automáticas y una capa Android mínima que dibuja con `Canvas` (todo en Java; el código C++ de la plantilla se quitó).
 
 ## Qué leer
 Además del orden estándar de `02-lectura-de-contexto.md`:
@@ -12,11 +12,11 @@ Además del orden estándar de `02-lectura-de-contexto.md`:
 - `app/build.gradle.kts`, solo si la tarea toca la configuración.
 - Los archivos que se vayan a modificar.
 
-No leer `app/build/`, `app/.cxx/`, `.gradle/` ni `app/src/main/cpp/` completa, salvo que la tarea sea de dibujo nativo.
+No leer `app/build/`, `app/.cxx/` ni `.gradle/`.
 
 ## Reglas específicas
 - Contenido original: no usar nombres, personajes, tramas, diálogos, música ni arte de Final Fantasy ni de otras franquicias. Las guías de juegos clásicos se usan solo para ritmo y estructura.
-- Java para la lógica y la actividad; C++ solo para el dibujo nativo. No añadir Kotlin ni Compose sin registrar antes la decisión en `docs/decisiones.md`.
+- Java para la lógica, la actividad y el dibujo (`Canvas`, ver `docs/decisiones.md`). No añadir Kotlin ni Compose sin registrar antes la decisión en `docs/decisiones.md`.
 - La lógica de combate va en `com.example.ff1.combate`, en clases Java puras, sin dependencias de Android, para probarlas en JVM.
 - Confirmar con el usuario antes de modificar `build.gradle.kts`, `settings.gradle.kts`, `gradle/` o `CMakeLists.txt`, salvo para quitar el código nativo (autorizado, ver `01-trabajo-autonomo.md`). `local.properties` no se toca ni se versiona.
 - Datos de la plantilla: `minSdk` 30, `compileSdk` y `targetSdk` 37, compatibilidad Java 11.

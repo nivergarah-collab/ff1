@@ -4,6 +4,13 @@ Más reciente primero.
 
 ## 2026-10-02 (bloque 7)
 - **Hito H3.5 "Primera versión jugable" (usuario):** se inserta entre H3 y H4 para tener cuanto antes un APK que se pueda jugar en el celular. Lo hace Opus; al terminarlo, pausa para pasar a Sonnet (H4 a H7).
+- **Rejilla virtual de 360 × 640, vertical:** las pantallas dibujan en unidades fijas y `Escalado` ajusta a la pantalla con escala uniforme y bandas negras. La franja inferior (y ≥ 450) es de los controles táctiles. Motivo: un solo diseño para todos los teléfonos y pruebas sin píxeles. La actividad se fija en vertical.
+- **Bucle de paso fijo de 50 ms:** la vista convierte el reloj (`SystemClock.uptimeMillis` por la interfaz `Tiempo`) en pasos lógicos; como mucho 5 por cuadro. En cada paso el combate llama a `avanzarPaso`, así el ritmo se ajusta con `combate.ticksPorPaso` (4 en `configuracion.json`) y el avance rápido.
+- **Máquina de pantallas con una interfaz `Pantalla`:** añadir pantallas (escenas, tienda, posada) no exige tocar las existentes; `Juego` atiende el avance rápido en cualquier pantalla.
+- **Partida desde `inicio.json`:** grupo, objetos, oro, mapa y título iniciales son datos (documento `inicio` v1). `configuracion.json` pasa a ser obligatorio en el paquete. Un paquete inválido muestra una pantalla de error y no cierra el juego.
+- **Mensajes del combate en la presentación:** `juego.Mensajes` arma la frase a partir de `ResultadoAccion` (curación si actor y objetivo son del mismo bando). Queda como deuda pasar estos textos a datos.
+- **Actividad simple (`android.app.Activity`) con tema del sistema a pantalla completa:** no hace falta AppCompat para una vista propia. Teclas del emulador: flechas, Intro/Z, X/Escape y F.
+- **Código nativo quitado** (rama `chore/quitar-codigo-nativo`, autorizado): ya no se compila C++ ni se usa `games-activity`. La entrada de `games-activity` del catálogo `gradle/libs.versions.toml` queda sin uso porque `gradle/` no se toca.
 
 ## 2026-10-02 (bloque 6)
 - **Los objetos pueden apuntar a `si-mismo`:** al compartir la lectura del efecto con las habilidades (`CatalogoCombate.leerHabilidad`), un objeto acepta los mismos objetivos que una habilidad. Motivo: una sola regla de lectura; el único cambio visible es el mensaje de error de un objetivo desconocido (ahora lista tres opciones).

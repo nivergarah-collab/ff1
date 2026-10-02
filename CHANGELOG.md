@@ -4,6 +4,15 @@ Formato: más reciente primero, con fecha en `AAAA-MM-DD`.
 
 ## 2026-10-02
 
+### Añadido (bloque 7, H3.5 primera versión jugable)
+- Escena de dibujo en Java puro (`dibujo.Escena`, `Escalado`) y traductor único a `Canvas` (`android.LienzoCanvas`).
+- Controles táctiles en pantalla, entrada con repetición y bucle de paso fijo (`entrada`).
+- Máquina de pantallas (`juego`): título, exploración del mapa con encuentros, combate con menú (Atacar, Magia, Objeto, Huir), barras de vida y tiempo, avance rápido visible, recompensas y vuelta al mapa; pantalla de error de datos.
+- `MainActivity` nueva con vista propia; documento `inicio.json`, `configuracion.json` del juego y color opcional por casilla. 26 pruebas nuevas.
+
+### Quitado (bloque 7)
+- Renderizador C++ y `GameActivity` de la plantilla (`app/src/main/cpp/`, `externalNativeBuild`, `prefab`, `games-activity`), rama `chore/quitar-codigo-nativo`.
+
 ### Cambiado (bloque 6)
 - Limpieza tras H1–H3: helper de pruebas `PaqueteDelJuego`; validación de rangos común en `motor.datos.Documentos`; lectura de efecto/estado compartida entre habilidades y objetos (los objetos aceptan `objetivo` `si-mismo`). 5 pruebas nuevas, sin cambios de comportamiento salvo lo anterior.
 

@@ -35,8 +35,8 @@ Hito insertado por el usuario el 2026-10-02 (ver `decisiones.md`): un APK instal
 - [x] Máquina de pantallas en Java puro, con pruebas: título (Nueva partida; Continuar deshabilitado hasta H7), exploración y combate.
 - [x] Exploración: dibujar el mapa de `mapas/campo.json`, mover al jugador con colisiones y encuentros aleatorios que abren el combate.
 - [x] Combate con menú (Atacar, Magia, Objeto, Huir), barras de tiempo y de vida, interruptor de avance rápido visible, fin con recompensas y regreso al mapa.
-- [ ] Quitar el código nativo (rama `chore/quitar-codigo-nativo`), con `Pruebas` y `APK` en verde.
-- [ ] Dejar en `docs/estado.md` cómo bajar, instalar y probar el APK.
+- [x] Quitar el código nativo (rama `chore/quitar-codigo-nativo`), con `Pruebas` y `APK` en verde.
+- [x] Dejar en `docs/estado.md` cómo bajar, instalar y probar el APK.
 
 ## H4 · Narrativa
 - [ ] Historia original en `docs/historia.md`, con las mismas etapas de un RPG clásico.
@@ -64,3 +64,4 @@ Registrar aquí lo que se deja pendiente de refactorizar o limpiar.
 - Combate: `turnoAutomatico` solo ataca; una IA de enemigos que use habilidades queda para H6 (jefe).
 - Limpieza tras H1–H3 hecha en el bloque 6 (helper `PaqueteDelJuego` para pruebas, `Documentos.rango`/`rangoO`/`dentro` para rangos y `CatalogoCombate.leerHabilidad` compartido con los objetos). Queda sin unificar la comprobación de ids repetidos (cada catálogo tiene su mensaje) y los `if` de objetivo; revisar en H8.
 - Mundo: el mapa v1 no tiene salidas entre mapas; añadirlas en H5–H6.
+- H3.5: los textos de la interfaz (menús, mensajes de combate en `juego.Mensajes`) están en el código; pasarlos a datos si se quiere traducir o reutilizar (H8). Los héroes caídos siguen caídos tras ganar un combate hasta que exista la posada (H5).
