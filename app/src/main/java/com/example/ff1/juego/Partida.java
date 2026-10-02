@@ -100,8 +100,8 @@ public final class Partida {
 
     /** Parámetros que declaran los módulos del juego. */
     public static EsquemaConfiguracion esquema() {
-        return ConfiguracionMundo.declarar(ConfiguracionInventario.declarar(
-                ConfiguracionCombate.declarar(new EsquemaConfiguracion())));
+        return ConfiguracionJuego.declarar(ConfiguracionMundo.declarar(ConfiguracionInventario.declarar(
+                ConfiguracionCombate.declarar(new EsquemaConfiguracion()))));
     }
 
     /** Partida nueva según {@code inicio.json}; lanza {@link ErrorDeDatos} si el paquete no es válido. */

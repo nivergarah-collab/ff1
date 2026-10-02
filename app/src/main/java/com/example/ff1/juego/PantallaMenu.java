@@ -50,6 +50,7 @@ public final class PantallaMenu implements Pantalla {
             case EQUIPO:
             case ESTADO:
             case FORMACION:
+            case AJUSTES:
             case SALIR:
                 return true;
             default:
@@ -82,6 +83,8 @@ public final class PantallaMenu implements Pantalla {
                 return new PantallaEstado(juego, partida);
             case FORMACION:
                 return new PantallaFormacion(juego, partida);
+            case AJUSTES:
+                return new PantallaAjustes(juego, partida);
             default:
                 return null;
         }

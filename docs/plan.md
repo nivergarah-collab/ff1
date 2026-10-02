@@ -47,8 +47,8 @@ Hito insertado por el usuario el 2026-10-02 (ver `decisiones.md`): el juego nece
 - [x] Equipo: ranuras de arma, armadura y accesorio por héroe, equipar y quitar con comparación de estadísticas antes de confirmar, con pruebas (el motor de equipo ya existe en `inventario`).
 - [x] Estado: nivel, experiencia, estadísticas y estados alterados de cada héroe. (Fuera de combate los estados no se conservan: la ficha muestra la condición "en pie" o "caído"; ver `decisiones.md`.)
 - [x] Formación: cambiar el orden del grupo y que el combate respete el nuevo orden, con pruebas.
-- [ ] Ajustes: velocidad del texto y del combate y avance rápido por defecto, guardados en la configuración (en caliente), con pruebas.
-- [ ] Guardar: la opción aparece, pero desactivada hasta H7 (ahí se conecta).
+- [x] Ajustes: velocidad del texto y del combate y avance rápido por defecto, guardados en la configuración (en caliente), con pruebas. (Se cambian en la configuración vigente al instante; escribirlos a disco queda para H7, con el guardado.)
+- [x] Guardar: la opción aparece, pero desactivada hasta H7 (ahí se conecta).
 - [ ] Actualizar `docs/receta-de-extension.md` (cómo añadir una sección al menú) y `docs/estado.md` ("Cómo probar el APK" con el menú).
 
 ## H4 · Narrativa

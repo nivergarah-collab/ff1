@@ -87,6 +87,8 @@ Parámetros declarados: se listan aquí a medida que cada hito los añade.
 | `inventario.maximoPorObjeto` | entero | 1–999 | 99 | H2 |
 | `mundo.pasosMinimos` | entero | 1–999 | 15 | H3 |
 | `mundo.pasosMaximos` | entero | 1–999 | 30 (si es menor que el mínimo, se usa el mínimo) | H3 |
+| `juego.msMensaje` | entero | 100–5000 | 900 (milisegundos que se ve cada mensaje del combate) | H3.6 |
+| `juego.rapidoAlEmpezar` | entero | 0–1 | 0 (1 = el avance rápido empieza encendido en una partida nueva) | H3.6 |
 
 Barra de tiempo: en cada tick, cada combatiente vivo que no espera turno suma `max(1, velocidad × velocidadBarra / 10)`; con la carga llena entra en la cola de turnos. Empates en un mismo tick: primero el que más se pasó y, a igualdad, el inscrito antes.
 

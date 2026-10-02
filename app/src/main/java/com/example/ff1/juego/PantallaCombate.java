@@ -29,7 +29,6 @@ public final class PantallaCombate implements Pantalla {
     }
 
     static final List<String> MENU = Arrays.asList("Atacar", "Magia", "Objeto", "Huir");
-    static final int MS_MENSAJE = 900;
     private static final int VISIBLES = 4;
 
     private final Juego juego;
@@ -39,7 +38,7 @@ public final class PantallaCombate implements Pantalla {
     private Fase fase = Fase.MENSAJE;
     private int cursor;
     private int cursorMenu;
-    private int restante = MS_MENSAJE;
+    private int restante;
     private String mensaje = "¡Aparecen enemigos!";
     private Combatiente actor;
     private Habilidad elegida;
@@ -53,6 +52,12 @@ public final class PantallaCombate implements Pantalla {
         this.partida = partida;
         this.combate = combate;
         this.regreso = regreso;
+        this.restante = msMensaje();
+    }
+
+    /** Tiempo que se ve cada mensaje; sale de la configuración vigente (Menú → Ajustes). */
+    private int msMensaje() {
+        return partida.config().actual().entero(ConfiguracionJuego.MS_MENSAJE);
     }
 
     public Fase fase() {
@@ -116,7 +121,7 @@ public final class PantallaCombate implements Pantalla {
 
     private void mostrar(String texto) {
         mensaje = texto;
-        restante = MS_MENSAJE;
+        restante = msMensaje();
         fase = Fase.MENSAJE;
     }
 

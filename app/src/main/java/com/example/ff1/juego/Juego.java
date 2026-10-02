@@ -110,6 +110,7 @@ public final class Juego {
         try {
             partida = Partida.nueva(fuente, azar);
             pila.clear();
+            rapido = partida.config().actual().entero(ConfiguracionJuego.RAPIDO_AL_EMPEZAR) == 1;
             irA(new PantallaExploracion(this, partida));
         } catch (ErrorDeDatos e) {
             irA(new PantallaError(this, e.getMessage()));

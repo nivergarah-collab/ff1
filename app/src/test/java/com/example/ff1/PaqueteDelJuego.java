@@ -4,6 +4,7 @@ import java.io.File;
 
 import com.example.ff1.motor.fuentes.FuenteContenidoJson;
 import com.example.ff1.motor.fuentes.LectorArchivos;
+import com.example.ff1.motor.fuentes.LectorTexto;
 
 /** Acceso de las pruebas al paquete de contenido del juego (app/src/main/assets/contenido). */
 public final class PaqueteDelJuego {
@@ -12,10 +13,25 @@ public final class PaqueteDelJuego {
     }
 
     public static FuenteContenidoJson fuente() {
+        return new FuenteContenidoJson(new LectorArchivos(carpeta()));
+    }
+
+    /** El paquete del juego, pero con otro {@code configuracion.json} (texto JSON completo). */
+    public static FuenteContenidoJson fuenteConConfiguracion(final String configuracionJson) {
+        final LectorArchivos base = new LectorArchivos(carpeta());
+        return new FuenteContenidoJson(new LectorTexto() {
+            @Override
+            public String leer(String ruta) throws java.io.IOException {
+                return ruta.startsWith("configuracion") ? configuracionJson : base.leer(ruta);
+            }
+        });
+    }
+
+    private static File carpeta() {
         File carpeta = new File("app/src/main/assets/contenido");
         if (!carpeta.isDirectory()) {
             carpeta = new File("src/main/assets/contenido"); // Gradle corre desde app/
         }
-        return new FuenteContenidoJson(new LectorArchivos(carpeta));
+        return carpeta;
     }
 }
