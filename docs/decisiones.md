@@ -2,6 +2,11 @@
 
 Más reciente primero.
 
+## 2026-10-02 (bloque 5)
+- **Encuentros por zona y cuenta atrás:** cada casilla de la leyenda puede nombrar una `zona`; las que no la tienen (por ejemplo los senderos) son seguras. La cuenta atrás se tira entre `mundo.pasosMinimos` y `mundo.pasosMaximos` (15–30, de `investigacion-ritmo.md`) y solo baja al pisar casillas con zona. Motivo: ritmo predecible sin rachas de combates seguidos, y caminos seguros diseñables desde los datos. Los grupos se eligen por peso en `encuentros.json`, aparte del mapa, para reutilizar zonas entre mapas.
+- **Salidas entre mapas pospuestas:** el mapa v1 no tiene salidas ni puertas; se añadirán (como campo nuevo, documentado en el contrato) cuando existan el pueblo y la mazmorra (H5–H6). Motivo: no inventar el formato antes de tener dos mapas que conectar.
+- **Bloque de limpieza pospuesto:** el bloque de refactorización tras H1 y H2 se aplaza a después de la pausa para el cambio de modelo, porque H3 cabía en este bloque y su cierre exige la receta de extensión y la pausa. Queda en "Deuda técnica" del plan.
+
 ## 2026-10-02 (bloque 3)
 - **Barra de tiempo:** carga entera; por tick suma `max(1, velocidad × velocidadBarra / 10)` hasta `cargaLlena`. Quien está listo deja de cargar hasta actuar (sin modo "activo" en el MVP). Empates en un tick: primero el que más se pasó y luego el orden de inscripción, para que sea determinista sin azar.
 - **Tipos de habilidad y estados por registro:** los datos solo nombran claves (`danio`, `curacion`, `alteracion`; `veneno`, `sueno`, `proteccion`) que el catálogo valida contra registros del motor; su regla se implementa al hacer las acciones. Así un juego nuevo añade tipos sin tocar el cargador.

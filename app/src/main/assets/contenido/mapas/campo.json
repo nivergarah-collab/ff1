@@ -1,0 +1,26 @@
+{
+  "tipo": "mapa",
+  "version": 1,
+  "id": "campo",
+  "leyenda": {
+    ".": { "nombre": "pradera", "pasable": true, "zona": "llanura" },
+    ",": { "nombre": "matorral", "pasable": true, "zona": "maleza" },
+    "=": { "nombre": "sendero", "pasable": true },
+    "^": { "nombre": "risco", "pasable": false },
+    "~": { "nombre": "laguna", "pasable": false },
+    "T": { "nombre": "arboleda", "pasable": false }
+  },
+  "filas": [
+    "^^^^^^^^^^^^^^^^",
+    "^..,,,....TT...^",
+    "^.==========,,.^",
+    "^.=..~~~...=,,.^",
+    "^.=..~~~...=...^",
+    "^.=.,,,....=.TT^",
+    "^.=........=...^",
+    "^.=====....====^",
+    "^,,,,.=........^",
+    "^^^^^^^^^^^^^^^^"
+  ],
+  "inicio": { "x": 6, "y": 8 }
+}

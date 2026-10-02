@@ -2,7 +2,7 @@
 
 Describe cómo el motor recibe contenido, configuración, azar, tiempo y guardado, y el formato de cada documento. Es la base del futuro molde del motor (ver "Diseño adaptable" en `mision-mvp.md`). Se actualiza en cada hito que añada o cambie un tipo de dato.
 
-Estado: H1 en curso (`combatientes` y `habilidades` v1). Los demás tipos de contenido se completan en sus hitos.
+Estado: H3 terminado (`configuracion`, `habilidades`, `combatientes`, `progresion`, `objetos`, `botin`, `mapa` y `encuentros` v1). Los demás tipos de contenido se completan en sus hitos. Cómo añadir contenido: `docs/receta-de-extension.md`.
 
 ## Formato
 - **JSON** (RFC 8259), en UTF-8, leído con `motor.datos.LectorJson`, escrito en Java puro sin librerías. Funciona igual en la JVM de pruebas y en Android, y es el formato natural de una API futura.
@@ -41,7 +41,10 @@ contenido/
 ├── configuracion.json   ← tipo "configuracion"
 ├── combatientes.json    ← héroes y enemigos (H1)
 ├── habilidades.json     ← (H1)
+├── progresion.json      ← (H2)
 ├── objetos.json         ← (H2)
+├── botin.json           ← (H2)
+├── encuentros.json      ← (H3)
 ├── mapas/<id>.json      ← (H3)
 └── escenas/<id>.json    ← (H4)
 ```
@@ -81,6 +84,8 @@ Parámetros declarados: se listan aquí a medida que cada hito los añade.
 | `combate.venenoPorCiento` | entero | 1–50 | 8 | H1 |
 | `combate.proteccionPorCiento` | entero | 0–100 | 50 | H1 |
 | `inventario.maximoPorObjeto` | entero | 1–999 | 99 | H2 |
+| `mundo.pasosMinimos` | entero | 1–999 | 15 | H3 |
+| `mundo.pasosMaximos` | entero | 1–999 | 30 (si es menor que el mínimo, se usa el mínimo) | H3 |
 
 Barra de tiempo: en cada tick, cada combatiente vivo que no espera turno suma `max(1, velocidad × velocidadBarra / 10)`; con la carga llena entra en la cola de turnos. Empates en un mismo tick: primero el que más se pasó y, a igualdad, el inscrito antes.
 
@@ -191,8 +196,42 @@ Objetos que suelta cada enemigo al caer (`inventario.TablaBotin`).
 
 Lo que no cabe en el inventario se informa como sobrante y no se guarda.
 
+### `mapa` · versión 1
+Mapa por casillas (`mundo.Mapa`), un archivo por mapa en `mapas/<id>.json`. El grupo se mueve con `mundo.Explorador`.
+```json
+{ "tipo": "mapa", "version": 1, "id": "campo",
+  "leyenda": { ".": { "nombre": "pradera", "pasable": true },
+               "^": { "nombre": "risco", "pasable": false } },
+  "filas": [ "^^^^", "^..^", "^^^^" ],
+  "inicio": { "x": 1, "y": 1 } }
+```
+| Campo | Tipo | Regla |
+|---|---|---|
+| `id` | texto | Igual al nombre del archivo. |
+| `leyenda` | objeto | Clave de un solo carácter → `nombre` (texto), `pasable` (booleano) y `zona` (texto, opcional: zona de `encuentros`; sin zona no hay encuentros en esa casilla). |
+| `filas` | lista de textos | Al menos una; todas con el mismo ancho; cada carácter debe estar en la leyenda. La fila 0 es la de arriba. |
+| `inicio` | objeto `x`, `y` | Casilla pasable dentro del mapa donde aparece el grupo. |
+
+Fuera del mapa nada es pasable. Un paso hacia una casilla no pasable no mueve al grupo, solo lo gira.
+
+### `encuentros` · versión 1
+Grupos de enemigos por zona (`mundo.TablaEncuentros`), en `encuentros.json`. `mundo.Encuentros` lleva una cuenta atrás tirada entre `mundo.pasosMinimos` y `mundo.pasosMaximos`; solo baja con los pasos sobre casillas con `zona`, y al llegar a cero elige un grupo de esa zona por peso y vuelve a tirar.
+```json
+{ "tipo": "encuentros", "version": 1, "zonas": [
+  { "zona": "llanura", "grupos": [
+    { "enemigos": [ "musgoso" ], "peso": 3 },
+    { "enemigos": [ "musgoso", "musgoso" ], "peso": 2 } ] }
+] }
+```
+| Campo | Tipo | Regla |
+|---|---|---|
+| `zona` | texto | Sin repetir. Toda zona usada por un mapa debe estar aquí (`validarMapa`). |
+| `grupos` | lista | Al menos uno. |
+| `grupos[].enemigos` | lista de textos | 1–6 ids de combatientes con `bando` `enemigo`; se pueden repetir. |
+| `grupos[].peso` | entero | 1–100, defecto 1. Probabilidad relativa dentro de la zona. |
+
 ### Guardado de partida
 Pendiente (H7). Será un documento JSON con `tipo` `"partida"` y `version`, escrito con `EscritorJson` y guardado en un `Almacen`. Incluirá la semilla del azar.
 
 ### Tipos de contenido de juego
-Pendientes: `mapa` (H3), `escena` (H4), `tienda` (H5). Cada uno se documenta aquí con su versión, sus campos y un ejemplo al implementarlo.
+Pendientes: `escena` (H4), `tienda` (H5). Cada uno se documenta aquí con su versión, sus campos y un ejemplo al implementarlo.

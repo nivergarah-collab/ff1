@@ -1,0 +1,13 @@
+{
+  "tipo": "encuentros",
+  "version": 1,
+  "zonas": [
+    { "zona": "llanura", "grupos": [
+      { "enemigos": [ "musgoso" ], "peso": 3 },
+      { "enemigos": [ "musgoso", "musgoso" ], "peso": 2 },
+      { "enemigos": [ "ala-de-hollin" ], "peso": 1 } ] },
+    { "zona": "maleza", "grupos": [
+      { "enemigos": [ "ala-de-hollin", "musgoso" ], "peso": 2 },
+      { "enemigos": [ "lagarto-de-cantera" ], "peso": 1 } ] }
+  ]
+}
