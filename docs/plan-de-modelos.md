@@ -15,10 +15,10 @@ El motor y su arquitectura (combate, contrato de datos, patrones de extensión) 
 H0 ya está terminado y H1 está en curso (Opus).
 
 ## Ritmo
-- La tarea programada corre una vez por hora; es el mínimo que permite la plataforma. Cada ejecución es un bloque de unos 10 minutos.
+- La tarea programada corre una vez por hora; es el mínimo que permite la plataforma. Cada bloque puede durar hasta unos 25 minutos (o la mitad del contexto), con un commit por tarea y push cada dos tareas.
 - Fase A (Opus): de una a tres tareas por bloque.
 - Fase B (Sonnet): más tareas por bloque, porque cada una es más chica y sigue la receta (de dos a cuatro, o más si caben sin pasar de la mitad del contexto). El ritmo sube por bloque, no por frecuencia.
-- Límite de bloques: el límite de 24 es probablemente corto para todo el MVP a este ritmo. Se sube con el usuario, no por decisión del agente (ver "Decisiones del usuario").
+- Límite de bloques: 50 en total (subido desde 24 con autorización del usuario el 2026-10-02).
 
 ## Puntos de cambio
 El agente se detiene solo en cada punto (estado `PAUSA` en `docs/estado.md`), abre el pull request del hito y espera.
@@ -51,6 +51,7 @@ El usuario escribe en Claude (raíz) "pasa a Sonnet" o "vuelve a Opus". Claude:
 3. Pone el estado del MVP en `EN CURSO` en `docs/estado.md` (en la rama pendiente más reciente) y sube el cambio.
 4. Confirma qué quedó configurado.
 
-## Decisiones del usuario
-- Límite de bloques: subir de 24 a un valor mayor (propuesta: 50 en total).
-- Quitar el código nativo C++ y la `GameActivity` de la plantilla cuando el agente lo pida (exige cambiar `CMakeLists.txt` y `build.gradle.kts`).
+## Decisiones del usuario (2026-10-02)
+- Límite de bloques: subido de 24 a 50.
+- Código nativo C++ y `GameActivity` de la plantilla: autorizado quitarlos en la rama `chore/quitar-codigo-nativo`, solo lo necesario y con `Pruebas` y `APK` en verde.
+- Duración del bloque: hasta unos 25 minutos.
