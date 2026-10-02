@@ -67,13 +67,13 @@ Limitaciones conocidas de esta versión: no hay guardado (H7), ni pueblo, posada
 ## Ramas y pull requests pendientes
 Orden de fusión: de la más antigua a la más nueva, con "Merge commit".
 1. `feature/h36-menu-del-grupo` (parte de `main`): H3.6 menú del grupo, pull request #14 https://github.com/nivergarah-collab/ff1/pull/14
-2. `feature/h4-narrativa` (parte de `feature/h36-menu-del-grupo`): H4 historia y escenas de texto, pull request: ver el enlace de la rama al final de esta línea https://github.com/nivergarah-collab/ff1/pull/new/feature/h4-narrativa
+2. `feature/h4-narrativa` (parte de `feature/h36-menu-del-grupo`): H4 historia y escenas de texto, pull request #15 https://github.com/nivergarah-collab/ff1/pull/15
 
 ## Preguntas pendientes
 - `gradle/libs.versions.toml` conserva la entrada `games-activity`, ya sin uso; quitarla es opcional y lo decide el usuario (`gradle/` no lo toca el agente).
 
 ## Pruebas
-Nube, 2026-10-02 (bloque 8): `scripts/probar-logica.sh` 220 de 220 pruebas pasan en `feature/h4-narrativa`. GitHub Actions: `feature/h36-menu-del-grupo` con `Pruebas` y `APK` en verde; `feature/h4-narrativa` se revisa al cerrar el bloque.
+Nube, 2026-10-02 (bloque 8): `scripts/probar-logica.sh` 220 de 220 pruebas pasan en `feature/h4-narrativa`. GitHub Actions: `feature/h36-menu-del-grupo` con `Pruebas` y `APK` en verde; `feature/h4-narrativa` con `Pruebas` (push y pull request) y `APK` en verde.
 
 ## Notas
 - `ExampleUnitTest` y `ExampleInstrumentedTest` son de la plantilla y se reemplazarán.
