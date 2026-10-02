@@ -1,0 +1,22 @@
+{
+  "tipo": "objetos",
+  "version": 1,
+  "ranuras": ["arma", "armadura", "accesorio"],
+  "lista": [
+    { "id": "tonico-de-raiz", "nombre": "Tónico de raíz", "categoria": "consumible", "precio": 20,
+      "efecto": { "tipo": "curacion", "poder": 30, "objetivo": "aliado" } },
+    { "id": "agua-de-roca", "nombre": "Agua de roca", "categoria": "consumible", "precio": 60,
+      "efecto": { "tipo": "curacion", "poder": 80, "objetivo": "aliado" } },
+    { "id": "frasco-de-brasas", "nombre": "Frasco de brasas", "categoria": "consumible", "precio": 40,
+      "efecto": { "tipo": "danio", "poder": 25, "objetivo": "enemigo" } },
+    { "id": "hoja-de-ensayo", "nombre": "Hoja de ensayo", "categoria": "equipo", "precio": 50,
+      "ranura": "arma", "bonos": { "ataque": 4 }, "clases": ["guardian", "rastreador"] },
+    { "id": "vara-de-sauce", "nombre": "Vara de sauce", "categoria": "equipo", "precio": 45,
+      "ranura": "arma", "bonos": { "ataque": 1, "poder": 3 }, "clases": ["arcanista", "herbolaria"] },
+    { "id": "jubon-acolchado", "nombre": "Jubón acolchado", "categoria": "equipo", "precio": 40,
+      "ranura": "armadura", "bonos": { "defensa": 3 } },
+    { "id": "cordel-de-viento", "nombre": "Cordel de viento", "categoria": "equipo", "precio": 120,
+      "ranura": "accesorio", "bonos": { "velocidad": 2 } },
+    { "id": "llave-de-cantera", "nombre": "Llave de cantera", "categoria": "clave" }
+  ]
+}

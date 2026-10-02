@@ -2,6 +2,9 @@ package com.example.ff1.progresion;
 
 import com.example.ff1.combate.Combatiente;
 import com.example.ff1.combate.DefinicionCombatiente;
+import com.example.ff1.inventario.Bonos;
+import com.example.ff1.inventario.DefinicionObjeto;
+import com.example.ff1.inventario.Equipo;
 
 /**
  * Héroe del grupo entre combates: clase, nombre elegido, experiencia, nivel y vida y magia
@@ -12,6 +15,7 @@ public final class Heroe {
     private final DefinicionCombatiente clase;
     private final String nombre;
     private final TablaProgresion tabla;
+    private final Equipo equipo;
     private int experiencia;
     private int nivel = 1;
     private int vida;
@@ -21,6 +25,7 @@ public final class Heroe {
         this.clase = clase;
         this.nombre = nombre;
         this.tabla = tabla;
+        this.equipo = new Equipo(clase.id);
         DefinicionCombatiente s = estadisticas();
         this.vida = s.vida;
         this.magia = s.magia;
@@ -55,9 +60,40 @@ public final class Heroe {
         return nivel >= tabla.nivelMaximo() ? 0 : tabla.experienciaPara(nivel + 1) - experiencia;
     }
 
-    /** Estadísticas máximas del nivel actual. */
+    /** Estadísticas máximas del nivel actual, con los bonos del equipo puesto. */
     public DefinicionCombatiente estadisticas() {
-        return tabla.enNivel(clase, nivel);
+        DefinicionCombatiente d = tabla.enNivel(clase, nivel);
+        Bonos b = equipo.bonos();
+        return new DefinicionCombatiente(d.id, d.nombre, d.bando,
+                Math.min(99999, d.vida + b.vida), Math.min(9999, d.magia + b.magia),
+                Math.min(999, d.ataque + b.ataque), Math.min(999, d.defensa + b.defensa),
+                Math.min(999, d.poder + b.poder), Math.min(255, d.velocidad + b.velocidad),
+                d.habilidades, d.experiencia, d.oro);
+    }
+
+    /** Equipo puesto (solo lectura: se cambia con {@link #equipar} y {@link #desequipar}). */
+    public java.util.Map<String, DefinicionObjeto> equipo() {
+        return equipo.puestas();
+    }
+
+    /** Pone una pieza y devuelve la que estaba en esa ranura (o {@code null}). */
+    public DefinicionObjeto equipar(DefinicionObjeto pieza) {
+        DefinicionObjeto anterior = equipo.equipar(pieza);
+        ajustarAlMaximo();
+        return anterior;
+    }
+
+    /** Quita la pieza de una ranura y la devuelve (o {@code null}). */
+    public DefinicionObjeto desequipar(String ranura) {
+        DefinicionObjeto quitada = equipo.quitar(ranura);
+        ajustarAlMaximo();
+        return quitada;
+    }
+
+    private void ajustarAlMaximo() {
+        DefinicionCombatiente s = estadisticas();
+        vida = Math.min(vida, s.vida);
+        magia = Math.min(magia, s.magia);
     }
 
     /**
