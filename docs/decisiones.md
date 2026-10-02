@@ -3,6 +3,7 @@
 Más reciente primero.
 
 ## 2026-10-01
+- **APK descargable:** el APK de depuración lo construye GitHub Actions (flujo `APK`) y queda como archivo descargable por rama; el agente no puede construirlo ni modificar los flujos. Los flujos corren también en `feature/**` y `fix/**`, porque el agente no abre pull requests y sin eso sus ramas no tendrían pruebas. Solo el flujo `Pruebas` cuenta para la regla de parada. La versión firmada de lanzamiento queda fuera del MVP.
 - **Diseño adaptable:** el motor se separa del contenido y de la configuración, que entran por interfaces intercambiables (archivos locales y memoria en el MVP; API o editor después). Parámetros ajustables en caliente, datos versionados y validados, extensión por registro y contrato de datos documentado. Se hace para poder extraer después un molde del motor reutilizable en otros juegos, distinto del molde de proyectos de `Android/plantilla-proyecto/`. La API remota y la interfaz de edición quedan fuera del MVP.
 - **Definición de hecho y límites:** el MVP queda "listo para revisión" al cumplir los ocho criterios de `mision-mvp.md`, incluida una prueba de recorrido completo. El agente se detiene también a los 24 bloques, tras 3 bloques sin avance o con 2 bloques seguidos de GitHub Actions en rojo. El control vive en la sección `## Control` de `estado.md`.
 - **Modo de ejecución:** sesiones programadas por bloques. Cada una arranca desde cero, retoma desde `docs/estado.md`, trabaja un bloque, hace commit y deja el estado escrito. El agente trabaja en un clon del repositorio en la nube.

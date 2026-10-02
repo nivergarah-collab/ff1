@@ -12,6 +12,8 @@ Plantilla nativa de Android Studio (GameActivity) sin código de juego propio to
 
 Los requisitos salen de `app/build.gradle.kts`; la ejecución aún no fue verificada.
 
+También se puede instalar un APK de depuración sin Android Studio: en GitHub, pestaña Actions, abrir la ejecución `APK` de la rama y bajar `ff1-debug-apk` desde "Artifacts".
+
 ## Estructura
 - `app/src/main/java/com/example/ff1/`: código Java; `MainActivity` es la actividad del juego.
 - `app/src/main/cpp/`: dibujo nativo en C++ (`Renderer`, `Shader`, `Model`), compilado con CMake.
@@ -20,7 +22,7 @@ Los requisitos salen de `app/build.gradle.kts`; la ejecución aún no fue verifi
 - `skills/`: constructor y reglas específicas del proyecto.
 - `docs/`: estado, decisiones y estrategia de pruebas.
 - `scripts/`: verificaciones automáticas.
-- `.github/workflows/`: integración continua.
+- `.github/workflows/`: integración continua y construcción del APK.
 
 ## Decisiones importantes
 - Se mantiene la plantilla nativa (Java + C++), sin Kotlin ni Compose.

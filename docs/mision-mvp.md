@@ -54,7 +54,7 @@ El agente se detiene, y lo declara en `docs/estado.md`, cuando ocurre lo primero
 - El MVP queda listo para revisión (ver arriba).
 - Se ejecutaron **24 bloques** (unos tres días a ocho por día), aunque falte trabajo.
 - Pasaron **3 bloques seguidos sin marcar ninguna tarea** del plan.
-- GitHub Actions queda en rojo en **2 bloques seguidos** y el agente no logra corregirlo.
+- El flujo `Pruebas` de GitHub Actions queda en rojo en **2 bloques seguidos** y el agente no logra corregirlo.
 
 No añade funcionalidades fuera de esta misión. El procedimiento exacto está en `skills/01-trabajo-autonomo.md`.
 

@@ -18,9 +18,10 @@
 - GitHub Actions en verde en las ejecuciones #1 y #3.
 - Copia de las skills maestras en `skills/maestras/`, fusionada en `main` (pull request #2).
 - Tarea programada creada: una sesión cada 3 horas, con notificación al celular.
+- Definición de hecho, límites de parada y diseño adaptable en `main` (pull request #3).
 
 ## Siguiente
-1. **Usuario:** fusionar en GitHub la rama `feature/definicion-de-hecho` antes de la primera sesión programada.
+1. **Usuario:** fusionar la rama `feature/apk-descargable` y colocar en `.github/workflows/` los dos flujos que envió Claude (`pruebas.yml` actualizado y `apk.yml` nuevo).
 2. Primer bloque del agente: hito H0 de `docs/plan.md`.
 
 La ruta completa está en `docs/plan.md`.
