@@ -3,7 +3,7 @@
 ## Control
 - Estado del MVP: EN CURSO
 - Bloques ejecutados: 9 de 50
-- Bloques seguidos sin avance: 0
+- Bloques seguidos sin avance: 1
 
 Última actualización: 2026-10-02 (bloque 9, Sonnet: limpieza tras H3.6 y H4)
 
@@ -67,7 +67,7 @@ Limitaciones conocidas de esta versión: no hay guardado (H7), ni pueblo, posada
 
 ## Ramas y pull requests pendientes
 Orden de fusión: de la más antigua a la más nueva, con "Merge commit".
-1. `chore/limpieza-h36-h4` (parte de `main`): limpieza de las pantallas del menú. Pull request: ver abajo.
+1. `chore/limpieza-h36-h4` (parte de `main`): limpieza de las pantallas del menú. Pull request abierto (ver enlace en el resumen del bloque).
 
 ## Preguntas pendientes
 - `gradle/libs.versions.toml` conserva la entrada `games-activity`, ya sin uso; quitarla es opcional y lo decide el usuario (`gradle/` no lo toca el agente).
