@@ -3,6 +3,9 @@
 Más reciente primero.
 
 ## 2026-10-02
+- **Pruebas de lógica en la nube:** `scripts/probar-logica.sh` compila con `javac --release 11` los archivos que no importan Android y ejecuta las clases `*Test` con un ejecutor propio (`scripts/EjecutorLogica.java`) fuera de `app/`, para que Gradle no lo compile. No añade dependencias: usa el JUnit 4 y Hamcrest que trae Gradle. Consecuencia: la lógica de juego no debe importar Android para poder probarse aquí.
+- **Ritmo del MVP:** se toma de `docs/investigacion-ritmo.md` (20 a 40 minutos, jefe superable a nivel 3 o 4, un encuentro cada 15 a 30 pasos). Son valores de balance: irán en la configuración, no en el código.
+- **Rama base del bloque 1:** `feature/h0-preparacion` parte de `feature/autorizar-pull-requests`, pendiente de fusión, según la regla de ramas encadenadas.
 - **Pull requests del agente:** el agente puede abrir pull requests (uno por hito terminado o al detenerse con trabajo sin fusionar), pero nunca fusionarlos, aprobarlos ni cerrarlos. Si no tiene herramienta para abrirlos, deja el enlace `pull/new/<rama>` en "Preguntas pendientes". Sus ramas se encadenan, así que el usuario fusiona con "Merge commit" (no "Squash") y en orden. Sobrescribe de `06` solo la confirmación para abrir pull requests y la preferencia de fusión. Sin verificar: el permiso de la app de GitHub para pull requests y que la sesión en la nube tenga herramienta para abrirlos.
 
 ## 2026-10-01

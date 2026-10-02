@@ -2,10 +2,10 @@
 
 ## Control
 - Estado del MVP: EN CURSO
-- Bloques ejecutados: 0 de 24
+- Bloques ejecutados: 1 de 24
 - Bloques seguidos sin avance: 0
 
-Última actualización: 2026-10-01
+Última actualización: 2026-10-02 (bloque 1)
 
 ## Hecho
 - Proyecto movido a `Desktop\Android\ff1`.
@@ -21,21 +21,24 @@
 - Definición de hecho, límites de parada y diseño adaptable en `main` (pull request #3).
 - APK descargable y flujos `Pruebas` y `APK` en `main` (pull requests #4 y #5); el APK #1 se construyó bien.
 - Autorización para que el agente abra pull requests, en la rama `feature/autorizar-pull-requests`.
+- Bloque 1 (H0, rama `feature/h0-preparacion`): entorno verificado (javac 21 con `--release 11`, JUnit 4.13.2 y Hamcrest 1.3 en `/opt/gradle-8.14.3/lib`); `scripts/probar-logica.sh` creado y probado; resumen de ritmo en `docs/investigacion-ritmo.md`.
 
 ## Siguiente
-1. **Usuario:** fusionar la rama `feature/autorizar-pull-requests` (autorización para que el agente abra pull requests).
-2. Primer bloque del agente: hito H0 de `docs/plan.md`.
+1. **Usuario:** fusionar en orden, con "Merge commit", las ramas de "Ramas y pull requests pendientes".
+2. Bloque 2 del agente: terminar H0 (decidir cómo se dibujan menús y texto; interfaces del motor, formato de datos y `docs/contrato-de-datos.md`). Al terminar H0, abrir el pull request de `feature/h0-preparacion`.
 
 La ruta completa está en `docs/plan.md`.
 
 ## Ramas y pull requests pendientes
-Ninguna. (Orden de fusión: de la más antigua a la más nueva, con "Merge commit".)
+Orden de fusión: de la más antigua a la más nueva, con "Merge commit".
+1. `feature/autorizar-pull-requests` (sin pull request; la abrió el usuario).
+2. `feature/h0-preparacion` (parte de la anterior; H0 en curso, pull request al terminar el hito).
 
 ## Preguntas pendientes
 Ninguna.
 
 ## Pruebas
-GitHub Actions en verde (ejecuciones #1 y #3). Sin ejecutar localmente.
+Nube, 2026-10-02: `scripts/probar-logica.sh` 1 de 1 pruebas pasan. GitHub Actions de `feature/h0-preparacion`: ver abajo.
 
 ## Notas
 - `ExampleUnitTest` y `ExampleInstrumentedTest` son de la plantilla y se reemplazarán.
