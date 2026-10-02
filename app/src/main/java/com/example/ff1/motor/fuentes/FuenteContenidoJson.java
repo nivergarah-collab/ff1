@@ -36,4 +36,16 @@ public final class FuenteContenidoJson implements FuenteContenido {
             throw new ErrorDeDatos(ruta + ": " + e.getMessage(), e);
         }
     }
+
+    @Override
+    public boolean existe(String recurso) {
+        try {
+            lector.leer(recurso + ".json");
+            return true;
+        } catch (FileNotFoundException e) {
+            return false;
+        } catch (IOException e) {
+            return true; // existe pero falla: que cargar() informe el error
+        }
+    }
 }

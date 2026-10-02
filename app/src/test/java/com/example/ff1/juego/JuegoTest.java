@@ -32,6 +32,7 @@ public class JuegoTest {
             j.pulsar(Boton.ACEPTAR); // salta la escena de apertura
         }
         assertTrue(j.pantalla() instanceof PantallaExploracion);
+        j.partida().irAMapa("campo", 6, 8); // las pruebas de exploración y combate parten del campo
         return j;
     }
 

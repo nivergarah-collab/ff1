@@ -17,4 +17,9 @@ public interface FuenteContenido {
      * @throws com.example.ff1.motor.datos.ErrorDeDatos si falta, no se puede leer o no es válido
      */
     Nodo cargar(String recurso, String tipo, int versionMaxima);
+
+    /** Si el recurso opcional existe (por defecto, sí; las fuentes que pueden faltar lo sobrescriben). */
+    default boolean existe(String recurso) {
+        return true;
+    }
 }

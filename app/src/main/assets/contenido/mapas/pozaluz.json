@@ -1,0 +1,114 @@
+{
+  "tipo": "mapa",
+  "version": 1,
+  "id": "pozaluz",
+  "leyenda": {
+    "#": {
+      "nombre": "valla",
+      "color": "#5B4630",
+      "pasable": false
+    },
+    "h": {
+      "nombre": "casa",
+      "color": "#8A5A3C",
+      "pasable": false
+    },
+    "L": {
+      "nombre": "mostrador de la tienda",
+      "color": "#C9A227",
+      "pasable": false
+    },
+    "P": {
+      "nombre": "mostrador de la posada",
+      "color": "#B5523B",
+      "pasable": false
+    },
+    "F": {
+      "nombre": "fuente",
+      "color": "#2F5D8C",
+      "pasable": false
+    },
+    "O": {
+      "nombre": "vecina",
+      "color": "#7A5C99",
+      "pasable": false
+    },
+    "V": {
+      "nombre": "vecino",
+      "color": "#4C8F8F",
+      "pasable": false
+    },
+    ".": {
+      "nombre": "plaza",
+      "color": "#A8997A",
+      "pasable": true
+    },
+    "S": {
+      "nombre": "camino al campo",
+      "color": "#B59A62",
+      "pasable": true
+    }
+  },
+  "filas": [
+    "######SS######",
+    "#hhh....Lhhh.#",
+    "#hhh.........#",
+    "#.....FF.....#",
+    "#.....FF..O..#",
+    "#............#",
+    "#.P.......V..#",
+    "#............#",
+    "#............#",
+    "##############"
+  ],
+  "inicio": {
+    "x": 6,
+    "y": 5
+  },
+  "salidas": [
+    {
+      "x": 6,
+      "y": 0,
+      "mapa": "campo",
+      "destino": {
+        "x": 2,
+        "y": 1
+      }
+    },
+    {
+      "x": 7,
+      "y": 0,
+      "mapa": "campo",
+      "destino": {
+        "x": 2,
+        "y": 1
+      }
+    }
+  ],
+  "lugares": [
+    {
+      "x": 8,
+      "y": 1,
+      "tipo": "tienda",
+      "ref": "tienda-de-lupe"
+    },
+    {
+      "x": 2,
+      "y": 6,
+      "tipo": "posada",
+      "ref": "posada-de-casilda"
+    },
+    {
+      "x": 10,
+      "y": 4,
+      "tipo": "vecino",
+      "ref": "ofelia"
+    },
+    {
+      "x": 10,
+      "y": 6,
+      "tipo": "vecino",
+      "ref": "pastor"
+    }
+  ]
+}

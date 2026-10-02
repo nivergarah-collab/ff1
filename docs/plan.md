@@ -56,7 +56,8 @@ Hito insertado por el usuario el 2026-10-02 (ver `decisiones.md`): el juego nece
 - [x] Motor de escenas de texto y diálogos. (Escena de apertura enganchada a la partida nueva; las escenas del jefe y del cierre se escriben con H6.)
 
 ## H5 · Pueblo y servicios
-- [ ] Tienda, posada y personajes con diálogo.
+- [x] Salidas entre mapas y lugares del mapa (tienda, posada, vecino), con `servicios.json` y pruebas.
+- [x] Tienda (comprar y vender), posada y personajes con diálogo en Pozaluz; la partida empieza en el pueblo.
 
 ## H6 · Mazmorra y jefe
 - [ ] Mapa de la mazmorra, enemigos y jefe.

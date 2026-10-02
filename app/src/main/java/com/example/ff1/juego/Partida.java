@@ -35,6 +35,7 @@ import com.example.ff1.mundo.TablaEncuentros;
 import com.example.ff1.progresion.Heroe;
 import com.example.ff1.progresion.Reparto;
 import com.example.ff1.progresion.TablaProgresion;
+import com.example.ff1.pueblo.Servicios;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -82,11 +83,18 @@ public final class Partida {
     private final Explorador explorador;
     private final Encuentros encuentros;
     private final Guion introduccion;
+    private final FuenteContenido fuente;
+    private final TablaEncuentros tabla;
+    private final Servicios servicios;
+    private final Map<String, Mapa> mapas = new LinkedHashMap<>();
     private int oro;
 
-    private Partida(ProveedorConfiguracion config, Azar azar, CatalogoCombate catalogo, CatalogoObjetos objetos,
+    private Partida(FuenteContenido fuente, TablaEncuentros tabla, Servicios servicios, ProveedorConfiguracion config, Azar azar, CatalogoCombate catalogo, CatalogoObjetos objetos,
             TablaBotin botin, Acciones acciones, Registro<TipoHabilidad> tipos, List<Heroe> grupo, Inventario inventario, Explorador explorador,
             Encuentros encuentros, Guion introduccion, int oro) {
+        this.fuente = fuente;
+        this.tabla = tabla;
+        this.servicios = servicios;
         this.config = config;
         this.azar = azar;
         this.catalogo = catalogo;
@@ -124,6 +132,8 @@ public final class Partida {
         Nodo inicio = fuente.cargar(TIPO_INICIO, TIPO_INICIO, VERSION_INICIO);
         Mapa mapa = Mapa.cargar(fuente, inicio.texto("mapa"));
         tabla.validarMapa(mapa);
+        Servicios servicios = Servicios.cargar(fuente, objetos);
+        servicios.validarMapa(mapa);
         List<Nodo> ng = inicio.lista("grupo");
         Documentos.dentro(inicio, "grupo", ng.size(), 1, 6);
         List<Heroe> grupo = new ArrayList<>();
@@ -144,8 +154,119 @@ public final class Partida {
         Guion introduccion = inicio.tiene("introduccion") ? Guion.cargar(fuente, inicio.texto("introduccion")) : null;
         int oro = Documentos.rangoO(inicio, "oro", 0, 999_999, 0);
         Acciones acciones = new Acciones(config, azar, tipos, estados);
-        return new Partida(config, azar, catalogo, objetos, botin, acciones, tipos, grupo,
+        Partida p = new Partida(fuente, tabla, servicios, config, azar, catalogo, objetos, botin, acciones, tipos, grupo,
                 inventario, new Explorador(mapa), new Encuentros(config, tabla, azar), introduccion, oro);
+        p.mapas.put(mapa.id, mapa);
+        return p;
+    }
+
+    /** Escena de texto del paquete (para los vecinos). */
+    public Guion escena(String id) {
+        return Guion.cargar(fuente, id);
+    }
+
+    public Servicios servicios() {
+        return servicios;
+    }
+
+    /** Mapa por id, cargado una vez y validado contra encuentros y servicios. */
+    public Mapa mapa(String id) {
+        Mapa m = mapas.get(id);
+        if (m == null) {
+            m = Mapa.cargar(fuente, id);
+            tabla.validarMapa(m);
+            servicios.validarMapa(m);
+            mapas.put(id, m);
+        }
+        return m;
+    }
+
+    /** Pone al grupo en (x, y) de otro mapa (al cruzar una salida) y reinicia la cuenta de encuentros. */
+    public void irAMapa(String id, int x, int y) {
+        explorador.colocar(mapa(id), x, y);
+        encuentros.reiniciar();
+    }
+
+    /** Cruza la salida si la casilla del grupo tiene una; devuelve si cambió de mapa. */
+    public boolean cruzarSalida() {
+        Mapa.Salida s = explorador.mapa().salidaEn(explorador.x(), explorador.y());
+        if (s == null) {
+            return false;
+        }
+        irAMapa(s.mapa, s.destinoX, s.destinoY);
+        return true;
+    }
+
+    /** Lugar (tienda, posada, vecino) justo delante del grupo, o {@code null}. */
+    public Mapa.Lugar lugarDelante() {
+        Explorador ex = explorador;
+        int x = ex.x() + ex.mirando().dx;
+        int y = ex.y() + ex.mirando().dy;
+        return ex.mapa().dentro(x, y) ? ex.mapa().lugarEn(x, y) : null;
+    }
+
+    public enum Compra { HECHA, SIN_ORO, SIN_ESPACIO }
+
+    public enum Venta { HECHA, NO_VENDIBLE, NO_LLEVA }
+
+    public enum Descanso { HECHO, SIN_ORO, NADA_QUE_CURAR }
+
+    /** Oro que se paga por un objeto del inventario: su precio por {@code pueblo.ventaPorCiento}. */
+    public int precioVenta(String idObjeto) {
+        DefinicionObjeto o = objetos.objeto(idObjeto);
+        if (o.categoria == DefinicionObjeto.Categoria.CLAVE) {
+            return 0;
+        }
+        return o.precio * config.actual().entero(ConfiguracionJuego.VENTA_POR_CIENTO) / 100;
+    }
+
+    /** Compra una unidad al precio del objeto. */
+    public Compra comprar(String idObjeto) {
+        DefinicionObjeto o = objetos.objeto(idObjeto);
+        if (oro < o.precio) {
+            return Compra.SIN_ORO;
+        }
+        if (inventario.espacio(idObjeto) < 1) {
+            return Compra.SIN_ESPACIO;
+        }
+        oro -= o.precio;
+        inventario.agregar(idObjeto, 1);
+        return Compra.HECHA;
+    }
+
+    /** Vende una unidad del inventario; los objetos clave y los de precio 0 no se venden. */
+    public Venta vender(String idObjeto) {
+        if (inventario.cantidad(idObjeto) < 1) {
+            return Venta.NO_LLEVA;
+        }
+        int precio = precioVenta(idObjeto);
+        if (precio < 1) {
+            return Venta.NO_VENDIBLE;
+        }
+        inventario.quitar(idObjeto, 1);
+        oro = (int) Math.min(999_999L, (long) oro + precio);
+        return Venta.HECHA;
+    }
+
+    /** Una noche en la posada: vida y magia al máximo y los caídos se levantan. Si nadie lo necesita, no cobra. */
+    public Descanso descansar(Servicios.Posada posada) {
+        boolean necesario = false;
+        for (Heroe h : grupo) {
+            if (h.vida() < h.estadisticas().vida || h.magia() < h.estadisticas().magia) {
+                necesario = true;
+            }
+        }
+        if (!necesario) {
+            return Descanso.NADA_QUE_CURAR;
+        }
+        if (oro < posada.precio) {
+            return Descanso.SIN_ORO;
+        }
+        oro -= posada.precio;
+        for (Heroe h : grupo) {
+            h.restaurar();
+        }
+        return Descanso.HECHO;
     }
 
     public ProveedorConfiguracion config() {

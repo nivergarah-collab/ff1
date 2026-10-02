@@ -10,12 +10,16 @@ public final class ConfiguracionJuego {
     /** 1 si el avance rápido está encendido al empezar una partida; 0 si no. */
     public static final String RAPIDO_AL_EMPEZAR = "juego.rapidoAlEmpezar";
 
+    /** Por ciento del precio que paga la tienda al comprar un objeto del grupo. */
+    public static final String VENTA_POR_CIENTO = "pueblo.ventaPorCiento";
+
     private ConfiguracionJuego() {
     }
 
     public static EsquemaConfiguracion declarar(EsquemaConfiguracion esquema) {
         return esquema
                 .entero(MS_MENSAJE, 100, 5000, 900)
-                .entero(RAPIDO_AL_EMPEZAR, 0, 1, 0);
+                .entero(RAPIDO_AL_EMPEZAR, 0, 1, 0)
+                .entero(VENTA_POR_CIENTO, 0, 100, 50);
     }
 }
