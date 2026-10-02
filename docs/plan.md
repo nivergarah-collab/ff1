@@ -20,7 +20,7 @@ Lo mantiene el agente. Marcar `[x]` al terminar y anotar aquí cualquier cambio 
 - **Salida:** un combate completo se simula en pruebas, con y sin avance rápido, y cambiando la configuración cambia el resultado.
 
 ## H2 · Progresión e inventario
-- [ ] Experiencia y niveles.
+- [x] Experiencia y niveles.
 - [ ] Inventario, objetos y equipamiento.
 - [ ] Botín.
 

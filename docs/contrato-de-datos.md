@@ -132,8 +132,25 @@ Clases de héroe y tipos de enemigo. El nombre del héroe lo elige el jugador; `
 | `habilidades` | lista de texto | Opcional. Cada `id` debe existir en `habilidades`. |
 | `experiencia`, `oro` | entero | 0–999999, defecto 0. Recompensa al vencerlo. |
 
+### `progresion` · versión 1
+Experiencia por nivel y crecimiento de cada clase de héroe (`progresion.TablaProgresion`).
+```json
+{ "tipo": "progresion", "version": 1,
+  "experiencia": [0, 10, 25, 45],
+  "clases": [
+    { "id": "guardian", "crecimiento": { "vida": 7, "ataque": 2, "defensa": 2 } }
+  ] }
+```
+| Campo | Tipo | Regla |
+|---|---|---|
+| `experiencia` | lista de enteros | Obligatoria, 1–99 valores. Experiencia acumulada para estar en cada nivel: el primero es 0 (nivel 1) y cada uno es mayor que el anterior. El nivel máximo es el largo de la lista. |
+| `clases` | lista | Obligatoria. `id` de un combatiente con `bando` `heroe`, sin repetir. |
+| `crecimiento` | objeto | `vida`, `magia`, `ataque`, `defensa`, `poder`, `velocidad`: enteros 0–999, defecto 0. Se suman por cada nivel sobre el 1. Una clase sin entrada no crece. |
+
+Reglas: al subir de nivel, la vida y la magia actuales suben lo mismo que su máximo. Al vencer, cada héroe en pie recibe la experiencia completa del combate (`progresion.Reparto`).
+
 ### Guardado de partida
 Pendiente (H7). Será un documento JSON con `tipo` `"partida"` y `version`, escrito con `EscritorJson` y guardado en un `Almacen`. Incluirá la semilla del azar.
 
 ### Tipos de contenido de juego
-Pendientes: `objetos` (H2), `mapa` (H3), `escena` (H4), `tienda` (H5). Cada uno se documenta aquí con su versión, sus campos y un ejemplo al implementarlo.
+Pendientes: `objetos` (H2, con un `efecto` que se resuelve como una habilidad), `mapa` (H3), `escena` (H4), `tienda` (H5). Cada uno se documenta aquí con su versión, sus campos y un ejemplo al implementarlo.
