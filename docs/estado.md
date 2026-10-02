@@ -26,7 +26,7 @@
 
 ## Siguiente
 1. **Usuario:** fusionar en orden, con "Merge commit", las ramas de "Ramas y pull requests pendientes".
-2. **Usuario:** revisar el pull request de H0 (rama `feature/h0-preparacion`).
+2. **Usuario:** revisar el pull request #6 de H0 (rama `feature/h0-preparacion`).
 3. Bloque 3 del agente: H1, en la rama `feature/h1-combate` que parte de `feature/h0-preparacion`. Primeras tareas: modelo de combatiente, habilidad y estados (leído desde `combatientes.json` y `habilidades.json`) y barra de tiempo por ticks con parámetros en la configuración.
 
 La ruta completa está en `docs/plan.md`.
@@ -34,7 +34,7 @@ La ruta completa está en `docs/plan.md`.
 ## Ramas y pull requests pendientes
 Orden de fusión: de la más antigua a la más nueva, con "Merge commit".
 1. `feature/autorizar-pull-requests` (sin pull request; la abrió el usuario).
-2. `feature/h0-preparacion` (parte de la anterior; H0 terminado, pull request abierto en el bloque 2; incluye también el commit de la rama 1).
+2. `feature/h0-preparacion` (parte de la anterior; H0 terminado, pull request #6 abierto en el bloque 2; incluye también el commit de la rama 1).
 
 ## Preguntas pendientes
 - **Renderizador nativo de la plantilla:** con la decisión de dibujar con `Canvas` en Java, el código C++ de `app/src/main/cpp/` y la `GameActivity` quedarán sin uso. Quitarlos exige tocar `CMakeLists.txt` y `build.gradle.kts` (y quitar la dependencia `games-activity`), lo que requiere tu confirmación. Mientras tanto, el agente los deja como están y la actividad nueva convivirá con ellos.
