@@ -59,6 +59,6 @@ El agente se detiene, y lo declara en `docs/estado.md`, cuando ocurre lo primero
 No añade funcionalidades fuera de esta misión. El procedimiento exacto está en `skills/01-trabajo-autonomo.md`.
 
 ## Restricciones
-- Plantilla nativa (Java + C++), `minSdk` 30. Sin Kotlin ni Compose.
+- Plantilla de Android Studio en Java (el C++ de la plantilla se quitó en H3.5, autorizado), `minSdk` 30. Sin Kotlin ni Compose.
 - Lógica de juego en Java puro, sin dependencias de Android.
 - Cómo se dibujan menús y texto: lo decide el agente en el hito H0, lo justifica y lo registra en `decisiones.md`.
