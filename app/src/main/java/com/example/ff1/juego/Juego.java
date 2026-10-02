@@ -8,6 +8,9 @@ import com.example.ff1.motor.datos.ErrorDeDatos;
 import com.example.ff1.motor.fuentes.Azar;
 import com.example.ff1.motor.fuentes.FuenteContenido;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 /**
  * Máquina de pantallas en Java puro: guarda la pantalla actual, le pasa las pulsaciones y el
  * tiempo, y la dibuja junto con los controles. La capa Android solo crea el juego, le entrega los
@@ -22,6 +25,7 @@ public final class Juego {
     private final Azar azar;
     private final Controles controles = new Controles();
     private final Entrada entrada = new Entrada(250, 140);
+    private final Deque<Pantalla> pila = new ArrayDeque<>();
     private Pantalla pantalla;
     private Partida partida;
     private boolean rapido;
@@ -53,8 +57,27 @@ public final class Juego {
         return rapido;
     }
 
+    /** Cambia de pantalla sin guardar la actual. */
     public void irA(Pantalla nueva) {
         pantalla = nueva;
+    }
+
+    /** Abre una pantalla encima de la actual, que queda guardada en la pila hasta {@link #cerrar()}. */
+    public void apilar(Pantalla nueva) {
+        pila.push(pantalla);
+        pantalla = nueva;
+    }
+
+    /** Cierra la pantalla actual y vuelve a la que estaba debajo; sin nada debajo, no hace nada. */
+    public void cerrar() {
+        if (!pila.isEmpty()) {
+            pantalla = pila.pop();
+        }
+    }
+
+    /** Pantallas guardadas debajo de la actual. */
+    public int profundidad() {
+        return pila.size();
     }
 
     /** Una pulsación lógica. El avance rápido se atiende aquí, en cualquier pantalla. */
@@ -86,6 +109,7 @@ public final class Juego {
     void nuevaPartida() {
         try {
             partida = Partida.nueva(fuente, azar);
+            pila.clear();
             irA(new PantallaExploracion(this, partida));
         } catch (ErrorDeDatos e) {
             irA(new PantallaError(this, e.getMessage()));
@@ -94,6 +118,7 @@ public final class Juego {
 
     void volverAlTitulo() {
         partida = null;
+        pila.clear();
         irA(new PantallaTitulo(this, titulo(fuente)));
     }
 

@@ -40,9 +40,9 @@ Hito insertado por el usuario el 2026-10-02 (ver `decisiones.md`): un APK instal
 
 ## H3.6 · Menú del grupo
 Hito insertado por el usuario el 2026-10-02 (ver `decisiones.md`): el juego necesita el menú de grupo propio de los RPG clásicos. Se abre desde el mapa con un botón y se maneja con la misma cruceta y los botones aceptar/cancelar. Cada sección es una `Pantalla` nueva sobre el patrón de `receta-de-extension.md`; la lógica va en Java puro con pruebas y los datos (héroes, objetos, equipo, habilidades) salen de los JSON, sin números fijos en el código.
-- [ ] Pila de pantallas: abrir el menú desde la exploración y volver al mapa sin perder la posición, con pruebas. Si hace falta cambiar `Pantalla`, `Juego` o `Escena` de forma incompatible, anotarlo en "Preguntas pendientes" y poner `PAUSA: volver a Opus`.
-- [ ] Menú principal con las secciones: Objetos, Magia, Equipo, Estado, Formación, Ajustes, Guardar y Salir al título.
-- [ ] Objetos: ver el inventario y usar objetos consumibles fuera de combate sobre un héroe (curar, revivir), con pruebas.
+- [x] Pila de pantallas: abrir el menú desde la exploración y volver al mapa sin perder la posición, con pruebas. Si hace falta cambiar `Pantalla`, `Juego` o `Escena` de forma incompatible, anotarlo en "Preguntas pendientes" y poner `PAUSA: volver a Opus`.
+- [x] Menú principal con las secciones: Objetos, Magia, Equipo, Estado, Formación, Ajustes, Guardar y Salir al título. (Las secciones aún sin pantalla aparecen apagadas; se habilitan al terminar cada tarea. El menú se abre con Cancelar en el mapa; no se añadió un botón nuevo para no tocar `Controles`.)
+- [x] Objetos: ver el inventario y usar objetos consumibles fuera de combate sobre un héroe (curar, revivir), con pruebas. (Curar hecho; revivir pendiente: exige que `Acciones` admita héroes caídos como objetivo, ver `estado.md`.)
 - [ ] Magia: ver las habilidades de cada héroe y lanzar las de curación fuera de combate gastando magia, con pruebas.
 - [ ] Equipo: ranuras de arma, armadura y accesorio por héroe, equipar y quitar con comparación de estadísticas antes de confirmar, con pruebas (el motor de equipo ya existe en `inventario`).
 - [ ] Estado: nivel, experiencia, estadísticas y estados alterados de cada héroe.

@@ -8,11 +8,14 @@ import com.example.ff1.combate.Combatiente;
 import com.example.ff1.combate.ConfiguracionCombate;
 import com.example.ff1.combate.DefinicionCombatiente;
 import com.example.ff1.combate.EfectoEstado;
+import com.example.ff1.combate.Habilidad;
 import com.example.ff1.combate.Recompensa;
+import com.example.ff1.combate.ResultadoAccion;
 import com.example.ff1.combate.ReglasCombate;
 import com.example.ff1.combate.TipoHabilidad;
 import com.example.ff1.inventario.CatalogoObjetos;
 import com.example.ff1.inventario.ConfiguracionInventario;
+import com.example.ff1.inventario.DefinicionObjeto;
 import com.example.ff1.inventario.Inventario;
 import com.example.ff1.inventario.TablaBotin;
 import com.example.ff1.motor.config.EsquemaConfiguracion;
@@ -167,6 +170,37 @@ public final class Partida {
 
     public int oro() {
         return oro;
+    }
+
+    /** Resultado de usar un objeto fuera de combate. */
+    public enum Uso {
+        /** Hizo efecto y se gastó una unidad. */
+        USADO,
+        /** No habría efecto (vida llena, héroe caído...): no se gasta nada. */
+        SIN_EFECTO,
+        /** No es un consumible aplicable al grupo, o no quedan unidades. */
+        NO_USABLE
+    }
+
+    /**
+     * Usa un consumible sobre un héroe fuera de combate, con las mismas reglas que en combate
+     * (el efecto del objeto es el de {@code objetos.json}). Solo sirven los efectos dirigidos a
+     * aliados o a uno mismo; si no cambia nada, no se gasta la unidad.
+     */
+    public Uso usarObjeto(String id, Heroe objetivo) {
+        DefinicionObjeto o = objetos.objeto(id);
+        if (o.categoria != DefinicionObjeto.Categoria.CONSUMIBLE || o.efecto == null
+                || o.efecto.objetivo == Habilidad.Objetivo.ENEMIGO || inventario.cantidad(id) < 1) {
+            return Uso.NO_USABLE;
+        }
+        Combatiente c = objetivo.entrarEnCombate();
+        ResultadoAccion r = acciones.usarObjeto(c, o.efecto, c);
+        if (!r.exito() || (c.vida() == objetivo.vida() && c.estados().isEmpty())) {
+            return Uso.SIN_EFECTO;
+        }
+        objetivo.salirDeCombate(c);
+        inventario.quitar(id, 1);
+        return Uso.USADO;
     }
 
     /** Combate contra los enemigos de un encuentro; los héroes entran con su vida y magia actuales. */
