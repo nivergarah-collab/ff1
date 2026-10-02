@@ -4,6 +4,10 @@ Formato: más reciente primero, con fecha en `AAAA-MM-DD`.
 
 ## 2026-10-02
 
+### Añadido (bloque 5)
+- Mundo (H3 terminado): mapa por casillas con leyenda, colisiones y posición inicial validada (`mundo.Mapa`, `Explorador`), primer mapa `mapas/campo.json`; encuentros aleatorios por zona (`encuentros.json`, `mundo.TablaEncuentros`, `Encuentros`) con `mundo.pasosMinimos` y `mundo.pasosMaximos` en la configuración, que crean los enemigos del combate. 15 pruebas nuevas.
+- `docs/receta-de-extension.md`: cómo añadir enemigos, objetos, habilidades, tipos de habilidad y estados, mapas y escenas, con ejemplos reales y la prueba que toca.
+
 ### Añadido (bloque 4)
 - Combate (H1 terminado): acciones atacar, habilidad, objeto y huir con cálculo de daño físico, mágico y curación; tipos de habilidad y estados registrados en `ReglasCombate`; fin del combate, turnos automáticos y recompensas; interruptor de avance rápido por pasos. Parámetros nuevos `combate.*` en la configuración.
 - Progresión (H2): experiencia por nivel y crecimiento por clase (`progresion.json`), héroe persistente con vida y magia entre combates, reparto de experiencia.
