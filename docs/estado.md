@@ -2,10 +2,10 @@
 
 ## Control
 - Estado del MVP: EN CURSO
-- Bloques ejecutados: 7 de 50
+- Bloques ejecutados: 8 de 50
 - Bloques seguidos sin avance: 0
 
-Última actualización: 2026-10-02 (usuario: reanudado con Sonnet, hito H3.6 añadido)
+Última actualización: 2026-10-02 (bloque 8, Sonnet: H3.6 terminado)
 
 ## Hecho
 - Proyecto movido a `Desktop\Android\ff1`.
@@ -32,38 +32,45 @@
 - Bloque 6 (limpieza tras H1–H3, rama `chore/limpieza-h1-h3` desde `main`): helper de pruebas `PaqueteDelJuego` (sustituye 7 copias del cargador del paquete), validación de rangos común (`motor.datos.Documentos.rango`, `rangoO`, `dentro`) y lectura de efecto/estado compartida entre habilidades y objetos (`CatalogoCombate.leerHabilidad`; los objetos ahora aceptan también `objetivo` `si-mismo`). 149 pruebas.
 - Pull request #10 (limpieza) fusionado en `main` por el usuario.
 - Bloque 7 (Opus, H3.5 "Primera versión jugable" terminado): escena de dibujo en Java puro y traductor a `Canvas`; controles táctiles, entrada y bucle de paso fijo; máquina de pantallas (título, exploración, combate, error); combate con menú, barras de vida y tiempo, avance rápido visible y recompensas; `MainActivity` nueva como actividad de lanzamiento; `inicio.json` y `configuracion.json`; código nativo quitado en `chore/quitar-codigo-nativo`. 175 pruebas. Pull requests #11 y #12.
+- Pull requests #11, #12 (H3.5 y código nativo) y #13 (plan H3.6) fusionados en `main` por el usuario; reanudado con Sonnet (EN CURSO).
+- Bloque 8 (Sonnet, H3.6 "Menú del grupo" terminado, rama `feature/h36-menu-del-grupo` desde `main`): pila de pantallas en `Juego`; menú del grupo abierto con Cancelar en el mapa; Objetos y Magia de curación fuera de combate; revivir con la Pluma de alba (solo fuera de combate); Equipo con comparación de estadísticas; ficha de Estado; Formación que respeta el combate; Ajustes en caliente (`combate.ticksPorPaso`, `juego.msMensaje`, `juego.rapidoAlEmpezar`); Guardar apagado hasta H7; receta (sección 8b) y contrato al día. 214 pruebas.
 - Autorizado por el usuario el 2026-10-02: límite de 50 bloques (antes 24), quitar el código nativo de la plantilla (ver `skills/01-trabajo-autonomo.md`) y bloques de hasta unos 25 minutos, una sesión por hora.
 
 ## Siguiente
-1. **Sonnet, bloque 8:** hito H3.6 "Menú del grupo" (ver `docs/plan.md`), antes de H4. Rama `feature/h36-menu-del-grupo` desde `main`. Seguir `docs/receta-de-extension.md`.
-2. Después: H4 (historia en `docs/historia.md` y motor de escenas de texto como `Pantalla` nueva), H5, H6 y H7.
+1. **Sonnet, bloque 9:** hito H4 "Narrativa" (ver `docs/plan.md`): `docs/historia.md` (original, mismas etapas de un RPG clásico) y el motor de escenas de texto como `Pantalla` nueva (receta 6 y 8 de `docs/receta-de-extension.md`). Rama `feature/h4-narrativa` desde `feature/h36-menu-del-grupo` (pendiente de fusión).
+2. Después: H5, H6 y H7. Cada dos hitos terminados, un bloque de limpieza (H3.6 y H4 cuentan juntos: el siguiente bloque de limpieza va tras H4).
 3. Reglas para Sonnet: no cambiar de forma incompatible las interfaces del motor, `Pantalla`, `Escena` ni el contrato de datos (si hace falta, anotarlo en "Preguntas pendientes"); con 2 bloques sin avance o `Pruebas` en rojo 2 bloques seguidos, poner `PAUSA: volver a Opus (motivo)`; al marcar la última tarea de H7, abrir el pull request y poner `PAUSA: cambio de modelo (volver a Opus para H8)`.
 
 La ruta completa está en `docs/plan.md`.
 
 ## Cómo probar el APK
-1. **Bajarlo:** en GitHub, pestaña **Actions** del repositorio → ejecución **APK** de la rama (`chore/quitar-codigo-nativo`, o `main` cuando estén fusionadas) → sección **Artifacts** → **ff1-debug-apk** (un .zip con el .apk; dura 14 días). Enlace directo a las ejecuciones: https://github.com/nivergarah-collab/ff1/actions/workflows/apk.yml
+1. **Bajarlo:** en GitHub, pestaña **Actions** del repositorio → ejecución **APK** de la rama (`feature/h36-menu-del-grupo`, o `main` cuando esté fusionada) → sección **Artifacts** → **ff1-debug-apk** (un .zip con el .apk; dura 14 días). Enlace directo a las ejecuciones: https://github.com/nivergarah-collab/ff1/actions/workflows/apk.yml
 2. **Instalarlo:** pasar el .apk al celular (Android 11 o superior), abrirlo y permitir "instalar apps de origen desconocido" para la app con que se abrió. Si había una versión anterior de ff1 instalada con otra firma, desinstalarla primero.
-3. **Qué probar** (unos 5 minutos, en vertical):
+3. **Qué probar** (unos 8 minutos, en vertical):
    - Título "Crónica de la Cantera": "Continuar" aparece apagado; "Aceptar" en "Nueva partida".
    - Mapa: la cruceta mueve al grupo (cuadro amarillo); mantenerla pulsada lo hace caminar. Los riscos, la laguna y la arboleda no se pueden pisar. Por el sendero no hay encuentros; por la pradera y el matorral salta uno cada 15–30 pasos.
-   - Combate: la barra amarilla de cada héroe se llena; en su turno aparece el menú. Probar Atacar (elegir objetivo con la cruceta), Magia con Tadeo o Mirta, Objeto (Tónico de raíz), Cancelar para volver y Huir. "Rápido" acelera el combate y muestra "Avance rápido x2".
+   - **Menú del grupo:** en el mapa, "Cancelar" abre el menú; "Cancelar" otra vez vuelve al mismo sitio. "Guardar" está apagado (llega en H7).
+   - **Objetos:** elegir un Tónico de raíz y un héroe herido (tras algún combate): cura y gasta una unidad; con la vida llena avisa y no gasta. La Pluma de alba levanta a un héroe caído con un tercio de vida.
+   - **Magia:** con Mirta, "Bálsamo" cura a un aliado y gasta PM; "Muro de ramas" avisa que solo sirve en combate; el Guardián no conoce magia.
+   - **Equipo:** el grupo empieza con una hoja, una vara, dos jubones y un cordel en el inventario. Al elegir una pieza se ve la comparación (por ejemplo Ataque +4) antes de confirmar; "(Quitar)" la devuelve al inventario.
+   - **Estado:** ficha de cada héroe (arriba/abajo cambia de héroe). **Formación:** Aceptar marca, mover y Aceptar cambia de sitio; en el combate siguiente el orden es el nuevo.
+   - **Ajustes:** izquierda/derecha cambian la velocidad del combate, el tiempo de los mensajes y si el avance rápido empieza encendido; el cambio se nota al instante en el próximo combate. **Salir al título** pide confirmación.
+   - Combate: la barra amarilla de cada héroe se llena; en su turno aparece el menú. Probar Atacar (elegir objetivo con la cruceta), Magia con Tadeo o Mirta, Objeto (Tónico de raíz; la Pluma no aparece aquí), Cancelar para volver y Huir. "Rápido" acelera el combate y muestra "Avance rápido x2".
    - Al ganar: experiencia, oro, subidas de nivel y botín; "Aceptar" vuelve al mapa en el mismo sitio. Si cae todo el grupo, vuelve al título.
    - En emulador también sirven las flechas, Intro/Z (aceptar), X/Escape (cancelar) y F (rápido).
-4. Anotar en "Preguntas pendientes" (o decírselo al agente) lo que se vea mal: tamaño de letra, botones difíciles de tocar, ritmo del combate (se ajusta con `combate.ticksPorPaso` en `configuracion.json`).
+4. Anotar en "Preguntas pendientes" (o decírselo al agente) lo que se vea mal: tamaño de letra, botones difíciles de tocar, ritmo del combate o cualquier pantalla del menú que quede apretada.
 
-Limitaciones conocidas de esta versión: no hay guardado (H7), ni pueblo, posada o tienda (H5): los héroes caídos siguen caídos hasta volver al título.
+Limitaciones conocidas de esta versión: no hay guardado (H7), ni pueblo, posada o tienda (H5): los héroes caídos se levantan con la Pluma de alba (solo hay una) o al volver al título. Los ajustes no se guardan en disco hasta H7.
 
 ## Ramas y pull requests pendientes
 Orden de fusión: de la más antigua a la más nueva, con "Merge commit".
-1. `feature/h35-jugable` (parte de `main`): H3.5, pull request #11 https://github.com/nivergarah-collab/ff1/pull/11
-2. `chore/quitar-codigo-nativo` (parte de `feature/h35-jugable`): quitar el código nativo y documentación del cierre de H3.5, pull request #12 https://github.com/nivergarah-collab/ff1/pull/12
+1. `feature/h36-menu-del-grupo` (parte de `main`): H3.6 menú del grupo (pull request: ver el enlace al final de esta lista cuando se abra).
 
 ## Preguntas pendientes
 - `gradle/libs.versions.toml` conserva la entrada `games-activity`, ya sin uso; quitarla es opcional y lo decide el usuario (`gradle/` no lo toca el agente).
 
 ## Pruebas
-Nube, 2026-10-02 (bloque 7): `scripts/probar-logica.sh` 175 de 175 pruebas pasan. GitHub Actions: en `feature/h35-jugable`, `Pruebas` y `APK` en verde; en `chore/quitar-codigo-nativo`, `APK` en verde (lanzado a mano, la rama `chore/*` no dispara flujos al hacer push) y `Pruebas` en el pull request #12.
+Nube, 2026-10-02 (bloque 8): `scripts/probar-logica.sh` 214 de 214 pruebas pasan en `feature/h36-menu-del-grupo`. GitHub Actions: pendiente de revisar al cerrar el bloque (ver más abajo si quedó anotado).
 
 ## Notas
 - `ExampleUnitTest` y `ExampleInstrumentedTest` son de la plantilla y se reemplazarán.

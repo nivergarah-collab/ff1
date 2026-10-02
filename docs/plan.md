@@ -49,7 +49,7 @@ Hito insertado por el usuario el 2026-10-02 (ver `decisiones.md`): el juego nece
 - [x] Formación: cambiar el orden del grupo y que el combate respete el nuevo orden, con pruebas.
 - [x] Ajustes: velocidad del texto y del combate y avance rápido por defecto, guardados en la configuración (en caliente), con pruebas. (Se cambian en la configuración vigente al instante; escribirlos a disco queda para H7, con el guardado.)
 - [x] Guardar: la opción aparece, pero desactivada hasta H7 (ahí se conecta).
-- [ ] Actualizar `docs/receta-de-extension.md` (cómo añadir una sección al menú) y `docs/estado.md` ("Cómo probar el APK" con el menú).
+- [x] Actualizar `docs/receta-de-extension.md` (cómo añadir una sección al menú) y `docs/estado.md` ("Cómo probar el APK" con el menú).
 
 ## H4 · Narrativa
 - [ ] Historia original en `docs/historia.md`, con las mismas etapas de un RPG clásico.
