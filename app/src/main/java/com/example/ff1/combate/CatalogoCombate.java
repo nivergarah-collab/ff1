@@ -80,24 +80,35 @@ public final class CatalogoCombate {
         Map<String, Habilidad> mapa = new LinkedHashMap<>();
         for (Nodo n : doc.lista("lista")) {
             String id = id(n, mapa);
-            String tipo = n.texto("tipo");
-            if (!tipos.contiene(tipo)) {
-                throw new ErrorDeDatos(n.ruta() + ".tipo: tipo de habilidad \"" + tipo + "\" no registrado");
-            }
-            String estado = null;
-            int duracion = 0;
-            if (n.tiene("estado")) {
-                Nodo e = n.objeto("estado");
-                estado = e.texto("id");
-                if (!estados.contiene(estado)) {
-                    throw new ErrorDeDatos(e.ruta() + ".id: estado \"" + estado + "\" no registrado");
-                }
-                duracion = Documentos.rango(e, "duracion", 1, 99);
-            }
-            mapa.put(id, new Habilidad(id, n.texto("nombre"), tipo, Documentos.rangoO(n, "coste", 0, 999, 0),
-                    Documentos.rangoO(n, "poder", 0, 9999, 0), objetivo(n), estado, duracion));
+            mapa.put(id, leerHabilidad(n, id, n.texto("nombre"), Documentos.rangoO(n, "coste", 0, 999, 0),
+                    "enemigo", tipos, estados));
         }
         return mapa;
+    }
+
+    /**
+     * Lee el efecto de una habilidad u objeto: {@code tipo}, {@code poder}, {@code objetivo}
+     * (con {@code objetivoPorDefecto} si falta) y {@code estado} opcional. Lo comparten los
+     * documentos {@code habilidades} y {@code objetos}.
+     */
+    public static Habilidad leerHabilidad(Nodo n, String id, String nombre, int coste,
+            String objetivoPorDefecto, Registro<?> tipos, Registro<?> estados) {
+        String tipo = n.texto("tipo");
+        if (!tipos.contiene(tipo)) {
+            throw new ErrorDeDatos(n.ruta() + ".tipo: tipo de habilidad \"" + tipo + "\" no registrado");
+        }
+        String estado = null;
+        int duracion = 0;
+        if (n.tiene("estado")) {
+            Nodo e = n.objeto("estado");
+            estado = e.texto("id");
+            if (!estados.contiene(estado)) {
+                throw new ErrorDeDatos(e.ruta() + ".id: estado \"" + estado + "\" no registrado");
+            }
+            duracion = Documentos.rango(e, "duracion", 1, 99);
+        }
+        return new Habilidad(id, nombre, tipo, coste, Documentos.rangoO(n, "poder", 0, 9999, 0),
+                objetivo(n, objetivoPorDefecto), estado, duracion);
     }
 
     private static Map<String, DefinicionCombatiente> leerCombatientes(Nodo doc,
@@ -138,8 +149,8 @@ public final class CatalogoCombate {
     }
 
 
-    private static Habilidad.Objetivo objetivo(Nodo n) {
-        String texto = n.textoO("objetivo", "enemigo");
+    private static Habilidad.Objetivo objetivo(Nodo n, String porDefecto) {
+        String texto = n.textoO("objetivo", porDefecto);
         switch (texto) {
             case "enemigo":
                 return Habilidad.Objetivo.ENEMIGO;

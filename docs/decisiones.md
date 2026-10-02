@@ -2,6 +2,10 @@
 
 Más reciente primero.
 
+## 2026-10-02 (bloque 6)
+- **Los objetos pueden apuntar a `si-mismo`:** al compartir la lectura del efecto con las habilidades (`CatalogoCombate.leerHabilidad`), un objeto acepta los mismos objetivos que una habilidad. Motivo: una sola regla de lectura; el único cambio visible es el mensaje de error de un objetivo desconocido (ahora lista tres opciones).
+- **Rangos comunes en el motor:** `Documentos.rango`/`rangoO` (mensaje `ruta.campo: valor fuera del rango [min, max]`) reemplazan las copias privadas de cada catálogo.
+
 ## 2026-10-02 (bloque 5)
 - **Encuentros por zona y cuenta atrás:** cada casilla de la leyenda puede nombrar una `zona`; las que no la tienen (por ejemplo los senderos) son seguras. La cuenta atrás se tira entre `mundo.pasosMinimos` y `mundo.pasosMaximos` (15–30, de `investigacion-ritmo.md`) y solo baja al pisar casillas con zona. Motivo: ritmo predecible sin rachas de combates seguidos, y caminos seguros diseñables desde los datos. Los grupos se eligen por peso en `encuentros.json`, aparte del mapa, para reutilizar zonas entre mapas.
 - **Salidas entre mapas pospuestas:** el mapa v1 no tiene salidas ni puertas; se añadirán (como campo nuevo, documentado en el contrato) cuando existan el pueblo y la mazmorra (H5–H6). Motivo: no inventar el formato antes de tener dos mapas que conectar.
