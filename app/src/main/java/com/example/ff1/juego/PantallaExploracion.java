@@ -74,10 +74,32 @@ public final class PantallaExploracion implements Pantalla {
             case Mapa.LUGAR_POSADA:
                 juego.apilar(new PantallaPosada(juego, partida, sv.posada(l.ref)));
                 break;
+            case Mapa.LUGAR_JEFE:
+                encararJefe(sv.jefe(l.ref));
+                break;
             default:
                 juego.irA(new PantallaEscena(juego, partida.escena(sv.vecino(l.ref).escena),
                         partida.nombresPorClase(), this));
         }
+    }
+
+    /** Escena previa → combate sin huida → escena final → regreso al sitio indicado. */
+    private void encararJefe(final Servicios.Jefe jefe) {
+        if (partida.jefeDerrotado(jefe.id)) {
+            mensaje = "Ya no queda nada aquí.";
+            return;
+        }
+        final Pantalla mapa = this;
+        PantallaCombate combate = new PantallaCombate(juego, partida,
+                partida.empezarCombate(jefe.enemigos, false), mapa);
+        combate.trasVictoria(new Runnable() {
+            @Override
+            public void run() {
+                partida.derrotarJefe(jefe);
+                juego.irA(new PantallaEscena(juego, partida.escena(jefe.escenaFinal), partida.nombresPorClase(), mapa));
+            }
+        });
+        juego.irA(new PantallaEscena(juego, partida.escena(jefe.escenaPrevia), partida.nombresPorClase(), combate));
     }
 
     static Direccion direccion(Boton b) {
@@ -142,7 +164,8 @@ public final class PantallaExploracion implements Pantalla {
         if (mensaje.isEmpty() && l != null) {
             Servicios sv = partida.servicios();
             String nombre = l.tipo.equals(Mapa.LUGAR_TIENDA) ? sv.tienda(l.ref).nombre
-                    : l.tipo.equals(Mapa.LUGAR_POSADA) ? sv.posada(l.ref).nombre : sv.vecino(l.ref).nombre;
+                    : l.tipo.equals(Mapa.LUGAR_POSADA) ? sv.posada(l.ref).nombre
+                    : l.tipo.equals(Mapa.LUGAR_JEFE) ? sv.jefe(l.ref).nombre : sv.vecino(l.ref).nombre;
             e.texto(Escena.ANCHO / 2, 6, nombre + " (Aceptar)", Estilo.LETRA, Estilo.RESALTE, Escena.Alineacion.CENTRO);
         }
     }

@@ -77,6 +77,7 @@ public final class Mapa {
     public static final String LUGAR_TIENDA = "tienda";
     public static final String LUGAR_POSADA = "posada";
     public static final String LUGAR_VECINO = "vecino";
+    public static final String LUGAR_JEFE = "jefe";
 
     public final String id;
     public final int ancho;
@@ -170,8 +171,9 @@ public final class Mapa {
                 if (!m.dentro(lx, ly)) {
                     throw new ErrorDeDatos(n.ruta() + ": (" + lx + ", " + ly + ") está fuera del mapa");
                 }
-                if (!tipo.equals(LUGAR_TIENDA) && !tipo.equals(LUGAR_POSADA) && !tipo.equals(LUGAR_VECINO)) {
-                    throw new ErrorDeDatos(n.ruta() + ".tipo: \"" + tipo + "\" no es tienda, posada ni vecino");
+                if (!tipo.equals(LUGAR_TIENDA) && !tipo.equals(LUGAR_POSADA) && !tipo.equals(LUGAR_VECINO)
+                        && !tipo.equals(LUGAR_JEFE)) {
+                    throw new ErrorDeDatos(n.ruta() + ".tipo: \"" + tipo + "\" no es tienda, posada, vecino ni jefe");
                 }
                 m.lugares.add(new Lugar(lx, ly, tipo, n.texto("ref")));
             }

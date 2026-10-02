@@ -87,6 +87,7 @@ public final class Partida {
     private final TablaEncuentros tabla;
     private final Servicios servicios;
     private final Map<String, Mapa> mapas = new LinkedHashMap<>();
+    private final java.util.Set<String> jefesDerrotados = new java.util.LinkedHashSet<>();
     private int oro;
 
     private Partida(FuenteContenido fuente, TablaEncuentros tabla, Servicios servicios, ProveedorConfiguracion config, Azar azar, CatalogoCombate catalogo, CatalogoObjetos objetos,
@@ -132,7 +133,7 @@ public final class Partida {
         Nodo inicio = fuente.cargar(TIPO_INICIO, TIPO_INICIO, VERSION_INICIO);
         Mapa mapa = Mapa.cargar(fuente, inicio.texto("mapa"));
         tabla.validarMapa(mapa);
-        Servicios servicios = Servicios.cargar(fuente, objetos);
+        Servicios servicios = Servicios.cargar(fuente, objetos, catalogo);
         servicios.validarMapa(mapa);
         List<Nodo> ng = inicio.lista("grupo");
         Documentos.dentro(inicio, "grupo", ng.size(), 1, 6);
@@ -164,6 +165,16 @@ public final class Partida {
     /** Escena de texto del paquete (para los vecinos). */
     public Guion escena(String id) {
         return Guion.cargar(fuente, id);
+    }
+
+    public boolean jefeDerrotado(String id) {
+        return jefesDerrotados.contains(id);
+    }
+
+    /** Marca al jefe como vencido y lleva al grupo al sitio de regreso (tras la escena final). */
+    public void derrotarJefe(Servicios.Jefe j) {
+        jefesDerrotados.add(j.id);
+        irAMapa(j.regresoMapa, j.regresoX, j.regresoY);
     }
 
     public Servicios servicios() {
@@ -206,6 +217,15 @@ public final class Partida {
                 }
                 if (nuevo) {
                     pendientes.add(destino);
+                }
+            }
+            for (Mapa.Lugar l : m.lugares()) {
+                if (l.tipo.equals(Mapa.LUGAR_JEFE)) {
+                    Servicios.Jefe j = servicios.jefe(l.ref);
+                    if (!mapa(j.regresoMapa).pasable(j.regresoX, j.regresoY)) {
+                        throw new ErrorDeDatos("servicios.jefes." + j.id + ".regreso: (" + j.regresoX + ", "
+                                + j.regresoY + ") no es una casilla pasable de " + j.regresoMapa);
+                    }
                 }
             }
         }
@@ -483,11 +503,16 @@ public final class Partida {
 
     /** Combate contra los enemigos de un encuentro; los héroes entran con su vida y magia actuales. */
     public Combate empezarCombate(List<String> enemigos) {
+        return empezarCombate(enemigos, true);
+    }
+
+    /** Igual, indicando si se puede huir (los jefes no se rehúyen). */
+    public Combate empezarCombate(List<String> enemigos, boolean huidaPermitida) {
         List<Combatiente> heroes = new ArrayList<>();
         for (Heroe h : grupo) {
             heroes.add(h.entrarEnCombate());
         }
-        return new Combate(config, acciones, azar, heroes, Encuentros.crearEnemigos(enemigos, catalogo), true);
+        return new Combate(config, acciones, azar, heroes, Encuentros.crearEnemigos(enemigos, catalogo), huidaPermitida);
     }
 
     /** Guarda en los héroes cómo terminaron y, si hubo victoria, reparte experiencia, oro y botín. */

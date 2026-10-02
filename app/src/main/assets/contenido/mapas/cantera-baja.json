@@ -33,6 +33,11 @@
       "nombre": "escalera hacia arriba",
       "color": "#B59A62",
       "pasable": true
+    },
+    "G": {
+      "nombre": "grieta",
+      "color": "#1E2A3A",
+      "pasable": false
     }
   },
   "filas": [
@@ -43,7 +48,7 @@
     "#,##########",
     "#,,,,,,,,,,#",
     "##########,#",
-    "#,,,,,,,,,,#",
+    "#G,,,,,,,,,#",
     "############"
   ],
   "inicio": {
@@ -59,6 +64,14 @@
         "x": 10,
         "y": 2
       }
+    }
+  ],
+  "lugares": [
+    {
+      "x": 1,
+      "y": 7,
+      "tipo": "jefe",
+      "ref": "soterrado"
     }
   ]
 }

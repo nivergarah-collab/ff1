@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.example.ff1.combate.CatalogoCombate;
 import com.example.ff1.guion.Guion;
 import com.example.ff1.inventario.CatalogoObjetos;
 import com.example.ff1.inventario.DefinicionObjeto;
@@ -68,6 +69,31 @@ public final class Servicios {
         }
     }
 
+    /** Encuentro único con escena previa, combate sin huida y escena final. */
+    public static final class Jefe {
+        public final String id;
+        public final String nombre;
+        public final List<String> enemigos;
+        public final String escenaPrevia;
+        public final String escenaFinal;
+        public final String regresoMapa;
+        public final int regresoX;
+        public final int regresoY;
+
+        Jefe(String id, String nombre, List<String> enemigos, String escenaPrevia, String escenaFinal,
+                String regresoMapa, int regresoX, int regresoY) {
+            this.id = id;
+            this.nombre = nombre;
+            this.enemigos = Collections.unmodifiableList(enemigos);
+            this.escenaPrevia = escenaPrevia;
+            this.escenaFinal = escenaFinal;
+            this.regresoMapa = regresoMapa;
+            this.regresoX = regresoX;
+            this.regresoY = regresoY;
+        }
+    }
+
+    private final Map<String, Jefe> jefes = new LinkedHashMap<>();
     private final Map<String, Tienda> tiendas = new LinkedHashMap<>();
     private final Map<String, Posada> posadas = new LinkedHashMap<>();
     private final Map<String, Vecino> vecinos = new LinkedHashMap<>();
@@ -81,7 +107,7 @@ public final class Servicios {
     }
 
     /** Carga {@code servicios.json} si existe; comprueba que sus objetos y escenas existen. */
-    public static Servicios cargar(FuenteContenido fuente, CatalogoObjetos objetos) {
+    public static Servicios cargar(FuenteContenido fuente, CatalogoObjetos objetos, CatalogoCombate combate) {
         if (!fuente.existe(TIPO)) {
             return vacio();
         }
@@ -116,6 +142,23 @@ public final class Servicios {
                 s.poner(s.vecinos, n.texto("id"), new Vecino(n.texto("id"), n.texto("nombre"), n.texto("escena")), n);
             }
         }
+        if (doc.tiene("jefes")) {
+            for (Nodo n : doc.lista("jefes")) {
+                List<String> enemigos = new ArrayList<>();
+                for (Nodo e : n.lista("enemigos")) {
+                    enemigos.add(combate.combatiente(e.comoTexto()).id);
+                }
+                if (enemigos.isEmpty()) {
+                    throw new ErrorDeDatos(n.ruta() + ".enemigos: el jefe no tiene enemigos");
+                }
+                Guion.cargar(fuente, n.texto("escenaPrevia"));
+                Guion.cargar(fuente, n.texto("escenaFinal"));
+                Nodo r = n.objeto("regreso");
+                s.poner(s.jefes, n.texto("id"), new Jefe(n.texto("id"), n.texto("nombre"), enemigos,
+                        n.texto("escenaPrevia"), n.texto("escenaFinal"), r.texto("mapa"), r.entero("x"),
+                        r.entero("y")), n);
+            }
+        }
         return s;
     }
 
@@ -136,6 +179,9 @@ public final class Servicios {
                 case Mapa.LUGAR_POSADA:
                     ok = posadas.containsKey(l.ref);
                     break;
+                case Mapa.LUGAR_JEFE:
+                    ok = jefes.containsKey(l.ref);
+                    break;
                 default:
                     ok = vecinos.containsKey(l.ref);
             }
@@ -152,6 +198,10 @@ public final class Servicios {
 
     public Posada posada(String id) {
         return buscar(posadas, id, "posada");
+    }
+
+    public Jefe jefe(String id) {
+        return buscar(jefes, id, "jefe");
     }
 
     public Vecino vecino(String id) {

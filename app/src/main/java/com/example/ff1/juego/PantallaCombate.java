@@ -45,6 +45,7 @@ public final class PantallaCombate implements Pantalla {
     private String objetoElegido;
     private List<Combatiente> candidatos = new ArrayList<>();
     private Partida.Desenlace desenlace;
+    private Runnable trasVictoria;
     private final List<String> lineasFin = new ArrayList<>();
 
     PantallaCombate(Juego juego, Partida partida, Combate combate, Pantalla regreso) {
@@ -74,6 +75,11 @@ public final class PantallaCombate implements Pantalla {
 
     public String mensaje() {
         return mensaje;
+    }
+
+    /** Qué hacer al aceptar el final de una victoria (por defecto, volver al mapa); lo usan los jefes. */
+    void trasVictoria(Runnable accion) {
+        this.trasVictoria = accion;
     }
 
     public Partida.Desenlace desenlace() {
@@ -172,6 +178,8 @@ public final class PantallaCombate implements Pantalla {
                 if (b == Boton.ACEPTAR) {
                     if (desenlace.estado == Combate.Estado.DERROTA) {
                         juego.volverAlTitulo();
+                    } else if (trasVictoria != null && desenlace.estado == Combate.Estado.VICTORIA) {
+                        trasVictoria.run();
                     } else {
                         juego.irA(regreso);
                     }

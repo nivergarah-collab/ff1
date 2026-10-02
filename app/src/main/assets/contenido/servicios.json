@@ -37,5 +37,21 @@
       "nombre": "Vecino pastor",
       "escena": "pastor"
     }
+  ],
+  "jefes": [
+    {
+      "id": "soterrado",
+      "nombre": "La grieta",
+      "enemigos": [
+        "soterrado"
+      ],
+      "escenaPrevia": "soterrado-previa",
+      "escenaFinal": "cierre",
+      "regreso": {
+        "mapa": "pozaluz",
+        "x": 6,
+        "y": 5
+      }
+    }
   ]
 }

@@ -61,8 +61,8 @@ Hito insertado por el usuario el 2026-10-02 (ver `decisiones.md`): el juego nece
 
 ## H6 · Mazmorra y jefe
 - [x] Cantera Hundida: puerta de hierro con llave, dos galerías enlazadas con escalera y enemigos propios (`cantera-alta`, `cantera-baja`).
-- [ ] Jefe (el Soterrado): combatiente, golpe fuerte cada pocos turnos, escena previa y encuentro al final de la galería baja.
-- [ ] Escena de cierre.
+- [x] Jefe (el Soterrado): combatiente, golpe fuerte cada pocos turnos, escena previa y encuentro al final de la galería baja.
+- [x] Escena de cierre (`cierre`, tras vencer al jefe; el grupo vuelve a Pozaluz).
 
 ## H7 · Guardado y carga
 - [ ] Guardar y cargar partida, con pruebas de ida y vuelta.

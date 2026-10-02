@@ -128,6 +128,21 @@
       "velocidad": 9,
       "experiencia": 18,
       "oro": 14
+    },
+    {
+      "id": "soterrado",
+      "nombre": "El Soterrado",
+      "bando": "enemigo",
+      "vida": 240,
+      "ataque": 15,
+      "defensa": 8,
+      "velocidad": 6,
+      "experiencia": 150,
+      "oro": 200,
+      "golpeFuerte": {
+        "cada": 3,
+        "habilidad": "sacudida-de-piedra"
+      }
     }
   ]
 }

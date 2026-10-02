@@ -27,6 +27,7 @@ public final class Combate {
     private final boolean huidaPermitida;
     private final ProveedorConfiguracion config;
     private final AvanceRapido avanceRapido;
+    private final java.util.Map<Combatiente, Integer> turnosPropios = new java.util.IdentityHashMap<>();
     private Estado estado = Estado.EN_CURSO;
 
     public Combate(ProveedorConfiguracion config, Acciones acciones, Azar azar,
@@ -147,7 +148,15 @@ public final class Combate {
             return perderTurno();
         }
         List<Combatiente> vivos = vivos(actor.bando() == Bando.HEROE ? enemigos : heroes);
-        return atacar(vivos.get(azar.entero(vivos.size())));
+        Combatiente objetivo = vivos.get(azar.entero(vivos.size()));
+        DefinicionCombatiente d = actor.definicion();
+        if (d.golpeCada > 0 && d.golpeFuerte != null) {
+            int n = turnosPropios.merge(actor, 1, Integer::sum);
+            if (n % d.golpeCada == 0) {
+                return usarHabilidad(d.golpeFuerte, objetivo);
+            }
+        }
+        return atacar(objetivo);
     }
 
     /** Experiencia y oro de los enemigos caídos; solo tras la victoria. */
