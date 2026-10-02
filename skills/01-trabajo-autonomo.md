@@ -8,7 +8,9 @@ Guiar a un agente que trabaja por bloques, sin supervisión, para construir el M
 ## Entorno
 - El agente trabaja en un clon del repositorio en la nube, con terminal. No usa la carpeta del computador del usuario.
 - La nube no tiene acceso a Maven, Google ni Gradle: no puede compilar la app Android. Sí compila y prueba la lógica en Java puro con `javac` y el JUnit 4 incluido con Gradle (`scripts/probar-logica.sh`).
-- La compilación Android y la suite completa corren en GitHub Actions. El agente lee solo el resumen del resultado.
+- GitHub Actions corre dos flujos en cada push a `main`, `feature/**` y `fix/**`: `Pruebas` (estructura y suite unitaria) y `APK` (construye el APK de depuración y lo deja como archivo descargable en la ejecución). El agente no puede ejecutarlos ni modificarlos: `.github/` es solo del usuario.
+- Para ver el resultado de una rama, el agente consulta `https://github.com/nivergarah-collab/ff1/actions?query=branch%3A<rama>` y lee solo el estado de cada flujo. Si la rama no tiene ejecuciones, lo anota y sigue; no cuenta como rojo.
+- El agente mantiene el proyecto compilable. Si el flujo `APK` falla, lo anota en "Preguntas pendientes" de `docs/estado.md` (puede requerir cambios de Gradle o CMake, que necesitan confirmación) y sigue. Solo el flujo `Pruebas` cuenta para la regla de parada.
 - El usuario recibe el trabajo con `git pull` y prueba en Android Studio.
 
 ## Autorización previa
