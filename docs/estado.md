@@ -2,7 +2,7 @@
 
 ## Control
 - Estado del MVP: EN CURSO
-- Bloques ejecutados: 3 de 24
+- Bloques ejecutados: 3 de 50
 - Bloques seguidos sin avance: 0
 
 Última actualización: 2026-10-02 (bloque 3)
@@ -25,6 +25,7 @@
 - Bloque 2 (H0 terminado, rama `feature/h0-preparacion`): menús, texto y mapa se dibujarán con `Canvas` en Java a partir de una escena de dibujo en Java puro; formato de datos JSON con lector y escritor propios (`motor.datos`); interfaces del motor para contenido, azar, tiempo y guardado (`motor.fuentes`); configuración validada y reemplazable en caliente y registro de extensiones (`motor.config`); `docs/contrato-de-datos.md` escrito.
 - Pull request #6 (H0) fusionado en `main` por el usuario.
 - Bloque 3 (H1, rama `feature/h1-combate` desde `main`): modelo de combate en `com.example.ff1.combate` (`Combatiente`, `DefinicionCombatiente`, `Habilidad`, `Bando`, `CatalogoCombate` que lee y valida `combatientes.json` y `habilidades.json`); barra de tiempo por ticks (`BarraTiempo`) con `combate.velocidadBarra` y `combate.cargaLlena` en la configuración, reemplazables en caliente; primer paquete de contenido original en `app/src/main/assets/contenido/` (4 clases de héroe, 3 enemigos, 7 habilidades).
+- Autorizado por el usuario el 2026-10-02: límite de 50 bloques (antes 24), quitar el código nativo de la plantilla (ver `skills/01-trabajo-autonomo.md`) y bloques de hasta unos 25 minutos, una sesión por hora.
 
 ## Siguiente
 1. **Usuario:** nada que fusionar todavía; el pull request de H1 se abrirá al terminar el hito.
@@ -38,7 +39,7 @@ Orden de fusión: de la más antigua a la más nueva, con "Merge commit".
 1. `feature/h1-combate` (parte de `main`; H1 en curso, sin pull request todavía).
 
 ## Preguntas pendientes
-- **Renderizador nativo de la plantilla:** con la decisión de dibujar con `Canvas` en Java, el código C++ de `app/src/main/cpp/` y la `GameActivity` quedarán sin uso. Quitarlos exige tocar `CMakeLists.txt` y `build.gradle.kts` (y quitar la dependencia `games-activity`), lo que requiere tu confirmación. Mientras tanto, el agente los deja como están y la actividad nueva convivirá con ellos.
+Ninguna.
 
 ## Pruebas
 Nube, 2026-10-02 (bloque 3): `scripts/probar-logica.sh` 72 de 72 pruebas pasan. GitHub Actions en `feature/h1-combate` (commit `8f2c8e5`): `Pruebas` #23 en verde y `APK` #11 en verde.

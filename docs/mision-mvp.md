@@ -52,7 +52,7 @@ El MVP está **listo para revisión** cuando se cumplen todas estas condiciones:
 ## Límites del trabajo autónomo
 El agente se detiene, y lo declara en `docs/estado.md`, cuando ocurre lo primero de esto:
 - El MVP queda listo para revisión (ver arriba).
-- Se ejecutaron **24 bloques** (unos tres días a ocho por día), aunque falte trabajo.
+- Se ejecutaron **50 bloques** (unos dos días a una sesión por hora), aunque falte trabajo.
 - Pasaron **3 bloques seguidos sin marcar ninguna tarea** del plan.
 - El flujo `Pruebas` de GitHub Actions queda en rojo en **2 bloques seguidos** y el agente no logra corregirlo.
 

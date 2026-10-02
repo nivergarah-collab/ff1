@@ -4,6 +4,9 @@ Formato: más reciente primero, con fecha en `AAAA-MM-DD`.
 
 ## 2026-10-02
 
+### Cambiado
+- Límite de bloques 24 a 50, bloques de hasta unos 25 minutos y autorización para quitar el código nativo de la plantilla.
+
 ### Añadido (bloque 3)
 - Combate (H1): modelo de combatiente, habilidad y estados en `com.example.ff1.combate`, leído y validado desde `combatientes.json` y `habilidades.json` (documentos v1 en `docs/contrato-de-datos.md`).
 - Barra de tiempo (ATB) por ticks simulados, con `combate.velocidadBarra` y `combate.cargaLlena` en la configuración, ajustables en caliente.

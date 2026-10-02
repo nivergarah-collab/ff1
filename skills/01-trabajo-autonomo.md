@@ -30,13 +30,23 @@ Sigue requiriendo confirmación (se deja anotado en `docs/estado.md`, en "Pregun
 - Merge a `main` y cerrar pull requests.
 - Borrar ramas, etiquetas o archivos versionados.
 - `push --force` y cualquier reescritura del historial.
-- Modificar `build.gradle.kts`, `settings.gradle.kts`, `gradle/`, `CMakeLists.txt`, `.github/` o `local.properties`, y añadir dependencias.
+- Modificar `build.gradle.kts`, `settings.gradle.kts`, `gradle/`, `CMakeLists.txt`, `.github/` o `local.properties`, y añadir dependencias. Única excepción autorizada el 2026-10-02: quitar el renderizador nativo de la plantilla (ver "Quitar el código nativo").
 - Publicar versiones.
+
+## Quitar el código nativo (autorizado)
+El usuario autorizó el 2026-10-02 quitar el renderizador C++ y la `GameActivity` de la plantilla, porque el dibujo va con `Canvas` en Java. Se hace en una rama propia (`chore/quitar-codigo-nativo`) y solo cuando la actividad nueva ya reemplaza a la nativa:
+- Se puede borrar `app/src/main/cpp/` y lo que solo usaba la `GameActivity`, y editar `CMakeLists.txt`, `app/build.gradle.kts` y el manifiesto únicamente para quitar la compilación nativa (`externalNativeBuild`, NDK, `games-activity`).
+- No se añade ninguna dependencia ni se cambian versiones, SDK ni firma.
+- Se confirma que `Pruebas` y `APK` quedan en verde en esa rama antes de seguir; si no, se revierte el cambio de compilación y se anota en "Preguntas pendientes".
+- El flujo `APK` instala CMake; puede seguir así, no estorba (`.github/` sigue siendo del usuario).
+
+## Duración del bloque
+Las sesiones se repiten cada hora. Un bloque puede durar hasta unos 25 minutos (el agente mira la hora con `date` al empezar) o hasta la mitad del contexto, lo que llegue primero. Dentro del bloque: un commit por tarea, `push` al terminar cada dos tareas y la suite de lógica al cerrar. Si queda poco tiempo o contexto, no se abre una tarea nueva.
 
 ## Ciclo de un bloque de trabajo
 1. Inicializarse según `04` y leer en el orden de `02`, más `docs/mision-mvp.md` y `docs/plan.md`.
 2. Verificar el entorno y las conexiones (`07`) con comprobaciones ligeras.
-3. Elegir la siguiente tarea pendiente del plan; en un bloque, una a tres tareas pequeñas.
+3. Elegir la siguiente tarea pendiente del plan; en un bloque, las tareas pequeñas que quepan (ver "Duración del bloque").
 4. Crear o continuar la rama de la tarea.
 5. Escribir la prueba, implementar, correr las pruebas del alcance y hacer commit.
 6. Marcar la tarea en `docs/plan.md`.
@@ -70,7 +80,7 @@ La sección `## Control` de `docs/estado.md` (al principio del archivo) guía el
 ```
 ## Control
 - Estado del MVP: EN CURSO
-- Bloques ejecutados: 0 de 24
+- Bloques ejecutados: 0 de 50
 - Bloques seguidos sin avance: 0
 ```
 
@@ -78,7 +88,7 @@ El estado puede ser `EN CURSO`, `LISTO PARA REVISIÓN` o `DETENIDO: <motivo>`.
 
 1. **Lo primero de cada bloque**, tras clonar el repositorio, es leer solo esa sección. Si no existe, se crea con los valores de arriba.
 2. Si el estado no es `EN CURSO`, el bloque termina de inmediato con un resumen de una línea, sin leer nada más ni cambiar nada. Así las sesiones que sigan llegando casi no gastan tokens.
-3. Si los bloques ejecutados ya son 24 o más, el estado pasa a `DETENIDO: límite de bloques`, se escribe y el bloque termina.
+3. Si los bloques ejecutados ya alcanzaron el máximo de esa línea (50), el estado pasa a `DETENIDO: límite de bloques`, se escribe y el bloque termina.
 4. En cada bloque que sigue: sumar 1 a "Bloques ejecutados"; sumar 1 a "sin avance" si no se marcó ninguna tarea del plan, o ponerlo en 0 si se marcó alguna.
 5. Si "sin avance" llega a 3, o GitHub Actions queda en rojo en 2 bloques seguidos sin poder corregirlo, el estado pasa a `DETENIDO: <motivo>` y se explica en el resumen.
 
