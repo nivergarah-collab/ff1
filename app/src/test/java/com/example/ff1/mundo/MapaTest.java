@@ -1,18 +1,16 @@
 package com.example.ff1.mundo;
 
+import com.example.ff1.PaqueteDelJuego;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.File;
 
 import org.junit.Test;
 
 import com.example.ff1.motor.datos.ErrorDeDatos;
 import com.example.ff1.motor.datos.LectorJson;
-import com.example.ff1.motor.fuentes.FuenteContenidoJson;
-import com.example.ff1.motor.fuentes.LectorArchivos;
 
 public class MapaTest {
 
@@ -93,11 +91,7 @@ public class MapaTest {
 
     @Test
     public void elMapaDelPaqueteEsValido() {
-        File carpeta = new File("app/src/main/assets/contenido");
-        if (!carpeta.isDirectory()) {
-            carpeta = new File("src/main/assets/contenido"); // Gradle corre desde app/
-        }
-        Mapa m = Mapa.cargar(new FuenteContenidoJson(new LectorArchivos(carpeta)), "campo");
+        Mapa m = Mapa.cargar(PaqueteDelJuego.fuente(), "campo");
         assertTrue(m.pasable(m.inicioX, m.inicioY));
         assertEquals(16, m.ancho);
     }

@@ -1,11 +1,11 @@
 package com.example.ff1.progresion;
 
+import com.example.ff1.PaqueteDelJuego;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -18,22 +18,12 @@ import com.example.ff1.combate.Recompensa;
 import com.example.ff1.combate.ReglasCombate;
 import com.example.ff1.motor.datos.ErrorDeDatos;
 import com.example.ff1.motor.datos.LectorJson;
-import com.example.ff1.motor.fuentes.FuenteContenidoJson;
-import com.example.ff1.motor.fuentes.LectorArchivos;
 
 public class ProgresionTest {
 
-    private static FuenteContenidoJson fuenteDelJuego() {
-        File carpeta = new File("app/src/main/assets/contenido");
-        if (!carpeta.isDirectory()) {
-            carpeta = new File("src/main/assets/contenido"); // Gradle corre desde app/
-        }
-        return new FuenteContenidoJson(new LectorArchivos(carpeta));
-    }
-
-    private static final CatalogoCombate CATALOGO = CatalogoCombate.cargar(fuenteDelJuego(),
+    private static final CatalogoCombate CATALOGO = CatalogoCombate.cargar(PaqueteDelJuego.fuente(),
             ReglasCombate.tiposHabilidad(), ReglasCombate.estados());
-    private static final TablaProgresion TABLA = TablaProgresion.cargar(fuenteDelJuego(), CATALOGO);
+    private static final TablaProgresion TABLA = TablaProgresion.cargar(PaqueteDelJuego.fuente(), CATALOGO);
 
     private static TablaProgresion tabla(String json) {
         return TablaProgresion.desde(LectorJson.leer(json), CATALOGO);
