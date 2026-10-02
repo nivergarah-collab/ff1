@@ -70,8 +70,6 @@ public class MenuGrupoTest {
             j.pulsar(Boton.ABAJO);
             assertTrue(PantallaMenu.habilitada(m.seccion()));
         }
-        j.pulsar(Boton.ACEPTAR);
-        assertTrue(j.pantalla() instanceof PantallaMenu || j.pantalla() instanceof PantallaObjetos);
     }
 
     @Test

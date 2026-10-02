@@ -48,6 +48,8 @@ public final class PantallaMenu implements Pantalla {
             case OBJETOS:
             case MAGIA:
             case EQUIPO:
+            case ESTADO:
+            case FORMACION:
             case SALIR:
                 return true;
             default:
@@ -76,6 +78,10 @@ public final class PantallaMenu implements Pantalla {
                 return new PantallaMagia(juego, partida);
             case EQUIPO:
                 return new PantallaEquipo(juego, partida);
+            case ESTADO:
+                return new PantallaEstado(juego, partida);
+            case FORMACION:
+                return new PantallaFormacion(juego, partida);
             default:
                 return null;
         }

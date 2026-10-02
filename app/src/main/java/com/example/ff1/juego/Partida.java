@@ -75,6 +75,7 @@ public final class Partida {
     private final TablaBotin botin;
     private final Acciones acciones;
     private final List<Heroe> grupo;
+    private final List<Heroe> orden;
     private final Inventario inventario;
     private final Explorador explorador;
     private final Encuentros encuentros;
@@ -89,7 +90,8 @@ public final class Partida {
         this.objetos = objetos;
         this.botin = botin;
         this.acciones = acciones;
-        this.grupo = grupo;
+        this.orden = grupo;
+        this.grupo = Collections.unmodifiableList(grupo);
         this.inventario = inventario;
         this.explorador = explorador;
         this.encuentros = encuentros;
@@ -136,7 +138,7 @@ public final class Partida {
         }
         int oro = Documentos.rangoO(inicio, "oro", 0, 999_999, 0);
         Acciones acciones = new Acciones(config, azar, tipos, estados);
-        return new Partida(config, azar, catalogo, objetos, botin, acciones, Collections.unmodifiableList(grupo),
+        return new Partida(config, azar, catalogo, objetos, botin, acciones, grupo,
                 inventario, new Explorador(mapa), new Encuentros(config, tabla, azar), oro);
     }
 
@@ -150,6 +152,11 @@ public final class Partida {
 
     public List<Heroe> grupo() {
         return grupo;
+    }
+
+    /** Cambia de sitio a dos héroes del grupo (formación); el combate usa este orden. */
+    public void intercambiarHeroes(int a, int b) {
+        Collections.swap(orden, a, b);
     }
 
     public Inventario inventario() {
