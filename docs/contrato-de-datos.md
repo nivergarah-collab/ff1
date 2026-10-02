@@ -113,7 +113,7 @@ Acciones (`combate.Acciones`; fuerzas en décimas, 10 = ×1):
 |---|---|---|
 | `id` | texto | Obligatorio, minúsculas con guiones, único. |
 | `nombre` | texto | Obligatorio. Texto visible. |
-| `tipo` | texto | Obligatorio. Clave registrada en el registro de tipos de habilidad (`ReglasCombate`): `danio` (daño mágico), `curacion` (vida al objetivo) y `alteracion` (aplica su estado y, si tiene poder, hace daño mágico). |
+| `tipo` | texto | Obligatorio. Clave registrada en el registro de tipos de habilidad (`ReglasCombate`): `danio` (daño mágico), `curacion` (vida al objetivo), `revivir` (levanta a un caído con `poder` por ciento de su vida máxima; solo en objetos, fuera de combate) y `alteracion` (aplica su estado y, si tiene poder, hace daño mágico). |
 | `coste` | entero | 0–999, defecto 0. Magia que gasta. |
 | `poder` | entero | 0–9999, defecto 0. |
 | `objetivo` | texto | `enemigo` (defecto), `aliado` o `si-mismo`. |

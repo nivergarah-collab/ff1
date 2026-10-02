@@ -113,6 +113,15 @@ public final class Combatiente {
         return hecho;
     }
 
+    /** Levanta a un combatiente caído con {@code cantidad} de vida (entre 1 y el máximo); devuelve la vida dada. */
+    public int revivir(int cantidad) {
+        if (vivo()) {
+            return 0;
+        }
+        vida = Math.max(1, Math.min(cantidad, vidaMaxima()));
+        return vida;
+    }
+
     /** Gasta magia si alcanza; devuelve {@code false} sin cambiar nada si no alcanza. */
     public boolean gastarMagia(int cantidad) {
         if (cantidad < 0) {

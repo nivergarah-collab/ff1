@@ -74,6 +74,7 @@ public final class Partida {
     private final CatalogoObjetos objetos;
     private final TablaBotin botin;
     private final Acciones acciones;
+    private final Registro<TipoHabilidad> tipos;
     private final List<Heroe> grupo;
     private final List<Heroe> orden;
     private final Inventario inventario;
@@ -82,7 +83,7 @@ public final class Partida {
     private int oro;
 
     private Partida(ProveedorConfiguracion config, Azar azar, CatalogoCombate catalogo, CatalogoObjetos objetos,
-            TablaBotin botin, Acciones acciones, List<Heroe> grupo, Inventario inventario, Explorador explorador,
+            TablaBotin botin, Acciones acciones, Registro<TipoHabilidad> tipos, List<Heroe> grupo, Inventario inventario, Explorador explorador,
             Encuentros encuentros, int oro) {
         this.config = config;
         this.azar = azar;
@@ -90,6 +91,7 @@ public final class Partida {
         this.objetos = objetos;
         this.botin = botin;
         this.acciones = acciones;
+        this.tipos = tipos;
         this.orden = grupo;
         this.grupo = Collections.unmodifiableList(grupo);
         this.inventario = inventario;
@@ -138,7 +140,7 @@ public final class Partida {
         }
         int oro = Documentos.rangoO(inicio, "oro", 0, 999_999, 0);
         Acciones acciones = new Acciones(config, azar, tipos, estados);
-        return new Partida(config, azar, catalogo, objetos, botin, acciones, grupo,
+        return new Partida(config, azar, catalogo, objetos, botin, acciones, tipos, grupo,
                 inventario, new Explorador(mapa), new Encuentros(config, tabla, azar), oro);
     }
 
@@ -177,6 +179,11 @@ public final class Partida {
 
     public int oro() {
         return oro;
+    }
+
+    /** Si el objeto se puede usar en combate (revivir, por ejemplo, solo vale fuera de él). */
+    public boolean sirveEnCombate(DefinicionObjeto o) {
+        return o.efecto != null && !tipos.obtener(o.efecto.tipo).actuaSobreCaidos();
     }
 
     /** Resultado de usar un objeto fuera de combate. */

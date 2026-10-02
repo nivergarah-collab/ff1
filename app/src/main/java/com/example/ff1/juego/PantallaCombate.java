@@ -292,7 +292,7 @@ public final class PantallaCombate implements Pantalla {
         List<String> r = new ArrayList<>();
         for (Map.Entry<String, Integer> e : partida.inventario().contenido().entrySet()) {
             DefinicionObjeto d = partida.objetos().objeto(e.getKey());
-            if (e.getValue() > 0 && d.categoria == DefinicionObjeto.Categoria.CONSUMIBLE && d.efecto != null) {
+            if (e.getValue() > 0 && d.categoria == DefinicionObjeto.Categoria.CONSUMIBLE && partida.sirveEnCombate(d)) {
                 r.add(e.getKey());
             }
         }

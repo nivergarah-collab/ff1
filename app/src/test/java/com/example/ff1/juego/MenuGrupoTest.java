@@ -267,4 +267,43 @@ public class MenuGrupoTest {
         assertTrue(j.pantalla() instanceof PantallaMenu);
         assertTrue(mirta.magia() < mirta.estadisticas().magia);
     }
+
+    // --- Revivir ------------------------------------------------------------------------------
+
+    @Test
+    public void unaPlumaLevantaAUnHeroeCaidoConUnTercioDeVida() {
+        Juego j = JuegoTest.enExploracion(1);
+        Heroe bruna = j.partida().grupo().get(0);
+        herir(bruna, 99999);
+        assertEquals(0, bruna.vida());
+        assertEquals(Partida.Uso.USADO, j.partida().usarObjeto("pluma-de-alba", bruna));
+        assertEquals(bruna.estadisticas().vida * 30 / 100, bruna.vida());
+        assertEquals(0, j.partida().inventario().cantidad("pluma-de-alba"));
+    }
+
+    @Test
+    public void unaPlumaSobreUnHeroeEnPieNoSeGasta() {
+        Juego j = JuegoTest.enExploracion(1);
+        Heroe bruna = j.partida().grupo().get(0);
+        assertEquals(Partida.Uso.SIN_EFECTO, j.partida().usarObjeto("pluma-de-alba", bruna));
+        assertEquals(1, j.partida().inventario().cantidad("pluma-de-alba"));
+    }
+
+    @Test
+    public void laPlumaNoApareceEnElMenuDeObjetosDelCombate() {
+        Juego j = JuegoTest.enExploracion(1);
+        assertFalse(j.partida().sirveEnCombate(j.partida().objetos().objeto("pluma-de-alba")));
+        assertTrue(j.partida().sirveEnCombate(j.partida().objetos().objeto("tonico-de-raiz")));
+        PantallaCombate c = JuegoTest.hastaUnEncuentro(j);
+        for (int i = 0; i < 20_000 && c.fase() != PantallaCombate.Fase.MENU; i++) {
+            j.avanzar(Juego.MS_POR_PASO);
+        }
+        j.pulsar(Boton.ABAJO);
+        j.pulsar(Boton.ABAJO); // Objeto
+        j.pulsar(Boton.ACEPTAR);
+        Escena e = new Escena();
+        j.dibujar(e);
+        assertTrue(e.contieneTexto("Tónico de raíz  x3"));
+        assertFalse(e.contieneTexto("Pluma de alba  x1"));
+    }
 }

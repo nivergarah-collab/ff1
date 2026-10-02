@@ -133,6 +133,30 @@ public class AccionesTest {
     }
 
     @Test
+    public void revivirLevantaAUnCaidoConUnPorcientoDeSuVidaMaxima() {
+        Combatiente h = heroe(5, 0, 10, 0); // 30 de vida
+        h.recibirDanio(99);
+        ResultadoAccion r = exactas().usarObjeto(h, habilidad("revivir", 0, 50, Habilidad.Objetivo.ALIADO, null, 0), h);
+        assertTrue(r.exito());
+        assertEquals(20, r.cantidad);
+        assertEquals(20, h.vida());
+    }
+
+    @Test
+    public void revivirSobreUnoEnPieNoHaceNadaYLosDemasTiposNoActuanSobreCaidos() {
+        Combatiente h = heroe(5, 0, 10, 0);
+        ResultadoAccion r = exactas().usarObjeto(h, habilidad("revivir", 0, 50, Habilidad.Objetivo.ALIADO, null, 0), h);
+        assertEquals(0, r.cantidad);
+        assertEquals(40, h.vida());
+        h.recibirDanio(99);
+        ResultadoAccion c = exactas().usarObjeto(h, habilidad("curacion", 0, 20, Habilidad.Objetivo.ALIADO, null, 0), h);
+        assertEquals(ResultadoAccion.Fallo.OBJETIVO_CAIDO, c.fallo);
+        assertEquals(0, h.vida());
+        assertTrue(ReglasCombate.tiposHabilidad().obtener("revivir").actuaSobreCaidos());
+        assertFalse(ReglasCombate.tiposHabilidad().obtener("curacion").actuaSobreCaidos());
+    }
+
+    @Test
     public void elVenenoDuelePorCadaTurnoHastaAgotarse() {
         Acciones a = exactas();
         Combatiente e = new Combatiente(Datos.definicion("e", Bando.ENEMIGO, 50, 0, 1, 0, 0, 10));
