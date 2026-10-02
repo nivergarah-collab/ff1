@@ -171,4 +171,62 @@ public class CombateTest {
         assertEquals(18, c.recompensa().experiencia);
         assertEquals(15, c.recompensa().oro);
     }
+
+    /** Juega por pasos de animación; devuelve los pasos y anota quién actuó en {@code registro}. */
+    private static int jugarPorPasos(Combate c, List<String> registro) {
+        int pasos = 0;
+        while (!c.terminado() && pasos < 100000) {
+            c.avanzarPaso();
+            pasos++;
+            while (c.turno() != null) {
+                ResultadoAccion r = c.turnoAutomatico();
+                registro.add(r.actor.nombre() + ">" + r.cantidad);
+            }
+        }
+        return pasos;
+    }
+
+    private Combate combateDelJuego(long semilla) {
+        CatalogoCombate cat = Datos.catalogoDelJuego();
+        List<Combatiente> heroes = Arrays.asList(new Combatiente(cat.combatiente("guardian")),
+                new Combatiente(cat.combatiente("rastreador")));
+        List<Combatiente> enemigos = Arrays.asList(new Combatiente(cat.combatiente("musgoso")),
+                new Combatiente(cat.combatiente("ala-de-hollin")));
+        return combate(new AzarSemilla(semilla), heroes, enemigos, true);
+    }
+
+    @Test
+    public void elAvanceRapidoNoCambiaElResultadoPeroUsaMenosPasos() {
+        List<String> normal = new ArrayList<>();
+        int pasosNormal = jugarPorPasos(combateDelJuego(3), normal);
+        Combate rapido = combateDelJuego(3);
+        rapido.avanceRapido().activar(true);
+        List<String> registroRapido = new ArrayList<>();
+        int pasosRapido = jugarPorPasos(rapido, registroRapido);
+        assertEquals(Combate.Estado.VICTORIA, rapido.estado());
+        assertEquals(normal, registroRapido);
+        assertTrue(pasosRapido + " < " + pasosNormal, pasosRapido * 3 < pasosNormal * 2);
+    }
+
+    @Test
+    public void cambiarLaConfiguracionCambiaElCombate() {
+        List<String> normal = new ArrayList<>();
+        jugarPorPasos(combateDelJuego(3), normal);
+        config.reemplazar(config.actual().con(ConfiguracionCombate.FUERZA_FISICA, 30));
+        List<String> fuerte = new ArrayList<>();
+        jugarPorPasos(combateDelJuego(3), fuerte);
+        assertFalse(normal.equals(fuerte));
+        assertTrue(fuerte.size() < normal.size());
+    }
+
+    @Test
+    public void unPasoSeDetieneCuandoAAlguienLeTocaActuar() {
+        Combatiente h = heroe(30, 5, 10);
+        Combate c = combate(new AzarSecuencia(0), Arrays.asList(h), Arrays.asList(enemigo(10, 5, 1, 0, 0)), true);
+        config.reemplazar(config.actual().con(ConfiguracionCombate.TICKS_POR_PASO, 60));
+        assertEquals(60, c.avanzarPaso());
+        assertEquals(40, c.avanzarPaso()); // velocidad 10: lleno a los 100 ticks
+        assertSame(h, c.turno());
+        assertEquals(0, c.avanzarPaso());
+    }
 }

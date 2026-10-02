@@ -72,6 +72,8 @@ Parámetros declarados: se listan aquí a medida que cada hito los añade.
 |---|---|---|---|---|
 | `combate.velocidadBarra` | entero | 1–100 | 10 | H1 |
 | `combate.cargaLlena` | entero | 100–100000 | 1000 | H1 |
+| `combate.avanceRapido` | entero | 1–8 | 2 | H1 |
+| `combate.ticksPorPaso` | entero | 1–100 | 1 | H1 |
 | `combate.fuerzaFisica` | entero | 1–100 | 10 | H1 |
 | `combate.fuerzaMagica` | entero | 1–100 | 10 | H1 |
 | `combate.varianza` | entero | 0–50 | 10 | H1 |
@@ -87,6 +89,7 @@ Acciones (`combate.Acciones`; fuerzas en décimas, 10 = ×1):
 - Curación: `poderHabilidad + poderActor × fuerzaMagica / 10`, sin pasar de la vida máxima.
 - Daño y curación se multiplican por `(100 + r) / 100`, con `r` al azar en `[−varianza, +varianza]`.
 - Objeto: su efecto se resuelve como una habilidad, sin coste de magia y con `poderActor` 0.
+- Paso de animación (`Combate.avanzarPaso`): avanza `ticksPorPaso` ticks (× `avanceRapido` con el interruptor encendido), tick a tick, y se detiene en cuanto a alguien le toca actuar; mientras alguien tiene el turno, el tiempo espera. El orden de turnos es el mismo con y sin avance rápido.
 - Huida: `huidaBase + 2 × (velocidad − velocidad media de los enemigos vivos)`, limitada a 5–95 %; un combate puede prohibirla (jefe).
 
 ### `habilidades` · versión 1

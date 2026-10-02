@@ -31,3 +31,7 @@ Más reciente primero.
 - **Lógica de combate:** en clases Java puras (`com.example.ff1.combate`) para poder probarla en JVM, sin depender de Android.
 - **Contenido:** nombres, personajes, arte y música originales; el proyecto se inspira en el género, no en la franquicia.
 - **Repositorio:** propio de ff1. Lo crea el usuario en GitHub, vacío y sin README.
+- **Barra de tiempo en modo espera (2026-10-02, H1):** mientras un combatiente tiene el turno, el tiempo del combate se detiene (`Combate.avanzarPaso` no avanza). Motivo: un MVP jugable en pantalla táctil sin presión de tiempo al elegir menús, y que el avance rápido no cambie el orden de los turnos. Un modo activo se podría añadir luego como opción.
+- **Acciones sin textos (2026-10-02, H1):** `Acciones` y `Combate` devuelven un `ResultadoAccion` con datos (acción, actor, objetivo, cantidad, estado, fallo) y la interfaz arma el mensaje. Motivo: separar motor y contenido; los textos irán en los datos.
+- **Objetos como efectos (2026-10-02, H1):** en combate, un objeto se resuelve con la misma estructura que una habilidad (tipo, poder, estado), sin coste de magia y sin la potencia del actor. Motivo: reutilizar el registro de tipos de habilidad; el documento `objetos` de H2 llevará ese efecto.
+

@@ -25,6 +25,8 @@ public final class Combate {
     private final List<Combatiente> heroes;
     private final List<Combatiente> enemigos;
     private final boolean huidaPermitida;
+    private final ProveedorConfiguracion config;
+    private final AvanceRapido avanceRapido;
     private Estado estado = Estado.EN_CURSO;
 
     public Combate(ProveedorConfiguracion config, Acciones acciones, Azar azar,
@@ -38,6 +40,8 @@ public final class Combate {
         this.heroes = Collections.unmodifiableList(new ArrayList<>(heroes));
         this.enemigos = Collections.unmodifiableList(new ArrayList<>(enemigos));
         this.huidaPermitida = huidaPermitida;
+        this.config = config;
+        this.avanceRapido = new AvanceRapido(config);
         for (Combatiente h : heroes) {
             barra.inscribir(h);
         }
@@ -70,6 +74,26 @@ public final class Combate {
     /** Avanza la barra; devuelve los que quedaron listos. Sin efecto si el combate terminó. */
     public List<Combatiente> avanzar(int ticks) {
         return terminado() ? Collections.<Combatiente>emptyList() : barra.avanzar(ticks);
+    }
+
+    public AvanceRapido avanceRapido() {
+        return avanceRapido;
+    }
+
+    /**
+     * Un paso de animación: avanza {@code combate.ticksPorPaso} ticks (multiplicados por el
+     * avance rápido si está encendido), tick a tick, y se detiene en cuanto a alguien le toca
+     * actuar. Así el orden de los turnos es el mismo con y sin avance rápido; mientras alguien
+     * tiene el turno el tiempo espera. Devuelve los ticks avanzados.
+     */
+    public int avanzarPaso() {
+        int maximo = avanceRapido.ticks(config.actual().entero(ConfiguracionCombate.TICKS_POR_PASO));
+        int hechos = 0;
+        while (hechos < maximo && turno() == null && !terminado()) {
+            barra.avanzar(1);
+            hechos++;
+        }
+        return hechos;
     }
 
     /** A quién le toca actuar, o {@code null}. */
