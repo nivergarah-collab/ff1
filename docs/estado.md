@@ -64,13 +64,13 @@ Limitaciones conocidas de esta versión: no hay guardado (H7), ni pueblo, posada
 
 ## Ramas y pull requests pendientes
 Orden de fusión: de la más antigua a la más nueva, con "Merge commit".
-1. `feature/h36-menu-del-grupo` (parte de `main`): H3.6 menú del grupo (pull request: ver el enlace al final de esta lista cuando se abra).
+1. `feature/h36-menu-del-grupo` (parte de `main`): H3.6 menú del grupo, pull request #14 https://github.com/nivergarah-collab/ff1/pull/14
 
 ## Preguntas pendientes
 - `gradle/libs.versions.toml` conserva la entrada `games-activity`, ya sin uso; quitarla es opcional y lo decide el usuario (`gradle/` no lo toca el agente).
 
 ## Pruebas
-Nube, 2026-10-02 (bloque 8): `scripts/probar-logica.sh` 214 de 214 pruebas pasan en `feature/h36-menu-del-grupo`. GitHub Actions: pendiente de revisar al cerrar el bloque (ver más abajo si quedó anotado).
+Nube, 2026-10-02 (bloque 8): `scripts/probar-logica.sh` 214 de 214 pruebas pasan en `feature/h36-menu-del-grupo`. GitHub Actions: en `feature/h36-menu-del-grupo`, `Pruebas` y `APK` en verde en el último commit de código.
 
 ## Notas
 - `ExampleUnitTest` y `ExampleInstrumentedTest` son de la plantilla y se reemplazarán.
