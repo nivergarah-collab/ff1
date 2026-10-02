@@ -22,7 +22,11 @@ Prioridad de cobertura: sistema de combate (daño, orden de turnos, estados, fin
 Con `-q` Gradle solo imprime los fallos. Si hay fallos, leer únicamente las etiquetas `<failure` de los XML en `app/build/test-results/testDebugUnitTest/`, no el reporte HTML ni el registro completo.
 
 ## Ciclo rápido en la nube (agentes)
-La nube no accede a Maven, Google ni Gradle. El agente prueba la lógica en Java puro con `javac` y el JUnit 4 incluido con Gradle, mediante `scripts/probar-logica.sh` (se crea en el hito H0 de `plan.md`). La compilación Android y la suite completa corren en GitHub Actions.
+La nube no accede a Maven, Google ni Gradle. El agente prueba la lógica en Java puro con `javac` (opción `--release 11`) y el JUnit 4 y Hamcrest incluidos con Gradle (`/opt/gradle*/lib` o la caché `~/.gradle`; se pueden fijar con `JUNIT_JAR` y `HAMCREST_JAR`).
+- Suite de lógica: `scripts/probar-logica.sh`
+- Solo un alcance: `scripts/probar-logica.sh combate` (clases de prueba cuyo nombre completo contiene el texto).
+
+El script compila los `.java` de `app/src/main/java` y `app/src/test/java` que no importan Android, ejecuta las clases `*Test` con `scripts/EjecutorLogica.java` e imprime una línea por clase, el detalle de cada fallo (mensaje y línea) y un resumen. Sale con código 1 si algo falla. La compilación Android y la suite completa corren en GitHub Actions.
 
 ## Integración continua
 `.github/workflows/pruebas.yml` (flujo `Pruebas`) corre la verificación de estructura y la suite unitaria en cada push a `main`, `feature/**` y `fix/**`, y en cada pull request. Los flujos los coloca el usuario: `.github/` es de solo lectura para el agente.
@@ -31,4 +35,4 @@ La nube no accede a Maven, Google ni Gradle. El agente prueba la lógica en Java
 `.github/workflows/apk.yml` (flujo `APK`) construye el APK de depuración en cada push a `main`, `feature/**` y `fix/**`, y lo guarda 14 días como archivo `ff1-debug-apk`. Se descarga desde la pestaña Actions de GitHub: abrir la ejecución `APK` de la rama y bajarlo desde "Artifacts". Es un APK de depuración, que se instala en el celular permitiendo aplicaciones de origen desconocido. Una versión firmada de lanzamiento queda fuera del MVP, porque exige guardar una clave como secreto. El flujo `APK` no está verificado: la plantilla nativa necesita CMake y el NDK.
 
 ## Último resultado
-Sin ejecutar.
+2026-10-02, nube (bloque 2): `scripts/probar-logica.sh` 40 de 40 pruebas pasan. GitHub Actions en `feature/h0-preparacion`: `Pruebas` y `APK` en verde.

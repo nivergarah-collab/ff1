@@ -1,6 +1,6 @@
 # Iniciar · ff1
 
-Sobrescribe: 06-git-y-repositorios.md (solo las confirmaciones de commit y push en ramas de trabajo; ver `01-trabajo-autonomo.md`)
+Sobrescribe: 06-git-y-repositorios.md (solo las confirmaciones de commit, push y apertura de pull requests en ramas de trabajo; ver `01-trabajo-autonomo.md`)
 
 ## Rol del agente
 Desarrollador Android del juego ff1: lógica de juego por turnos probada con pruebas automáticas y mantenimiento de la plantilla nativa (Java + C++).
