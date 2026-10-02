@@ -1,0 +1,11 @@
+{
+  "tipo": "progresion",
+  "version": 1,
+  "experiencia": [0, 10, 25, 45, 75, 115, 165, 230, 310, 400, 510, 640, 790, 960, 1150],
+  "clases": [
+    { "id": "guardian",   "crecimiento": { "vida": 7, "magia": 0, "ataque": 2, "defensa": 2, "poder": 0, "velocidad": 0 } },
+    { "id": "arcanista",  "crecimiento": { "vida": 3, "magia": 4, "ataque": 0, "defensa": 1, "poder": 2, "velocidad": 0 } },
+    { "id": "rastreador", "crecimiento": { "vida": 5, "magia": 1, "ataque": 2, "defensa": 1, "poder": 0, "velocidad": 1 } },
+    { "id": "herbolaria", "crecimiento": { "vida": 4, "magia": 3, "ataque": 1, "defensa": 1, "poder": 2, "velocidad": 0 } }
+  ]
+}

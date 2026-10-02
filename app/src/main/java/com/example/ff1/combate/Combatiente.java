@@ -29,6 +29,16 @@ public final class Combatiente {
         this.magia = definicion.magia;
     }
 
+    /** Con vida y magia actuales (un héroe herido que entra en combate). */
+    public Combatiente(DefinicionCombatiente definicion, String nombre, int vida, int magia) {
+        this(definicion, nombre);
+        if (vida < 0 || vida > definicion.vida || magia < 0 || magia > definicion.magia) {
+            throw new IllegalArgumentException("vida o magia fuera de rango: " + vida + ", " + magia);
+        }
+        this.vida = vida;
+        this.magia = magia;
+    }
+
     public DefinicionCombatiente definicion() {
         return definicion;
     }

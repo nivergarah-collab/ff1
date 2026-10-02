@@ -80,6 +80,7 @@ Parámetros declarados: se listan aquí a medida que cada hito los añade.
 | `combate.huidaBase` | entero | 0–100 | 50 | H1 |
 | `combate.venenoPorCiento` | entero | 1–50 | 8 | H1 |
 | `combate.proteccionPorCiento` | entero | 0–100 | 50 | H1 |
+| `inventario.maximoPorObjeto` | entero | 1–999 | 99 | H2 |
 
 Barra de tiempo: en cada tick, cada combatiente vivo que no espera turno suma `max(1, velocidad × velocidadBarra / 10)`; con la carga llena entra en la cola de turnos. Empates en un mismo tick: primero el que más se pasó y, a igualdad, el inscrito antes.
 
@@ -132,8 +133,66 @@ Clases de héroe y tipos de enemigo. El nombre del héroe lo elige el jugador; `
 | `habilidades` | lista de texto | Opcional. Cada `id` debe existir en `habilidades`. |
 | `experiencia`, `oro` | entero | 0–999999, defecto 0. Recompensa al vencerlo. |
 
+### `progresion` · versión 1
+Experiencia por nivel y crecimiento de cada clase de héroe (`progresion.TablaProgresion`).
+```json
+{ "tipo": "progresion", "version": 1,
+  "experiencia": [0, 10, 25, 45],
+  "clases": [
+    { "id": "guardian", "crecimiento": { "vida": 7, "ataque": 2, "defensa": 2 } }
+  ] }
+```
+| Campo | Tipo | Regla |
+|---|---|---|
+| `experiencia` | lista de enteros | Obligatoria, 1–99 valores. Experiencia acumulada para estar en cada nivel: el primero es 0 (nivel 1) y cada uno es mayor que el anterior. El nivel máximo es el largo de la lista. |
+| `clases` | lista | Obligatoria. `id` de un combatiente con `bando` `heroe`, sin repetir. |
+| `crecimiento` | objeto | `vida`, `magia`, `ataque`, `defensa`, `poder`, `velocidad`: enteros 0–999, defecto 0. Se suman por cada nivel sobre el 1. Una clase sin entrada no crece. |
+
+Reglas: al subir de nivel, la vida y la magia actuales suben lo mismo que su máximo. Al vencer, cada héroe en pie recibe la experiencia completa del combate (`progresion.Reparto`).
+
+### `objetos` · versión 1
+Consumibles, equipo y objetos clave (`inventario.CatalogoObjetos`).
+```json
+{ "tipo": "objetos", "version": 1, "ranuras": ["arma", "armadura", "accesorio"], "lista": [
+  { "id": "tonico-de-raiz", "nombre": "Tónico de raíz", "categoria": "consumible", "precio": 20,
+    "efecto": { "tipo": "curacion", "poder": 30, "objetivo": "aliado" } },
+  { "id": "hoja-de-ensayo", "nombre": "Hoja de ensayo", "categoria": "equipo", "precio": 50,
+    "ranura": "arma", "bonos": { "ataque": 4 }, "clases": ["guardian", "rastreador"] },
+  { "id": "llave-de-cantera", "nombre": "Llave de cantera", "categoria": "clave" }
+] }
+```
+| Campo | Tipo | Regla |
+|---|---|---|
+| `ranuras` | lista de texto | Opcional. Ranuras de equipo del juego, minúsculas con guiones, sin repetir. |
+| `id`, `nombre` | texto | Como en `habilidades`. |
+| `categoria` | texto | `consumible`, `equipo` o `clave`. |
+| `precio` | entero | 0–999999, defecto 0. Precio de compra (0 = fuera de tiendas). |
+| `efecto` | objeto | Obligatorio en `consumible`: `tipo` (registrado), `poder` (0–9999), `objetivo` (`aliado`, defecto, o `enemigo`) y `estado` opcional como en `habilidades`. Se resuelve como una habilidad sin coste ni potencia del actor. |
+| `ranura` | texto | Obligatorio en `equipo`; debe estar en `ranuras`. |
+| `bonos` | objeto | En `equipo`: `vida`, `magia`, `ataque`, `defensa`, `poder`, `velocidad`, enteros 0–999, defecto 0. |
+| `clases` | lista de texto | En `equipo`, opcional: clases de héroe que lo pueden equipar; vacía o ausente = todas. |
+
+Inventario: cada objeto se acumula hasta `inventario.maximoPorObjeto` unidades. Al cambiar el equipo, la vida y la magia actuales no pasan del nuevo máximo.
+
+### `botin` · versión 1
+Objetos que suelta cada enemigo al caer (`inventario.TablaBotin`).
+```json
+{ "tipo": "botin", "version": 1, "lista": [
+  { "enemigo": "lagarto-de-cantera", "objetos": [
+    { "id": "tonico-de-raiz", "probabilidad": 40, "cantidad": 2 } ] }
+] }
+```
+| Campo | Tipo | Regla |
+|---|---|---|
+| `enemigo` | texto | `id` de un combatiente con `bando` `enemigo`, sin repetir. |
+| `objetos[].id` | texto | Debe existir en `objetos`. |
+| `objetos[].probabilidad` | entero | Obligatorio, 1–100 (por ciento). Cada entrada se tira por separado. |
+| `objetos[].cantidad` | entero | 1–99, defecto 1. |
+
+Lo que no cabe en el inventario se informa como sobrante y no se guarda.
+
 ### Guardado de partida
 Pendiente (H7). Será un documento JSON con `tipo` `"partida"` y `version`, escrito con `EscritorJson` y guardado en un `Almacen`. Incluirá la semilla del azar.
 
 ### Tipos de contenido de juego
-Pendientes: `objetos` (H2), `mapa` (H3), `escena` (H4), `tienda` (H5). Cada uno se documenta aquí con su versión, sus campos y un ejemplo al implementarlo.
+Pendientes: `mapa` (H3), `escena` (H4), `tienda` (H5). Cada uno se documenta aquí con su versión, sus campos y un ejemplo al implementarlo.

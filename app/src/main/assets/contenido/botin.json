@@ -1,0 +1,11 @@
+{
+  "tipo": "botin",
+  "version": 1,
+  "lista": [
+    { "enemigo": "musgoso", "objetos": [ { "id": "tonico-de-raiz", "probabilidad": 25 } ] },
+    { "enemigo": "ala-de-hollin", "objetos": [ { "id": "frasco-de-brasas", "probabilidad": 15 } ] },
+    { "enemigo": "lagarto-de-cantera", "objetos": [
+      { "id": "tonico-de-raiz", "probabilidad": 40, "cantidad": 2 },
+      { "id": "jubon-acolchado", "probabilidad": 5 } ] }
+  ]
+}
