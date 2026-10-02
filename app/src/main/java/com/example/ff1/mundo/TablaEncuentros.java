@@ -66,10 +66,7 @@ public final class TablaEncuentros {
                     }
                     ids.add(id);
                 }
-                int peso = g.enteroO("peso", 1);
-                if (peso < 1 || peso > 100) {
-                    throw new ErrorDeDatos(g.ruta() + ".peso: " + peso + " fuera del rango [1, 100]");
-                }
+                int peso = Documentos.rangoO(g, "peso", 1, 100, 1);
                 grupos.add(new Grupo(Collections.unmodifiableList(ids), peso));
             }
             if (grupos.isEmpty()) {

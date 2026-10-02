@@ -1,11 +1,11 @@
 # Estado · ff1
 
 ## Control
-- Estado del MVP: PAUSA: cambio de modelo (pasar a Sonnet para H4 a H7)
-- Bloques ejecutados: 5 de 50
+- Estado del MVP: EN CURSO
+- Bloques ejecutados: 6 de 50
 - Bloques seguidos sin avance: 0
 
-Última actualización: 2026-10-02 (bloque 5)
+Última actualización: 2026-10-02 (bloque 6)
 
 ## Hecho
 - Proyecto movido a `Desktop\Android\ff1`.
@@ -28,25 +28,26 @@
 - Bloque 4 (H1 y H2 terminados): acciones y cálculo de daño con registros de tipos de habilidad y estados (`Acciones`, `ReglasCombate`), fin del combate y recompensas (`Combate`, `Recompensa`), avance rápido por pasos (`AvanceRapido`) y todos los parámetros del combate en la configuración (rama `feature/h1-combate`, pull request #7). En `feature/h2-progresion`: experiencia y niveles (`progresion.TablaProgresion`, `Heroe`, `Reparto`), objetos, inventario y equipo (`inventario.CatalogoObjetos`, `Inventario`, `Equipo`) y botín (`TablaBotin`), con contenido en `progresion.json`, `objetos.json` y `botin.json`.
 - Pull requests #7 (H1) y #8 (H2) fusionados en `main` por el usuario.
 - Bloque 5 (H3 terminado, rama `feature/h3-mundo` desde `main`): mapa por casillas con leyenda, colisiones e inicio validado (`mundo.Mapa`, `Direccion`, `Explorador`, primer mapa `mapas/campo.json`); encuentros aleatorios por zona con cuenta atrás de pasos tomada de la configuración (`mundo.TablaEncuentros`, `Encuentros`, `ConfiguracionMundo`, `encuentros.json`) que crean los enemigos de un `Combate`; `docs/receta-de-extension.md` escrita y `docs/contrato-de-datos.md` al día (`mapa` y `encuentros` v1). Pausa para el cambio de modelo.
+- Pull request #9 (H3) fusionado en `main`; el usuario cambió el modelo a Sonnet y pidió seguir (EN CURSO).
+- Bloque 6 (limpieza tras H1–H3, rama `chore/limpieza-h1-h3` desde `main`): helper de pruebas `PaqueteDelJuego` (sustituye 7 copias del cargador del paquete), validación de rangos común (`motor.datos.Documentos.rango`, `rangoO`, `dentro`) y lectura de efecto/estado compartida entre habilidades y objetos (`CatalogoCombate.leerHabilidad`; los objetos ahora aceptan también `objetivo` `si-mismo`). 149 pruebas.
 - Autorizado por el usuario el 2026-10-02: límite de 50 bloques (antes 24), quitar el código nativo de la plantilla (ver `skills/01-trabajo-autonomo.md`) y bloques de hasta unos 25 minutos, una sesión por hora.
 
 ## Siguiente
-1. **Usuario:** revisar y fusionar con "Merge commit" el pull request de H3 (`feature/h3-mundo`, ver abajo). Luego cambiar el modelo de la tarea programada a Sonnet y poner el estado de Control en `EN CURSO`.
-2. Bloque 6 (Sonnet): el bloque de refactorización y limpieza tras H1–H3 que quedó pendiente (ver "Deuda técnica" de `docs/plan.md`), en `chore/limpieza-h1-h3`, partiendo de `feature/h3-mundo` si aún no está fusionada o de `main`.
-3. Después: H4 (historia original en `docs/historia.md` y motor de escenas de texto). Seguir `docs/receta-de-extension.md` para añadir contenido; al hacer las escenas, reemplazar su sección 6 por un ejemplo real.
-4. Al marcar la última tarea de H7: pull request y pausa para volver a Opus (H8).
+1. **Usuario:** fusionar con "Merge commit" el pull request de limpieza (ver abajo).
+2. Bloque 7: H4, primera tarea: historia original en `docs/historia.md` (mismas etapas de un RPG clásico, sin copiar nada). Rama `feature/h4-narrativa` desde `chore/limpieza-h1-h3` (o `main` si ya está fusionada). Luego el motor de escenas de texto; al hacerlo, reemplazar la sección 6 de `docs/receta-de-extension.md` por un ejemplo real.
+3. Al marcar la última tarea de H7: pull request y pausa para volver a Opus (H8).
 
 La ruta completa está en `docs/plan.md`.
 
 ## Ramas y pull requests pendientes
 Orden de fusión: de la más antigua a la más nueva, con "Merge commit".
-1. `feature/h3-mundo` (parte de `main`): H3 terminado, pull request #9 https://github.com/nivergarah-collab/ff1/pull/9
+1. `chore/limpieza-h1-h3` (parte de `main`): limpieza tras H1–H3, pull request #10 https://github.com/nivergarah-collab/ff1/pull/10
 
 ## Preguntas pendientes
 Ninguna.
 
 ## Pruebas
-Nube, 2026-10-02 (bloque 5): `scripts/probar-logica.sh` 144 de 144 pruebas pasan en `feature/h3-mundo`. GitHub Actions en `feature/h3-mundo`: `Pruebas` #39 y `APK` #24 en verde en `89e0cde` (y `Pruebas` #40 del pull request).
+Nube, 2026-10-02 (bloque 6): `scripts/probar-logica.sh` 149 de 149 pruebas pasan en `chore/limpieza-h1-h3`. GitHub Actions: `Pruebas` en verde en el pull request #10 (la rama `chore/*` no dispara ningún flujo al hacer push, y `APK` solo corre en `main`, `feature/**` y `fix/**`, así que no se construyó el APK de esta rama; el cambio no toca Gradle ni código Android).
 
 ## Notas
 - `ExampleUnitTest` y `ExampleInstrumentedTest` son de la plantilla y se reemplazarán.

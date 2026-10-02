@@ -1,12 +1,12 @@
 package com.example.ff1.mundo;
 
+import com.example.ff1.PaqueteDelJuego;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,23 +23,13 @@ import com.example.ff1.motor.config.ProveedorConfiguracion;
 import com.example.ff1.motor.datos.ErrorDeDatos;
 import com.example.ff1.motor.datos.LectorJson;
 import com.example.ff1.motor.fuentes.AzarSecuencia;
-import com.example.ff1.motor.fuentes.FuenteContenidoJson;
-import com.example.ff1.motor.fuentes.LectorArchivos;
 
 public class EncuentrosTest {
 
-    private static FuenteContenidoJson fuente() {
-        File carpeta = new File("app/src/main/assets/contenido");
-        if (!carpeta.isDirectory()) {
-            carpeta = new File("src/main/assets/contenido"); // Gradle corre desde app/
-        }
-        return new FuenteContenidoJson(new LectorArchivos(carpeta));
-    }
-
-    private static final CatalogoCombate COMBATE = CatalogoCombate.cargar(fuente(),
+    private static final CatalogoCombate COMBATE = CatalogoCombate.cargar(PaqueteDelJuego.fuente(),
             ReglasCombate.tiposHabilidad(), ReglasCombate.estados());
-    private static final TablaEncuentros TABLA = TablaEncuentros.cargar(fuente(), COMBATE);
-    private static final Mapa CAMPO = Mapa.cargar(fuente(), "campo");
+    private static final TablaEncuentros TABLA = TablaEncuentros.cargar(PaqueteDelJuego.fuente(), COMBATE);
+    private static final Mapa CAMPO = Mapa.cargar(PaqueteDelJuego.fuente(), "campo");
 
     private static ProveedorConfiguracion config(int min, int max) {
         EsquemaConfiguracion e = ConfiguracionMundo.declarar(ConfiguracionCombate.declarar(new EsquemaConfiguracion()));

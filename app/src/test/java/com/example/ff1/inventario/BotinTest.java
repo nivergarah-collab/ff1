@@ -1,10 +1,10 @@
 package com.example.ff1.inventario;
 
+import com.example.ff1.PaqueteDelJuego;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -17,24 +17,14 @@ import com.example.ff1.combate.ReglasCombate;
 import com.example.ff1.motor.datos.ErrorDeDatos;
 import com.example.ff1.motor.datos.LectorJson;
 import com.example.ff1.motor.fuentes.AzarSecuencia;
-import com.example.ff1.motor.fuentes.FuenteContenidoJson;
-import com.example.ff1.motor.fuentes.LectorArchivos;
 
 public class BotinTest {
 
-    private static FuenteContenidoJson fuente() {
-        File carpeta = new File("app/src/main/assets/contenido");
-        if (!carpeta.isDirectory()) {
-            carpeta = new File("src/main/assets/contenido"); // Gradle corre desde app/
-        }
-        return new FuenteContenidoJson(new LectorArchivos(carpeta));
-    }
-
-    private static final CatalogoCombate COMBATE = CatalogoCombate.cargar(fuente(),
+    private static final CatalogoCombate COMBATE = CatalogoCombate.cargar(PaqueteDelJuego.fuente(),
             ReglasCombate.tiposHabilidad(), ReglasCombate.estados());
-    private static final CatalogoObjetos OBJETOS = CatalogoObjetos.cargar(fuente(), COMBATE,
+    private static final CatalogoObjetos OBJETOS = CatalogoObjetos.cargar(PaqueteDelJuego.fuente(), COMBATE,
             ReglasCombate.tiposHabilidad(), ReglasCombate.estados());
-    private static final TablaBotin BOTIN = TablaBotin.cargar(fuente(), COMBATE, OBJETOS);
+    private static final TablaBotin BOTIN = TablaBotin.cargar(PaqueteDelJuego.fuente(), COMBATE, OBJETOS);
 
     private static Combatiente caido(String id) {
         Combatiente c = new Combatiente(COMBATE.combatiente(id));

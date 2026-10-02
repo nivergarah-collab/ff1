@@ -82,8 +82,8 @@ public final class TablaProgresion {
                 throw new ErrorDeDatos(n.ruta() + ".id: \"" + id + "\" repetido");
             }
             Nodo c = n.objeto("crecimiento");
-            mapa.put(id, new Crecimiento(rango(c, "vida"), rango(c, "magia"), rango(c, "ataque"),
-                    rango(c, "defensa"), rango(c, "poder"), rango(c, "velocidad")));
+            mapa.put(id, new Crecimiento(Documentos.rangoO(c, "vida", 0, 999, 0), Documentos.rangoO(c, "magia", 0, 999, 0), Documentos.rangoO(c, "ataque", 0, 999, 0),
+                    Documentos.rangoO(c, "defensa", 0, 999, 0), Documentos.rangoO(c, "poder", 0, 999, 0), Documentos.rangoO(c, "velocidad", 0, 999, 0)));
         }
         return new TablaProgresion(xp, mapa);
     }
@@ -127,11 +127,4 @@ public final class TablaProgresion {
                 clase.habilidades, clase.experiencia, clase.oro);
     }
 
-    private static int rango(Nodo n, String clave) {
-        int v = n.enteroO(clave, 0);
-        if (v < 0 || v > 999) {
-            throw new ErrorDeDatos(n.ruta() + "." + clave + ": " + v + " fuera del rango [0, 999]");
-        }
-        return v;
-    }
 }

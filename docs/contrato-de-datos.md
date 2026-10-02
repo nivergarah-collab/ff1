@@ -172,7 +172,7 @@ Consumibles, equipo y objetos clave (`inventario.CatalogoObjetos`).
 | `id`, `nombre` | texto | Como en `habilidades`. |
 | `categoria` | texto | `consumible`, `equipo` o `clave`. |
 | `precio` | entero | 0–999999, defecto 0. Precio de compra (0 = fuera de tiendas). |
-| `efecto` | objeto | Obligatorio en `consumible`: `tipo` (registrado), `poder` (0–9999), `objetivo` (`aliado`, defecto, o `enemigo`) y `estado` opcional como en `habilidades`. Se resuelve como una habilidad sin coste ni potencia del actor. |
+| `efecto` | objeto | Obligatorio en `consumible`: `tipo` (registrado), `poder` (0–9999), `objetivo` (`aliado`, defecto, `enemigo` o `si-mismo`) y `estado` opcional como en `habilidades`. Se resuelve como una habilidad sin coste ni potencia del actor. |
 | `ranura` | texto | Obligatorio en `equipo`; debe estar en `ranuras`. |
 | `bonos` | objeto | En `equipo`: `vida`, `magia`, `ataque`, `defensa`, `poder`, `velocidad`, enteros 0–999, defecto 0. |
 | `clases` | lista de texto | En `equipo`, opcional: clases de héroe que lo pueden equipar; vacía o ausente = todas. |

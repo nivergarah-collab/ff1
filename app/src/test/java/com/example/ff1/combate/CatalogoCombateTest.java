@@ -1,11 +1,11 @@
 package com.example.ff1.combate;
 
+import com.example.ff1.PaqueteDelJuego;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,7 +15,6 @@ import com.example.ff1.motor.datos.ErrorDeDatos;
 import com.example.ff1.motor.datos.LectorJson;
 import com.example.ff1.motor.datos.Nodo;
 import com.example.ff1.motor.fuentes.FuenteContenidoJson;
-import com.example.ff1.motor.fuentes.LectorArchivos;
 import com.example.ff1.motor.fuentes.LectorMemoria;
 
 public class CatalogoCombateTest {
@@ -76,11 +75,7 @@ public class CatalogoCombateTest {
 
     @Test
     public void elPaqueteDelJuegoEsValido() {
-        File carpeta = new File("app/src/main/assets/contenido");
-        if (!carpeta.isDirectory()) {
-            carpeta = new File("src/main/assets/contenido"); // Gradle corre desde app/
-        }
-        CatalogoCombate cat = CatalogoCombate.cargar(new FuenteContenidoJson(new LectorArchivos(carpeta)),
+        CatalogoCombate cat = CatalogoCombate.cargar(PaqueteDelJuego.fuente(),
                 Datos.tiposHabilidad(), Datos.estados());
         int heroes = 0;
         for (DefinicionCombatiente d : cat.combatientes().values()) {

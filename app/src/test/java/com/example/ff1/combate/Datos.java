@@ -1,13 +1,11 @@
 package com.example.ff1.combate;
 
-import java.io.File;
+import com.example.ff1.PaqueteDelJuego;
 import java.util.Collections;
 
 import com.example.ff1.motor.config.EsquemaConfiguracion;
 import com.example.ff1.motor.config.ProveedorConfiguracion;
 import com.example.ff1.motor.config.Registro;
-import com.example.ff1.motor.fuentes.FuenteContenidoJson;
-import com.example.ff1.motor.fuentes.LectorArchivos;
 
 /** Ayudas compartidas por las pruebas de combate. */
 final class Datos {
@@ -46,11 +44,7 @@ final class Datos {
 
     /** Catálogo del paquete de contenido del juego (app/src/main/assets/contenido). */
     static CatalogoCombate catalogoDelJuego() {
-        File carpeta = new File("app/src/main/assets/contenido");
-        if (!carpeta.isDirectory()) {
-            carpeta = new File("src/main/assets/contenido"); // Gradle corre desde app/
-        }
-        return CatalogoCombate.cargar(new FuenteContenidoJson(new LectorArchivos(carpeta)),
+        return CatalogoCombate.cargar(PaqueteDelJuego.fuente(),
                 tiposHabilidad(), estados());
     }
 }

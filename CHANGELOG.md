@@ -4,6 +4,9 @@ Formato: más reciente primero, con fecha en `AAAA-MM-DD`.
 
 ## 2026-10-02
 
+### Cambiado (bloque 6)
+- Limpieza tras H1–H3: helper de pruebas `PaqueteDelJuego`; validación de rangos común en `motor.datos.Documentos`; lectura de efecto/estado compartida entre habilidades y objetos (los objetos aceptan `objetivo` `si-mismo`). 5 pruebas nuevas, sin cambios de comportamiento salvo lo anterior.
+
 ### Añadido (bloque 5)
 - Mundo (H3 terminado): mapa por casillas con leyenda, colisiones y posición inicial validada (`mundo.Mapa`, `Explorador`), primer mapa `mapas/campo.json`; encuentros aleatorios por zona (`encuentros.json`, `mundo.TablaEncuentros`, `Encuentros`) con `mundo.pasosMinimos` y `mundo.pasosMaximos` en la configuración, que crean los enemigos del combate. 15 pruebas nuevas.
 - `docs/receta-de-extension.md`: cómo añadir enemigos, objetos, habilidades, tipos de habilidad y estados, mapas y escenas, con ejemplos reales y la prueba que toca.

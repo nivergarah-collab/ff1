@@ -52,5 +52,5 @@ Lo mantiene el agente. Marcar `[x]` al terminar y anotar aquí cualquier cambio 
 Registrar aquí lo que se deja pendiente de refactorizar o limpiar.
 - Combate: los factores estructurales de las fórmulas (defensa / 2 y / 4, el 2 × de la huida y sus límites 5–95 %) son constantes en `Acciones`; pasarlos a la configuración si el balance lo pide (H8).
 - Combate: `turnoAutomatico` solo ataca; una IA de enemigos que use habilidades queda para H6 (jefe).
-- Limpieza tras H1–H3 (pendiente desde el bloque 5): helper común de pruebas para cargar el paquete de contenido (repetido en `ProgresionTest`, `InventarioTest`, `BotinTest`, `MapaTest`, `EncuentrosTest` y `combate.Datos`), validación de rangos e ids repetida en los catálogos (`CatalogoCombate`, `CatalogoObjetos`, `TablaBotin`, `TablaProgresion`, `TablaEncuentros`) y lectura de `efecto`/`estado` duplicada entre habilidades y objetos.
+- Limpieza tras H1–H3 hecha en el bloque 6 (helper `PaqueteDelJuego` para pruebas, `Documentos.rango`/`rangoO`/`dentro` para rangos y `CatalogoCombate.leerHabilidad` compartido con los objetos). Queda sin unificar la comprobación de ids repetidos (cada catálogo tiene su mensaje) y los `if` de objetivo; revisar en H8.
 - Mundo: el mapa v1 no tiene salidas entre mapas; añadirlas en H5–H6.

@@ -1,5 +1,6 @@
 package com.example.ff1.inventario;
 
+import com.example.ff1.PaqueteDelJuego;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
@@ -7,7 +8,6 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.File;
 import java.util.Arrays;
 
 import org.junit.Test;
@@ -23,26 +23,16 @@ import com.example.ff1.motor.config.ProveedorConfiguracion;
 import com.example.ff1.motor.datos.ErrorDeDatos;
 import com.example.ff1.motor.datos.LectorJson;
 import com.example.ff1.motor.fuentes.AzarSecuencia;
-import com.example.ff1.motor.fuentes.FuenteContenidoJson;
-import com.example.ff1.motor.fuentes.LectorArchivos;
 import com.example.ff1.progresion.Heroe;
 import com.example.ff1.progresion.TablaProgresion;
 
 public class InventarioTest {
 
-    private static FuenteContenidoJson fuente() {
-        File carpeta = new File("app/src/main/assets/contenido");
-        if (!carpeta.isDirectory()) {
-            carpeta = new File("src/main/assets/contenido"); // Gradle corre desde app/
-        }
-        return new FuenteContenidoJson(new LectorArchivos(carpeta));
-    }
-
-    private static final CatalogoCombate COMBATE = CatalogoCombate.cargar(fuente(),
+    private static final CatalogoCombate COMBATE = CatalogoCombate.cargar(PaqueteDelJuego.fuente(),
             ReglasCombate.tiposHabilidad(), ReglasCombate.estados());
-    private static final CatalogoObjetos OBJETOS = CatalogoObjetos.cargar(fuente(), COMBATE,
+    private static final CatalogoObjetos OBJETOS = CatalogoObjetos.cargar(PaqueteDelJuego.fuente(), COMBATE,
             ReglasCombate.tiposHabilidad(), ReglasCombate.estados());
-    private static final TablaProgresion TABLA = TablaProgresion.cargar(fuente(), COMBATE);
+    private static final TablaProgresion TABLA = TablaProgresion.cargar(PaqueteDelJuego.fuente(), COMBATE);
 
     private static CatalogoObjetos catalogo(String lista) {
         return CatalogoObjetos.desde(LectorJson.leer("{\"tipo\":\"objetos\",\"version\":1,"
