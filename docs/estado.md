@@ -1,5 +1,10 @@
 # Estado · ff1
 
+## Control
+- Estado del MVP: EN CURSO
+- Bloques ejecutados: 0 de 24
+- Bloques seguidos sin avance: 0
+
 Última actualización: 2026-10-01
 
 ## Hecho
@@ -11,12 +16,12 @@
 - Commit inicial subido a `main` (`5097248`, 66 archivos). `local.properties` no se versionó.
 - Misión del MVP, plan por hitos y skill de trabajo autónomo en `main` (pull request #1).
 - GitHub Actions en verde en las ejecuciones #1 y #3.
-- Copia de las skills maestras en `skills/maestras/` (rama `feature/skills-maestras`, pendiente de fusionar).
+- Copia de las skills maestras en `skills/maestras/`, fusionada en `main` (pull request #2).
+- Tarea programada creada: una sesión cada 3 horas, con notificación al celular.
 
 ## Siguiente
-1. **Usuario:** fusionar en GitHub la rama `feature/skills-maestras` y hacer `git pull` en `Desktop\Android\ff1`.
-2. Crear la tarea programada de sesiones de trabajo (cada 3 horas, con notificación al celular).
-3. Primer bloque del agente: hito H0 de `docs/plan.md`.
+1. **Usuario:** fusionar en GitHub la rama `feature/definicion-de-hecho` antes de la primera sesión programada.
+2. Primer bloque del agente: hito H0 de `docs/plan.md`.
 
 La ruta completa está en `docs/plan.md`.
 

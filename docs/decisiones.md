@@ -3,6 +3,7 @@
 Más reciente primero.
 
 ## 2026-10-01
+- **Definición de hecho y límites:** el MVP queda "listo para revisión" al cumplir los siete criterios de `mision-mvp.md`, incluida una prueba de recorrido completo. El agente se detiene también a los 24 bloques, tras 3 bloques sin avance o con 2 bloques seguidos de GitHub Actions en rojo. El control vive en la sección `## Control` de `estado.md`.
 - **Modo de ejecución:** sesiones programadas por bloques. Cada una arranca desde cero, retoma desde `docs/estado.md`, trabaja un bloque, hace commit y deja el estado escrito. El agente trabaja en un clon del repositorio en la nube.
 - **Historia:** mismas etapas que un RPG clásico, con trama, personajes y nombres originales. Las guías se estudian solo para ritmo y estructura; las cinemáticas son escenas de texto.
 - **Autorización previa al agente:** commit y push en ramas `feature/*` y `fix/*` sin preguntar. Siguen pidiendo confirmación el merge a `main`, los borrados, el `push --force` y los cambios de Gradle, CMake o CI. Sobrescribe de forma parcial `06-git-y-repositorios.md`.

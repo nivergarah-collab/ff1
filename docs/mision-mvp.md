@@ -25,11 +25,25 @@ Videos, música o arte comerciales, multijugador, tiendas dentro de la app, más
 - Arte y sonido: marcadores de posición simples, o recursos propios o libres de derechos. No se descargan archivos de terceros sin confirmación.
 
 ## Definición de terminado
-- Todo lo del apartado "Qué incluye" está implementado.
-- Cada funcionalidad tiene pruebas, y la suite completa pasa en GitHub Actions.
-- El juego se puede completar de inicio a fin en un emulador.
-- No queda código muerto ni duplicado evidente, y la documentación está al día.
-- `docs/estado.md` resume el resultado final.
+El MVP está **listo para revisión** cuando se cumplen todas estas condiciones:
+1. Los 11 puntos de "Qué incluye el MVP" están implementados.
+2. Todas las tareas de los hitos H0 a H8 de `plan.md` están marcadas, salvo el recorrido en emulador (lo verifica el usuario) y la "Deuda técnica" aceptada.
+3. Existe una prueba de recorrido completo que simula una partida de principio a fin (título, exploración, encuentros, combate, jefe, escena de cierre, guardado y carga) y pasa.
+4. La suite de lógica pasa y GitHub Actions está en verde en la última rama.
+5. `docs/historia.md` y las escenas de texto están completos y son originales.
+6. La pasada final de refactorización y limpieza está hecha (sin código muerto ni duplicado evidente) y el README final está escrito.
+7. `docs/estado.md` resume el resultado y lista lo que el usuario debe revisar.
+
+"Listo para revisión" no significa "aceptado": la aceptación la da el usuario tras probar el juego en un emulador.
+
+## Límites del trabajo autónomo
+El agente se detiene, y lo declara en `docs/estado.md`, cuando ocurre lo primero de esto:
+- El MVP queda listo para revisión (ver arriba).
+- Se ejecutaron **24 bloques** (unos tres días a ocho por día), aunque falte trabajo.
+- Pasaron **3 bloques seguidos sin marcar ninguna tarea** del plan.
+- GitHub Actions queda en rojo en **2 bloques seguidos** y el agente no logra corregirlo.
+
+No añade funcionalidades fuera de esta misión. El procedimiento exacto está en `skills/01-trabajo-autonomo.md`.
 
 ## Restricciones
 - Plantilla nativa (Java + C++), `minSdk` 30. Sin Kotlin ni Compose.
