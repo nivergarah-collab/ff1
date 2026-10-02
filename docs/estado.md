@@ -5,7 +5,7 @@
 - Bloques ejecutados: 8 de 50
 - Bloques seguidos sin avance: 0
 
-Última actualización: 2026-10-02 (bloque 8, Sonnet: H3.6 terminado)
+Última actualización: 2026-10-02 (bloque 8, Sonnet: H3.6 y H4 terminados)
 
 ## Hecho
 - Proyecto movido a `Desktop\Android\ff1`.
@@ -34,11 +34,12 @@
 - Bloque 7 (Opus, H3.5 "Primera versión jugable" terminado): escena de dibujo en Java puro y traductor a `Canvas`; controles táctiles, entrada y bucle de paso fijo; máquina de pantallas (título, exploración, combate, error); combate con menú, barras de vida y tiempo, avance rápido visible y recompensas; `MainActivity` nueva como actividad de lanzamiento; `inicio.json` y `configuracion.json`; código nativo quitado en `chore/quitar-codigo-nativo`. 175 pruebas. Pull requests #11 y #12.
 - Pull requests #11, #12 (H3.5 y código nativo) y #13 (plan H3.6) fusionados en `main` por el usuario; reanudado con Sonnet (EN CURSO).
 - Bloque 8 (Sonnet, H3.6 "Menú del grupo" terminado, rama `feature/h36-menu-del-grupo` desde `main`): pila de pantallas en `Juego`; menú del grupo abierto con Cancelar en el mapa; Objetos y Magia de curación fuera de combate; revivir con la Pluma de alba (solo fuera de combate); Equipo con comparación de estadísticas; ficha de Estado; Formación que respeta el combate; Ajustes en caliente (`combate.ticksPorPaso`, `juego.msMensaje`, `juego.rapidoAlEmpezar`); Guardar apagado hasta H7; receta (sección 8b) y contrato al día. 214 pruebas.
+- Bloque 8 (H4 "Narrativa" terminado, rama `feature/h4-narrativa` desde `feature/h36-menu-del-grupo`): `docs/historia.md` (historia original: Pozaluz, la Cantera Hundida y el Soterrado) y escenas de texto (documento `escena` v1, `guion.Guion`, `PantallaEscena`, marcadores `{heroe:<clase>}`); la apertura se muestra al empezar una partida nueva (`introduccion` en `inicio.json`). 220 pruebas.
 - Autorizado por el usuario el 2026-10-02: límite de 50 bloques (antes 24), quitar el código nativo de la plantilla (ver `skills/01-trabajo-autonomo.md`) y bloques de hasta unos 25 minutos, una sesión por hora.
 
 ## Siguiente
-1. **Sonnet, bloque 9:** hito H4 "Narrativa" (ver `docs/plan.md`): `docs/historia.md` (original, mismas etapas de un RPG clásico) y el motor de escenas de texto como `Pantalla` nueva (receta 6 y 8 de `docs/receta-de-extension.md`). Rama `feature/h4-narrativa` desde `feature/h36-menu-del-grupo` (pendiente de fusión).
-2. Después: H5, H6 y H7. Cada dos hitos terminados, un bloque de limpieza (H3.6 y H4 cuentan juntos: el siguiente bloque de limpieza va tras H4).
+1. **Sonnet, bloque 9: limpieza** (H3.6 y H4 son dos hitos terminados): rama `chore/limpieza-h36-h4` desde `feature/h4-narrativa`. Revisar código muerto, duplicación entre las pantallas del menú (cursor con vuelta, listas con `>`), nombres, pruebas redundantes y documentación; lo que no alcance, a "Deuda técnica" del plan.
+2. Después: H5 (tienda, posada y personajes con diálogo; usa `PantallaEscena` para los diálogos), H6 y H7. Siguiente limpieza tras H6.
 3. Reglas para Sonnet: no cambiar de forma incompatible las interfaces del motor, `Pantalla`, `Escena` ni el contrato de datos (si hace falta, anotarlo en "Preguntas pendientes"); con 2 bloques sin avance o `Pruebas` en rojo 2 bloques seguidos, poner `PAUSA: volver a Opus (motivo)`; al marcar la última tarea de H7, abrir el pull request y poner `PAUSA: cambio de modelo (volver a Opus para H8)`.
 
 La ruta completa está en `docs/plan.md`.
@@ -48,6 +49,7 @@ La ruta completa está en `docs/plan.md`.
 2. **Instalarlo:** pasar el .apk al celular (Android 11 o superior), abrirlo y permitir "instalar apps de origen desconocido" para la app con que se abrió. Si había una versión anterior de ff1 instalada con otra firma, desinstalarla primero.
 3. **Qué probar** (unos 8 minutos, en vertical):
    - Título "Crónica de la Cantera": "Continuar" aparece apagado; "Aceptar" en "Nueva partida".
+   - **Apertura:** una escena de texto de 7 líneas (Aceptar avanza; los personajes usan los nombres del grupo) y después el mapa.
    - Mapa: la cruceta mueve al grupo (cuadro amarillo); mantenerla pulsada lo hace caminar. Los riscos, la laguna y la arboleda no se pueden pisar. Por el sendero no hay encuentros; por la pradera y el matorral salta uno cada 15–30 pasos.
    - **Menú del grupo:** en el mapa, "Cancelar" abre el menú; "Cancelar" otra vez vuelve al mismo sitio. "Guardar" está apagado (llega en H7).
    - **Objetos:** elegir un Tónico de raíz y un héroe herido (tras algún combate): cura y gasta una unidad; con la vida llena avisa y no gasta. La Pluma de alba levanta a un héroe caído con un tercio de vida.
@@ -65,12 +67,13 @@ Limitaciones conocidas de esta versión: no hay guardado (H7), ni pueblo, posada
 ## Ramas y pull requests pendientes
 Orden de fusión: de la más antigua a la más nueva, con "Merge commit".
 1. `feature/h36-menu-del-grupo` (parte de `main`): H3.6 menú del grupo, pull request #14 https://github.com/nivergarah-collab/ff1/pull/14
+2. `feature/h4-narrativa` (parte de `feature/h36-menu-del-grupo`): H4 historia y escenas de texto, pull request: ver el enlace de la rama al final de esta línea https://github.com/nivergarah-collab/ff1/pull/new/feature/h4-narrativa
 
 ## Preguntas pendientes
 - `gradle/libs.versions.toml` conserva la entrada `games-activity`, ya sin uso; quitarla es opcional y lo decide el usuario (`gradle/` no lo toca el agente).
 
 ## Pruebas
-Nube, 2026-10-02 (bloque 8): `scripts/probar-logica.sh` 214 de 214 pruebas pasan en `feature/h36-menu-del-grupo`. GitHub Actions: en `feature/h36-menu-del-grupo`, `Pruebas` y `APK` en verde en el último commit de código.
+Nube, 2026-10-02 (bloque 8): `scripts/probar-logica.sh` 220 de 220 pruebas pasan en `feature/h4-narrativa`. GitHub Actions: `feature/h36-menu-del-grupo` con `Pruebas` y `APK` en verde; `feature/h4-narrativa` se revisa al cerrar el bloque.
 
 ## Notas
 - `ExampleUnitTest` y `ExampleInstrumentedTest` son de la plantilla y se reemplazarán.
