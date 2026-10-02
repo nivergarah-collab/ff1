@@ -14,7 +14,7 @@ Lo mantiene el agente. Marcar `[x]` al terminar y anotar aquí cualquier cambio 
 - [x] Modelo: personaje, enemigo, habilidad, estados.
 - [x] Barra de tiempo por ticks simulados.
 - [x] Acciones: atacar, magia, objeto, huir. Cálculo de daño.
-- [ ] Fin del combate y recompensas.
+- [x] Fin del combate y recompensas.
 - [ ] Interruptor de avance rápido como multiplicador de ticks.
 - [ ] Los parámetros del combate (velocidad de la barra, daño, avance rápido) vienen de la configuración, no de constantes en el código.
 - **Salida:** un combate completo se simula en pruebas, con y sin avance rápido, y cambiando la configuración cambia el resultado.
