@@ -4,6 +4,8 @@
   const L = window.Logica;
   const A = window.Almacen;
   const ESQUEMA = window.ESQUEMA_CONFIGURACION;
+  const T = window.Tablas;
+  const ET = window.EditorTablas;
   const $ = (id) => document.getElementById(id);
 
   const TIPOS = {
@@ -19,6 +21,13 @@
     actual: null,
     config: null, // {original, textoOriginal, entradas: {nombre: texto}, errores: {nombre: msg}, problemas, sucio}
     informe: null,
+    tablas: {}, // ruta -> {doc, original (texto normalizado), invalido, sucio}
+  };
+
+  // Documentos de tablas y las tablas que contiene cada uno.
+  const TABLAS_DE = {
+    'combatientes.json': ['combatientes'], 'habilidades.json': ['habilidades'], 'objetos.json': ['objetos'],
+    'botin.json': ['botin'], 'encuentros.json': ['encuentros'], 'servicios.json': ['tiendas', 'posadas', 'vecinos', 'jefes'],
   };
 
   // ---- Utilidades de DOM ----
@@ -81,15 +90,19 @@
 
   function actualizarBarra() {
     const c = estado.config;
-    $('guardar').disabled = !(c && c.sucio && !hayErrores());
+    const tabla = estado.tablas[estado.actual];
+    $('guardar').disabled = tabla ? !tabla.sucio : !(c && c.sucio && !hayErrores());
     $('revisar').disabled = !estado.almacen;
-    const sucio = !!(c && c.sucio);
+    const sucio = algunSucio();
     $('carpeta').replaceChildren(estado.almacen ? el('strong', { texto: estado.carpeta }) : 'Ninguna carpeta abierta');
     document.title = (sucio ? '● ' : '') + 'Editor de parámetros · ff1';
-    const marca = $('documentos').querySelector('[data-ruta="configuracion.json"]');
-    if (marca) marca.classList.toggle('sucio', sucio);
+    for (const b of $('documentos').querySelectorAll('[data-ruta]')) {
+      const ruta = b.getAttribute('data-ruta');
+      const sucioDoc = ruta === 'configuracion.json' ? !!(c && c.sucio) : !!(estado.tablas[ruta] && estado.tablas[ruta].sucio);
+      b.classList.toggle('sucio', sucioDoc);
+    }
     const pendiente = document.querySelector('.pendiente');
-    if (pendiente) pendiente.hidden = !sucio;
+    if (pendiente) pendiente.hidden = !(tabla ? tabla.sucio : (c && c.sucio));
   }
 
   function dibujarConfiguracion() {
@@ -158,6 +171,89 @@
     }
   }
 
+  // ---- Tablas de contenido (H11) ----
+
+  async function cargarTablas() {
+    estado.tablas = {};
+    for (const ruta of Object.keys(TABLAS_DE)) {
+      if (!estado.documentos.some((d) => d.ruta === ruta)) continue;
+      const r = L.analizar(await estado.almacen.leer(ruta));
+      if (!r.ok) { estado.tablas[ruta] = { invalido: r.error, sucio: false }; continue; }
+      estado.tablas[ruta] = { doc: r.valor, original: L.serializar(r.valor), sucio: false };
+    }
+  }
+
+  function docDeTabla(nombre) {
+    const ruta = T.TABLAS[nombre].archivo;
+    const t = estado.tablas[ruta];
+    return t && t.doc ? t.doc : undefined;
+  }
+
+  function referenciasVigentes() {
+    const docs = { combatientes: docDeTabla('combatientes'), habilidades: docDeTabla('habilidades'), objetos: docDeTabla('objetos') };
+    const sinExt = (carpeta) => estado.documentos.filter((d) => d.ruta.startsWith(carpeta + '/')).map((d) => d.ruta.slice(carpeta.length + 1).replace(/\.json$/, ''));
+    return T.referencias(docs, sinExt('escenas'), sinExt('mapas'));
+  }
+
+  function todosLosDocs() {
+    const r = {};
+    for (const n of T.ORDEN) r[n] = docDeTabla(n);
+    return r;
+  }
+
+  function actualizarSucioTabla(ruta) {
+    const t = estado.tablas[ruta];
+    t.sucio = L.serializar(t.doc) !== t.original;
+  }
+
+  function dibujarTablas(doc) {
+    const t = estado.tablas[doc.ruta];
+    const cont = $('editor');
+    cont.hidden = false;
+    $('bienvenida').hidden = true;
+    cont.replaceChildren();
+    if (t.invalido) {
+      cont.append(el('h2', { texto: doc.ruta }), el('p', { clase: 'aviso error', texto: t.invalido }),
+        el('p', { texto: 'Corrige el archivo a mano o restáuralo desde su copia .bak; luego vuelve a abrir la carpeta.' }));
+      return;
+    }
+    const nombres = TABLAS_DE[doc.ruta];
+    cont.append(el('div', { clase: 'encabezado' },
+      el('h2', { texto: doc.ruta }),
+      el('span', { clase: 'pendiente', texto: 'Cambios sin guardar', hidden: '' })));
+    const zona = el('div', { id: 'zonaTablas' });
+    cont.append(zona);
+    ET.dibujar(zona, {
+      archivo: doc.ruta, nombres, doc: t.doc, refs: referenciasVigentes, todos: todosLosDocs,
+      onCambio: () => { actualizarSucioTabla(doc.ruta); actualizarBarra(); },
+    });
+    actualizarBarra();
+  }
+
+  function algunSucio() {
+    return !!(estado.config && estado.config.sucio) || Object.values(estado.tablas).some((t) => t.sucio);
+  }
+
+  async function guardarTabla(ruta) {
+    const t = estado.tablas[ruta];
+    const errores = ET.erroresDe(TABLAS_DE[ruta], t.doc, referenciasVigentes());
+    if (errores.length) {
+      const e = errores[0];
+      avisar('No se puede guardar: ' + errores.length + ' problema(s). Primero: ' + T.TABLAS[e.tabla].titulo + (e.fila >= 0 ? ' #' + (e.fila + 1) : '') + ', ' + (e.campo || 'documento') + ': ' + e.mensaje, 'error');
+      return;
+    }
+    try {
+      const texto = L.serializar(t.doc);
+      const r = await L.guardarConCopia(estado.almacen, ruta, texto);
+      t.original = texto;
+      t.sucio = false;
+      avisar('Guardado ' + ruta + (r.copia ? ' (la versión anterior quedó en ' + r.copia + ')' : '') + '. Revísalo con el motor para confirmar que el juego lo acepta.', 'ok');
+      await seleccionar(ruta);
+    } catch (e) {
+      avisar('No se pudo guardar: ' + e.message, 'error');
+    }
+  }
+
   // ---- Documentos ----
 
   function dibujarLista() {
@@ -180,6 +276,10 @@
       if (!estado.config) estado.config = cargarConfiguracion(await estado.almacen.leer(ruta));
       if (!estado.config.invalido) revalidar();
       dibujarConfiguracion();
+      return;
+    }
+    if (TABLAS_DE[doc.ruta] && estado.tablas[doc.ruta]) {
+      dibujarTablas(doc);
       return;
     }
     await mostrarSoloLectura(doc);
@@ -208,7 +308,7 @@
       avisar('No se pudo abrir la carpeta: ' + e.message, 'error');
       return;
     }
-    if (estado.config && estado.config.sucio && !window.confirm('Hay cambios sin guardar. ¿Descartarlos y abrir otra carpeta?')) return;
+    if (algunSucio() && !window.confirm('Hay cambios sin guardar. ¿Descartarlos y abrir otra carpeta?')) return;
     try {
       const almacen = A.crearAlmacenCarpeta(handle);
       const rutas = await almacen.listar();
@@ -217,7 +317,8 @@
         avisar('En "' + handle.name + '" no hay configuracion.json: no parece una carpeta de contenido.', 'error');
         return;
       }
-      Object.assign(estado, { almacen, carpeta: handle.name, documentos, config: null, informe: null, actual: null });
+      Object.assign(estado, { almacen, carpeta: handle.name, documentos, config: null, informe: null, actual: null, tablas: {} });
+      await cargarTablas();
       avisar('');
       await seleccionar('configuracion.json');
     } catch (e) {
@@ -226,6 +327,7 @@
   }
 
   async function guardar() {
+    if (estado.tablas[estado.actual]) { await guardarTabla(estado.actual); return; }
     const c = estado.config;
     const { nuevo } = revalidar();
     if (hayErrores()) { avisar('Corrige los valores marcados antes de guardar.', 'error'); return; }
@@ -295,7 +397,7 @@
   // ---- Arranque ----
 
   window.addEventListener('beforeunload', (e) => {
-    if (estado.config && estado.config.sucio) { e.preventDefault(); e.returnValue = ''; }
+    if (algunSucio()) { e.preventDefault(); e.returnValue = ''; }
   });
   $('abrir').addEventListener('click', abrirCarpeta);
   $('guardar').addEventListener('click', guardar);

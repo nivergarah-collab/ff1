@@ -131,8 +131,9 @@ test('clasificarDocumentos reconoce el tipo de cada archivo', () => {
   assert.deepEqual(docs.map((d) => d.ruta), ['configuracion.json', 'combatientes.json', 'mapas/campo.json',
     'escenas/apertura.json', 'raro.json']);
   assert.equal(docs[0].editable, true);
-  assert.equal(docs[1].editable, false);
+  assert.equal(docs[1].editable, true, 'las tablas de contenido se editan desde H11');
   assert.equal(docs[2].tipo, 'mapa');
+  assert.equal(docs[2].editable, false, 'mapas y escenas siguen en solo lectura');
 });
 
 test('interpretarInforme lee la salida --json del validador', () => {
