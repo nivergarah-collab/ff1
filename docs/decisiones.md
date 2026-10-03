@@ -108,3 +108,5 @@ Tras terminar el MVP, el usuario eligió una interfaz paralela que adapta parám
 - **La vista de balance es de cálculo, no de simulación:** un golpe físico normal por turno, sin magia, objetos ni defensa; sirve para ver el ritmo y detectar enemigos desbalanceados.
 - **Mapas en solo lectura y `inicio`/`progresion` fuera de H11:** el plan pide ver el mapa por casillas y editar textos de escenas; editar la forma de un mapa o los documentos `inicio` y `progresion` no está en el plan, y queda como idea para una fase posterior.
 
+## 2026-10-03 · Bloque 15 (Sonnet): limpieza del editor
+- **`Dom.el` común:** las cuatro copias de `el()` pasan a `herramientas/editor/dom.js`, que `index.html` carga primero. `app.js` (487 líneas) queda sin dividir: sus secciones (configuración, navegación, guardado) comparten estado y partirlo ahora sería más riesgo que beneficio; si H12 lo hace crecer, se divide entonces.
