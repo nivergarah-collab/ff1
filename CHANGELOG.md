@@ -4,6 +4,16 @@ Formato: más reciente primero, con fecha en `AAAA-MM-DD`.
 
 ## 2026-10-03
 
+### Añadido (bloque 13, Fase 2: H9 y H10)
+- `scripts/validar-contenido.sh <carpeta> [--json]` y `herramientas.ValidadorContenido`: validan un paquete de contenido con los cargadores reales del motor; una línea por documento y el detalle con la ruta del campo solo en los errores. `ValidadorContenidoTest` (10 pruebas).
+- Editor de parámetros en `herramientas/editor/` (HTML, CSS y JavaScript sin dependencias): abre la carpeta de contenido, formulario de `configuracion.json` con rangos, descripciones y valores por defecto, guardado con copia `.bak`, aviso de cambios sin guardar y carga del informe del validador. `LEEME.md`.
+- `scripts/probar-editor.sh`: 23 pruebas con `node --test`, incluida la comprobación de que el motor acepta lo que el editor guarda.
+- `EsquemaConfiguracion.nombres/esEntero/minimo/maximo/defecto` (solo lectura) y `EsquemaEditorTest`, que ata el esquema del editor al del motor.
+
+### Cambiado (bloque 13)
+- `LectorArchivos` lanza `FileNotFoundException` si falta el archivo (antes un error genérico de lectura; así `FuenteContenidoJson.existe` funciona con carpetas).
+- Los errores de `CatalogoCombate.cargar` empiezan por el documento (`habilidades.json:` o `combatientes.json:`).
+
 ### Añadido (usuario)
 - Fase 2 en `docs/plan.md`: editor de parámetros (hitos H9 a H12). Tarea reanudada (EN CURSO).
 

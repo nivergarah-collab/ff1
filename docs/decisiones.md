@@ -94,3 +94,11 @@ El usuario probó el APK con H5–H7 y funciona. La tarea programada vuelve a Op
 
 ## 2026-10-03 · Fase 2: editor de parámetros (usuario)
 Tras terminar el MVP, el usuario eligió una interfaz paralela que adapta parámetros (opción 1) antes que el pixel art (opción 2). Se hace como herramienta aparte del juego (`herramientas/editor/`, HTML y JavaScript sin dependencias), con validación real del motor por línea de comandos. El pixel art queda para una fase posterior, con un contrato de arte previo.
+
+## 2026-10-03 · Bloque 13 (Sonnet): H9 y H10
+- **El validador vive en el código principal** (`com.example.ff1.herramientas.ValidadorContenido`, Java puro) y no en las pruebas: es una herramienta que el script ejecuta sobre cualquier carpeta. Reutiliza `Partida.nueva`, `CatalogoCombate`, `Mapa`, `Guion`... en vez de copiar las reglas; así el editor y el juego no pueden discrepar. Informa por documento: lo que depende de un documento roto queda `OMITIDO`, no `OK`, y un `OMITIDO` cuenta como fallo (código de salida 1).
+- **El navegador no puede ejecutar Java.** "Revisar con el motor" en el editor muestra el comando y carga el `informe.json` que produce `--json`; no hay servidor ni dependencias. La validación del editor (rangos y tipos) es una copia en JavaScript de las reglas del contrato, y dos pruebas la atan al motor: `EsquemaEditorTest` (mismo esquema) y la prueba de node que guarda con el editor y valida con el motor real.
+- **El esquema del editor es un archivo `.js`** (`window.ESQUEMA_CONFIGURACION = {...}`) y no JSON, porque abrir `index.html` desde el disco impide `fetch` de archivos locales. Las descripciones solo existen ahí (el motor no las declara); rango, tipo y defecto se comprueban contra el motor.
+- **Guardado:** `configuracion.json` se escribe con dos espacios de sangría y solo con los parámetros que difieren del defecto o que ya estaban; antes se deja `<archivo>.bak` y, si la copia falla, no se toca el original. Sin cambio de contrato.
+- **Accesores de solo lectura en `EsquemaConfiguracion`:** ampliación compatible de la interfaz del motor (no se cambia nada existente).
+
