@@ -4,6 +4,12 @@ Formato: más reciente primero, con fecha en `AAAA-MM-DD`.
 
 ## 2026-10-03
 
+### Añadido (bloque 14, Fase 2: H11)
+- Editor de contenido en `herramientas/editor/`: editores de tabla para combatientes, habilidades, objetos, botín, encuentros, tiendas, posadas, vecinos y jefes (`tablas.js`, `editor-tablas.js`) con añadir, duplicar y borrar, referencias por lista desplegable, aviso de ids rotos y de usos al borrar, y guardado bloqueado mientras haya problemas.
+- Vista de balance (`balance.js`, `vista-balance.js`) con las fórmulas de `Acciones` y la experiencia por nivel; `BalanceEditorTest` (Java) la ata al motor real con `pruebas/balance-casos.json`.
+- Mapas en solo lectura y edición de textos de escenas (`mundo.js`, `editor-mundo.js`).
+- `scripts/probar-editor.sh` pasa de 23 a 50 pruebas, entre ellas que el motor acepta un enemigo nuevo con su botín y su encuentro, y una escena editada.
+
 ### Añadido (bloque 13, Fase 2: H9 y H10)
 - `scripts/validar-contenido.sh <carpeta> [--json]` y `herramientas.ValidadorContenido`: validan un paquete de contenido con los cargadores reales del motor; una línea por documento y el detalle con la ruta del campo solo en los errores. `ValidadorContenidoTest` (10 pruebas).
 - Editor de parámetros en `herramientas/editor/` (HTML, CSS y JavaScript sin dependencias): abre la carpeta de contenido, formulario de `configuracion.json` con rangos, descripciones y valores por defecto, guardado con copia `.bak`, aviso de cambios sin guardar y carga del informe del validador. `LEEME.md`.

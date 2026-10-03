@@ -1,0 +1,342 @@
+{
+ "tipo": "balance-casos",
+ "nota": "Casos de referencia: balance.js y la prueba de Java BalanceEditorTest (motor real) deben dar el mismo minimo y maximo.",
+ "casos": [
+  {
+   "tipo": "fisico",
+   "ataque": 12,
+   "defensa": 4,
+   "fuerzaFisica": 10,
+   "varianza": 0,
+   "min": 10,
+   "max": 10
+  },
+  {
+   "tipo": "fisico",
+   "ataque": 2,
+   "defensa": 40,
+   "fuerzaFisica": 10,
+   "varianza": 0,
+   "min": 1,
+   "max": 1
+  },
+  {
+   "tipo": "fisico",
+   "ataque": 30,
+   "defensa": 9,
+   "fuerzaFisica": 25,
+   "varianza": 0,
+   "min": 71,
+   "max": 71
+  },
+  {
+   "tipo": "fisico",
+   "ataque": 999,
+   "defensa": 0,
+   "fuerzaFisica": 100,
+   "varianza": 0,
+   "min": 9990,
+   "max": 9990
+  },
+  {
+   "tipo": "fisico",
+   "ataque": 7,
+   "defensa": 7,
+   "fuerzaFisica": 1,
+   "varianza": 0,
+   "min": 1,
+   "max": 1
+  },
+  {
+   "tipo": "magico",
+   "poderHabilidad": 14,
+   "poderActor": 11,
+   "defensa": 8,
+   "fuerzaMagica": 10,
+   "varianza": 0,
+   "min": 23,
+   "max": 23
+  },
+  {
+   "tipo": "magico",
+   "poderHabilidad": 4,
+   "poderActor": 0,
+   "defensa": 60,
+   "fuerzaMagica": 10,
+   "varianza": 0,
+   "min": 1,
+   "max": 1
+  },
+  {
+   "tipo": "magico",
+   "poderHabilidad": 30,
+   "poderActor": 20,
+   "defensa": 3,
+   "fuerzaMagica": 40,
+   "varianza": 0,
+   "min": 110,
+   "max": 110
+  },
+  {
+   "tipo": "magico",
+   "poderHabilidad": 0,
+   "poderActor": 5,
+   "defensa": 0,
+   "fuerzaMagica": 10,
+   "varianza": 0,
+   "min": 5,
+   "max": 5
+  },
+  {
+   "tipo": "curacion",
+   "poderHabilidad": 30,
+   "poderActor": 0,
+   "fuerzaMagica": 10,
+   "varianza": 0,
+   "min": 30,
+   "max": 30
+  },
+  {
+   "tipo": "curacion",
+   "poderHabilidad": 10,
+   "poderActor": 12,
+   "fuerzaMagica": 10,
+   "varianza": 0,
+   "min": 22,
+   "max": 22
+  },
+  {
+   "tipo": "curacion",
+   "poderHabilidad": 0,
+   "poderActor": 9,
+   "fuerzaMagica": 35,
+   "varianza": 0,
+   "min": 31,
+   "max": 31
+  },
+  {
+   "tipo": "fisico",
+   "ataque": 12,
+   "defensa": 4,
+   "fuerzaFisica": 10,
+   "varianza": 10,
+   "min": 9,
+   "max": 11
+  },
+  {
+   "tipo": "fisico",
+   "ataque": 2,
+   "defensa": 40,
+   "fuerzaFisica": 10,
+   "varianza": 10,
+   "min": 1,
+   "max": 1
+  },
+  {
+   "tipo": "fisico",
+   "ataque": 30,
+   "defensa": 9,
+   "fuerzaFisica": 25,
+   "varianza": 10,
+   "min": 63,
+   "max": 78
+  },
+  {
+   "tipo": "fisico",
+   "ataque": 999,
+   "defensa": 0,
+   "fuerzaFisica": 100,
+   "varianza": 10,
+   "min": 8991,
+   "max": 10989
+  },
+  {
+   "tipo": "fisico",
+   "ataque": 7,
+   "defensa": 7,
+   "fuerzaFisica": 1,
+   "varianza": 10,
+   "min": 1,
+   "max": 1
+  },
+  {
+   "tipo": "magico",
+   "poderHabilidad": 14,
+   "poderActor": 11,
+   "defensa": 8,
+   "fuerzaMagica": 10,
+   "varianza": 10,
+   "min": 20,
+   "max": 25
+  },
+  {
+   "tipo": "magico",
+   "poderHabilidad": 4,
+   "poderActor": 0,
+   "defensa": 60,
+   "fuerzaMagica": 10,
+   "varianza": 10,
+   "min": 1,
+   "max": 1
+  },
+  {
+   "tipo": "magico",
+   "poderHabilidad": 30,
+   "poderActor": 20,
+   "defensa": 3,
+   "fuerzaMagica": 40,
+   "varianza": 10,
+   "min": 99,
+   "max": 121
+  },
+  {
+   "tipo": "magico",
+   "poderHabilidad": 0,
+   "poderActor": 5,
+   "defensa": 0,
+   "fuerzaMagica": 10,
+   "varianza": 10,
+   "min": 4,
+   "max": 5
+  },
+  {
+   "tipo": "curacion",
+   "poderHabilidad": 30,
+   "poderActor": 0,
+   "fuerzaMagica": 10,
+   "varianza": 10,
+   "min": 27,
+   "max": 33
+  },
+  {
+   "tipo": "curacion",
+   "poderHabilidad": 10,
+   "poderActor": 12,
+   "fuerzaMagica": 10,
+   "varianza": 10,
+   "min": 19,
+   "max": 24
+  },
+  {
+   "tipo": "curacion",
+   "poderHabilidad": 0,
+   "poderActor": 9,
+   "fuerzaMagica": 35,
+   "varianza": 10,
+   "min": 27,
+   "max": 34
+  },
+  {
+   "tipo": "fisico",
+   "ataque": 12,
+   "defensa": 4,
+   "fuerzaFisica": 10,
+   "varianza": 50,
+   "min": 5,
+   "max": 15
+  },
+  {
+   "tipo": "fisico",
+   "ataque": 2,
+   "defensa": 40,
+   "fuerzaFisica": 10,
+   "varianza": 50,
+   "min": 1,
+   "max": 1
+  },
+  {
+   "tipo": "fisico",
+   "ataque": 30,
+   "defensa": 9,
+   "fuerzaFisica": 25,
+   "varianza": 50,
+   "min": 35,
+   "max": 106
+  },
+  {
+   "tipo": "fisico",
+   "ataque": 999,
+   "defensa": 0,
+   "fuerzaFisica": 100,
+   "varianza": 50,
+   "min": 4995,
+   "max": 14985
+  },
+  {
+   "tipo": "fisico",
+   "ataque": 7,
+   "defensa": 7,
+   "fuerzaFisica": 1,
+   "varianza": 50,
+   "min": 1,
+   "max": 1
+  },
+  {
+   "tipo": "magico",
+   "poderHabilidad": 14,
+   "poderActor": 11,
+   "defensa": 8,
+   "fuerzaMagica": 10,
+   "varianza": 50,
+   "min": 11,
+   "max": 34
+  },
+  {
+   "tipo": "magico",
+   "poderHabilidad": 4,
+   "poderActor": 0,
+   "defensa": 60,
+   "fuerzaMagica": 10,
+   "varianza": 50,
+   "min": 1,
+   "max": 1
+  },
+  {
+   "tipo": "magico",
+   "poderHabilidad": 30,
+   "poderActor": 20,
+   "defensa": 3,
+   "fuerzaMagica": 40,
+   "varianza": 50,
+   "min": 55,
+   "max": 165
+  },
+  {
+   "tipo": "magico",
+   "poderHabilidad": 0,
+   "poderActor": 5,
+   "defensa": 0,
+   "fuerzaMagica": 10,
+   "varianza": 50,
+   "min": 2,
+   "max": 7
+  },
+  {
+   "tipo": "curacion",
+   "poderHabilidad": 30,
+   "poderActor": 0,
+   "fuerzaMagica": 10,
+   "varianza": 50,
+   "min": 15,
+   "max": 45
+  },
+  {
+   "tipo": "curacion",
+   "poderHabilidad": 10,
+   "poderActor": 12,
+   "fuerzaMagica": 10,
+   "varianza": 50,
+   "min": 11,
+   "max": 33
+  },
+  {
+   "tipo": "curacion",
+   "poderHabilidad": 0,
+   "poderActor": 9,
+   "fuerzaMagica": 35,
+   "varianza": 50,
+   "min": 15,
+   "max": 46
+  }
+ ]
+}

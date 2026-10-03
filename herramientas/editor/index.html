@@ -30,7 +30,8 @@
         <ol>
           <li>Pulsa <strong>Abrir carpeta de contenido…</strong> y elige <code>app/src/main/assets/contenido</code> (o la carpeta de otro paquete).</li>
           <li>Elige <strong>configuracion.json</strong> a la izquierda y cambia los parámetros en el formulario.</li>
-          <li><strong>Guardar</strong> escribe el archivo y deja la versión anterior en <code>configuracion.json.bak</code>.</li>
+          <li>Para crear o cambiar enemigos, habilidades, objetos, botín, encuentros, tiendas, posadas, vecinos y jefes, elige su documento a la izquierda: a la izquierda de cada tabla están las filas (añadir, duplicar, borrar) y a la derecha el formulario de la fila elegida. Las referencias son listas desplegables y los ids que no existen se marcan.</li>
+          <li><strong>Guardar</strong> escribe el documento que estás viendo y deja la versión anterior en un archivo <code>.bak</code>.</li>
           <li><strong>Revisar con el motor</strong> te da el comando que valida la carpeta con las reglas reales del juego.</li>
         </ol>
         <p class="nota" id="sinApi" hidden>Este navegador no permite abrir carpetas. Usa Chrome, Edge u otro navegador basado en Chromium.</p>
@@ -54,6 +55,12 @@
 
   <script src="esquema-configuracion.js"></script>
   <script src="logica.js"></script>
+  <script src="tablas.js"></script>
+  <script src="editor-tablas.js"></script>
+  <script src="balance.js"></script>
+  <script src="vista-balance.js"></script>
+  <script src="mundo.js"></script>
+  <script src="editor-mundo.js"></script>
   <script src="almacen.js"></script>
   <script src="app.js"></script>
 </body>

@@ -102,3 +102,9 @@ Tras terminar el MVP, el usuario eligió una interfaz paralela que adapta parám
 - **Guardado:** `configuracion.json` se escribe con dos espacios de sangría y solo con los parámetros que difieren del defecto o que ya estaban; antes se deja `<archivo>.bak` y, si la copia falla, no se toca el original. Sin cambio de contrato.
 - **Accesores de solo lectura en `EsquemaConfiguracion`:** ampliación compatible de la interfaz del motor (no se cambia nada existente).
 
+## 2026-10-03 · Bloque 14 (Sonnet): H11
+- **Tablas declarativas:** cada tabla del editor es una lista de columnas con ruta con punto (`efecto.poder`), tipo (`id`, `texto`, `entero`, `opcion`, `ref`, `refs`, `subfilas`), rango y referencia (`tablas.js`). La validación del editor repite las reglas del contrato para avisar antes de guardar; el motor sigue siendo la autoridad y dos pruebas lo atan (un enemigo nuevo con botín y encuentro, y un id roto que ambos rechazan). Sin cambio de contrato.
+- **Balance contra el motor, sin servidor:** las fórmulas de `Acciones` se replican en `balance.js`. Para que no se desvíen, `BalanceEditorTest` (Java) y `balance.test.js` (node) leen el mismo archivo de casos (`pruebas/balance-casos.json`); el motor se prueba con el azar en −varianza y en +varianza. Si alguien cambia una fórmula del motor, falla la prueba de Java.
+- **La vista de balance es de cálculo, no de simulación:** un golpe físico normal por turno, sin magia, objetos ni defensa; sirve para ver el ritmo y detectar enemigos desbalanceados.
+- **Mapas en solo lectura y `inicio`/`progresion` fuera de H11:** el plan pide ver el mapa por casillas y editar textos de escenas; editar la forma de un mapa o los documentos `inicio` y `progresion` no está en el plan, y queda como idea para una fase posterior.
+

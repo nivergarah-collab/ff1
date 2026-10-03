@@ -110,7 +110,7 @@
   // ---- Documentos de la carpeta ----
 
   const RAIZ = ['configuracion', 'inicio', 'habilidades', 'combatientes', 'progresion', 'objetos', 'botin', 'encuentros', 'servicios'];
-  const EDITABLES = new Set(['configuracion']);
+  const EDITABLES = new Set(['configuracion', 'combatientes', 'habilidades', 'objetos', 'botin', 'encuentros', 'servicios', 'escena']);
 
   L.clasificarDocumentos = function (rutas) {
     const docs = [];
