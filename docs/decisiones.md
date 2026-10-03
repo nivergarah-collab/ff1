@@ -73,3 +73,6 @@ Más reciente primero.
 - **Experiencia completa para cada héroe en pie (2026-10-02, H2):** al vencer, cada héroe con vida recibe toda la experiencia del combate; los caídos no reciben nada. Motivo: regla simple y legible para un recorrido corto. Se puede cambiar en `progresion.Reparto`.
 - **Botín en documento propio (2026-10-02, H2):** el botín va en `botin.json` y no dentro de `combatientes.json`, porque necesita validar contra los objetos y los objetos ya validan contra las clases de héroe; así no hay dependencia circular entre catálogos.
 - **Limpieza tras H3.6 y H4 (2026-10-02, bloque 9):** el giro del cursor y el marcador `>` se centralizan en `Menu.vuelta` y `Estilo.marcador`. No se tocaron `Pantalla`, `Juego` ni `Escena`. Queda sin unificar el dibujo de listas con ventana (cada pantalla tiene su disposición); revisar en H8.
+
+## 2026-10-03 · Vuelta a Opus (usuario)
+El usuario probó el APK con H5–H7 y funciona. La tarea programada vuelve a Opus: primero la limpieza tras H5–H7 (ver "Deuda técnica" de `docs/plan.md`) y luego H8.

@@ -1,11 +1,11 @@
 # Estado · ff1
 
 ## Control
-- Estado del MVP: PAUSA: cambio de modelo (volver a Opus para H8)
+- Estado del MVP: EN CURSO
 - Bloques ejecutados: 10 de 50
 - Bloques seguidos sin avance: 0
 
-Última actualización: 2026-10-02 (bloque 10, Sonnet: H5, H6 y H7 terminados)
+Última actualización: 2026-10-03 (usuario: APK de H5–H7 probado y funcionando; reanudado con Opus para la limpieza y H8)
 
 ## Hecho
 - Proyecto movido a `Desktop\Android\ff1`.

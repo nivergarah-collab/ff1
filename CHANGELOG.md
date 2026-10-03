@@ -2,6 +2,11 @@
 
 Formato: más reciente primero, con fecha en `AAAA-MM-DD`.
 
+## 2026-10-03
+
+### Cambiado (usuario)
+- Tarea reanudada con Opus (EN CURSO) para la limpieza tras H5–H7 y el hito H8.
+
 ## 2026-10-02
 
 ### Añadido (bloque 10, H5 pueblo, H6 mazmorra y jefe, H7 guardado)
