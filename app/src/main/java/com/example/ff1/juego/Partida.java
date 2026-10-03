@@ -24,8 +24,6 @@ import com.example.ff1.motor.config.EsquemaConfiguracion;
 import com.example.ff1.motor.config.ProveedorConfiguracion;
 import com.example.ff1.motor.config.Registro;
 import com.example.ff1.motor.datos.Documentos;
-import com.example.ff1.motor.datos.EscritorJson;
-import com.example.ff1.motor.datos.LectorJson;
 import com.example.ff1.motor.datos.ErrorDeDatos;
 import com.example.ff1.motor.datos.Nodo;
 import com.example.ff1.motor.fuentes.Azar;
@@ -93,7 +91,7 @@ public final class Partida {
     private final Servicios servicios;
     private final Map<String, Mapa> mapas = new LinkedHashMap<>();
     private final TablaProgresion progresion;
-    private final java.util.Set<String> jefesDerrotados = new java.util.LinkedHashSet<>();
+    private final Set<String> jefesDerrotados = new LinkedHashSet<>();
     private int oro;
 
     private Partida(FuenteContenido fuente, TablaEncuentros tabla, Servicios servicios, ProveedorConfiguracion config, Azar azar, CatalogoCombate catalogo, CatalogoObjetos objetos,
@@ -146,11 +144,7 @@ public final class Partida {
         Documentos.dentro(inicio, "grupo", ng.size(), 1, 6);
         List<Heroe> grupo = new ArrayList<>();
         for (Nodo n : ng) {
-            DefinicionCombatiente clase = catalogo.combatiente(n.texto("clase"));
-            if (clase.bando != Bando.HEROE) {
-                throw new ErrorDeDatos(n.ruta() + ".clase: \"" + clase.id + "\" no es un héroe");
-            }
-            grupo.add(new Heroe(clase, n.texto("nombre"), progresion));
+            grupo.add(crearHeroe(n, catalogo, progresion));
         }
         Inventario inventario = new Inventario(config.actual().entero(ConfiguracionInventario.MAXIMO_POR_OBJETO));
         if (inicio.tiene("objetos")) {
@@ -508,46 +502,11 @@ public final class Partida {
         return Uso.USADO;
     }
 
-    // --- Guardado ---------------------------------------------------------------------------
-
-    public static final String TIPO_PARTIDA = "partida";
-    public static final int VERSION_PARTIDA = 1;
-    private static final String[] AJUSTES = {
-        ConfiguracionCombate.TICKS_POR_PASO, ConfiguracionJuego.MS_MENSAJE, ConfiguracionJuego.RAPIDO_AL_EMPEZAR };
+    // --- Guardado (el formato está en Guardado) ---------------------------------------------
 
     /** Texto JSON con todo lo que cambia durante el juego (documento {@code "partida"}, ver el contrato). */
     public String guardar() {
-        Map<String, Object> doc = new LinkedHashMap<>();
-        doc.put("tipo", TIPO_PARTIDA);
-        doc.put("version", VERSION_PARTIDA);
-        doc.put("mapa", explorador.mapa().id);
-        doc.put("x", explorador.x());
-        doc.put("y", explorador.y());
-        doc.put("oro", oro);
-        doc.put("jefes", new ArrayList<>(jefesDerrotados));
-        List<Object> heroes = new ArrayList<>();
-        for (Heroe h : grupo) {
-            Map<String, Object> m = new LinkedHashMap<>();
-            m.put("clase", h.clase().id);
-            m.put("nombre", h.nombre());
-            m.put("experiencia", h.experiencia());
-            m.put("vida", h.vida());
-            m.put("magia", h.magia());
-            Map<String, Object> equipo = new LinkedHashMap<>();
-            for (Map.Entry<String, DefinicionObjeto> e : h.equipo().entrySet()) {
-                equipo.put(e.getKey(), e.getValue().id);
-            }
-            m.put("equipo", equipo);
-            heroes.add(m);
-        }
-        doc.put("grupo", heroes);
-        doc.put("inventario", new LinkedHashMap<String, Object>(inventario.contenido()));
-        Map<String, Object> ajustes = new LinkedHashMap<>();
-        for (String a : AJUSTES) {
-            ajustes.put(a, config.actual().entero(a));
-        }
-        doc.put("ajustes", ajustes);
-        return EscritorJson.escribir(Nodo.desde(doc));
+        return Guardado.escribir(this);
     }
 
     /**
@@ -555,84 +514,43 @@ public final class Partida {
      * encima lo guardado. Lanza {@link ErrorDeDatos} (con la ruta del campo) si el texto no vale.
      */
     public static Partida cargar(FuenteContenido fuente, Azar azar, String texto) {
-        Nodo doc = LectorJson.leer(texto);
-        Documentos.exigir(doc, TIPO_PARTIDA, VERSION_PARTIDA);
-        Partida p = nueva(fuente, azar);
-        try {
-            p.aplicar(doc);
-        } catch (IllegalArgumentException | IllegalStateException e) {
-            throw new ErrorDeDatos("partida: " + e.getMessage(), e);
-        }
-        return p;
+        return Guardado.leer(fuente, azar, texto);
     }
 
-    private void aplicar(Nodo doc) {
-        List<Nodo> ng = doc.lista("grupo");
-        Documentos.dentro(doc, "grupo", ng.size(), 1, 6);
-        List<Heroe> nuevos = new ArrayList<>();
-        for (Nodo n : ng) {
-            DefinicionCombatiente clase = catalogo.combatiente(n.texto("clase"));
-            if (clase.bando != Bando.HEROE) {
-                throw new ErrorDeDatos(n.ruta() + ".clase: \"" + clase.id + "\" no es un héroe");
-            }
-            Heroe h = new Heroe(clase, n.texto("nombre"), progresion);
-            Nodo eq = n.objeto("equipo");
-            for (String ranura : eq.claves()) {
-                DefinicionObjeto o = objetos.objeto(eq.texto(ranura));
-                if (!o.equipablePor(clase.id) || !ranura.equals(o.ranura)) {
-                    throw new ErrorDeDatos(eq.ruta() + "." + ranura + ": \"" + o.id + "\" no se puede equipar ahí");
-                }
-                h.equipar(o);
-            }
-            try {
-                h.restaurarEstado(Documentos.rango(n, "experiencia", 0, 99_999_999),
-                        Documentos.rango(n, "vida", 0, 99999), Documentos.rango(n, "magia", 0, 9999));
-            } catch (IllegalArgumentException e) {
-                throw new ErrorDeDatos(n.ruta() + ": " + e.getMessage());
-            }
-            nuevos.add(h);
+    /** Héroe de un nodo con {@code clase} y {@code nombre}; la clase debe ser del bando de los héroes. */
+    Heroe crearHeroe(Nodo n) {
+        return crearHeroe(n, catalogo, progresion);
+    }
+
+    private static Heroe crearHeroe(Nodo n, CatalogoCombate catalogo, TablaProgresion progresion) {
+        DefinicionCombatiente clase = catalogo.combatiente(n.texto("clase"));
+        if (clase.bando != Bando.HEROE) {
+            throw new ErrorDeDatos(n.ruta() + ".clase: \"" + clase.id + "\" no es un héroe");
         }
-        Nodo ni = doc.objeto("inventario");
-        Map<String, Integer> cantidades = new LinkedHashMap<>();
-        for (String id : ni.claves()) {
-            objetos.objeto(id);
-            cantidades.put(id, Documentos.rango(ni, id, 1, 999));
-        }
-        Mapa m = mapa(doc.texto("mapa"));
-        int x = doc.entero("x");
-        int y = doc.entero("y");
-        if (!m.pasable(x, y)) {
-            throw new ErrorDeDatos(doc.ruta() + ".x/y: (" + x + ", " + y + ") no es una casilla pasable de " + m.id);
-        }
-        Set<String> vencidos = new LinkedHashSet<>();
-        for (Nodo j : doc.lista("jefes")) {
-            servicios.jefe(j.comoTexto());
-            vencidos.add(j.comoTexto());
-        }
-        int oroGuardado = Documentos.rango(doc, "oro", 0, 999_999);
-        Configuracion nuevaConfig = config.actual();
-        if (doc.tiene("ajustes")) {
-            Nodo na = doc.objeto("ajustes");
-            for (String a : AJUSTES) {
-                if (na.tiene(a)) {
-                    nuevaConfig = nuevaConfig.con(a, na.entero(a));
-                }
-            }
-        }
-        // Todo es válido: ahora sí se cambia el estado.
+        return new Heroe(clase, n.texto("nombre"), progresion);
+    }
+
+    /** Jefes vencidos, en el orden en que cayeron (solo lectura). */
+    Set<String> jefesDerrotados() {
+        return Collections.unmodifiableSet(jefesDerrotados);
+    }
+
+    /** Reemplaza todo lo que cambia durante el juego; los datos ya vienen validados por {@link Guardado}. */
+    void restaurar(List<Heroe> heroes, Map<String, Integer> cantidades, int oro, Set<String> vencidos,
+            Configuracion ajustes, String idMapa, int x, int y) {
         orden.clear();
-        orden.addAll(nuevos);
+        orden.addAll(heroes);
         for (String id : new ArrayList<>(inventario.contenido().keySet())) {
             inventario.quitar(id, inventario.cantidad(id));
         }
         for (Map.Entry<String, Integer> e : cantidades.entrySet()) {
             inventario.agregar(e.getKey(), e.getValue());
         }
-        oro = oroGuardado;
+        this.oro = oro;
         jefesDerrotados.clear();
         jefesDerrotados.addAll(vencidos);
-        config.reemplazar(nuevaConfig);
-        irAMapa(m.id, x, y);
+        config.reemplazar(ajustes);
+        irAMapa(idMapa, x, y);
     }
 
     /** Combate contra los enemigos de un encuentro; los héroes entran con su vida y magia actuales. */
