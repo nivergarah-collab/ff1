@@ -35,6 +35,9 @@ El script compila los `.java` de `app/src/main/java` y `app/src/test/java` que n
 - Código de salida: 0 válido, 1 con errores u omitidos, 2 uso incorrecto. Ejemplos: `scripts/validar-contenido.sh app/src/main/assets/contenido` y `scripts/validar-contenido.sh app/src/test/resources/contenido-minimo`.
 - Pruebas: `ValidadorContenidoTest` (el paquete del juego y el mínimo, referencias rotas, JSON mal formado, rangos, documento ausente, salida JSON y códigos de salida).
 
+## Pruebas del editor (H10)
+`scripts/probar-editor.sh` corre las pruebas de JavaScript del editor (`herramientas/editor/pruebas/`) con `node --test`, sin dependencias. Si hay `javac`, también comprueba con `scripts/validar-contenido.sh` que el motor acepta lo que el editor guarda (todos los mínimos, todos los máximos y un cambio normal) y rechaza un valor fuera de rango. `EsquemaEditorTest` (Java) compara `herramientas/editor/esquema-configuracion.js` con el esquema real del motor.
+
 ## Integración continua
 `.github/workflows/pruebas.yml` (flujo `Pruebas`) corre la verificación de estructura y la suite unitaria en cada push a `main`, `feature/**` y `fix/**`, y en cada pull request. Los flujos los coloca el usuario: `.github/` es de solo lectura para el agente.
 

@@ -1,0 +1,132 @@
+:root {
+  --fondo: #f4f5f8;
+  --panel: #ffffff;
+  --texto: #1d2230;
+  --suave: #5b6478;
+  --borde: #d6dae4;
+  --acento: #2f5fd0;
+  --acento-texto: #ffffff;
+  --error: #b3261e;
+  --error-fondo: #fdecea;
+  --ok: #1d7a46;
+  --ok-fondo: #e6f5ec;
+  --aviso: #8a5a00;
+  --aviso-fondo: #fff4d6;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fondo: #14171f;
+    --panel: #1d212c;
+    --texto: #e6e9f2;
+    --suave: #9aa3b8;
+    --borde: #343a4b;
+    --acento: #7ba0ff;
+    --acento-texto: #10131b;
+    --error: #ff8a80;
+    --error-fondo: #3b1f1d;
+    --ok: #6fd69a;
+    --ok-fondo: #173223;
+    --aviso: #ffcf66;
+    --aviso-fondo: #3a2e12;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: var(--texto);
+  background: var(--fondo);
+}
+code, pre { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; font-size: 0.92em; }
+h1, h2, h3 { margin: 0; line-height: 1.2; }
+
+.barra {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px;
+  padding: 12px 20px; background: var(--panel); border-bottom: 1px solid var(--borde);
+  position: sticky; top: 0; z-index: 2;
+}
+.barra h1 { font-size: 18px; }
+.marca { color: var(--acento); }
+.carpeta { color: var(--suave); flex: 1 1 200px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.carpeta strong { color: var(--texto); }
+.acciones { display: flex; gap: 8px; flex-wrap: wrap; }
+
+button, input[type=file]::file-selector-button {
+  font: inherit; padding: 7px 14px; border-radius: 6px; cursor: pointer;
+  border: 1px solid var(--borde); background: var(--panel); color: var(--texto);
+}
+button:hover:not(:disabled) { border-color: var(--acento); }
+button:disabled { opacity: 0.45; cursor: default; }
+button.primario { background: var(--acento); color: var(--acento-texto); border-color: var(--acento); }
+button:focus-visible, input:focus-visible, summary:focus-visible { outline: 3px solid var(--acento); outline-offset: 1px; }
+
+.barra .aviso { flex: 1 1 100%; margin: 0; }
+.aviso { margin: 12px 0 0; padding: 10px 14px; border-radius: 6px; background: var(--aviso-fondo); color: var(--aviso); }
+.aviso.error { background: var(--error-fondo); color: var(--error); }
+.aviso.ok { background: var(--ok-fondo); color: var(--ok); }
+
+.cuerpo { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 20px; padding: 20px; align-items: start; }
+@media (max-width: 800px) { .cuerpo { grid-template-columns: 1fr; } }
+
+.lateral, .principal > section {
+  background: var(--panel); border: 1px solid var(--borde); border-radius: 8px; padding: 14px 16px;
+}
+.lateral h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--suave); margin-bottom: 8px; }
+.documentos { list-style: none; margin: 0; padding: 0; }
+.documentos li { margin: 0; }
+.documentos button {
+  width: 100%; text-align: left; border: 0; background: none; padding: 6px 8px; border-radius: 5px;
+  display: flex; justify-content: space-between; gap: 8px;
+}
+.documentos button:hover { background: var(--fondo); }
+.documentos button[aria-current=true] { background: var(--acento); color: var(--acento-texto); }
+.documentos .etiqueta { font-size: 11px; opacity: 0.75; }
+.documentos .sucio::after { content: " ●"; color: var(--aviso); }
+.documentos .estado-error { color: var(--error); }
+
+.bienvenida h2, .encabezado h2 { font-size: 20px; margin-bottom: 8px; }
+.bienvenida li { margin: 6px 0; }
+.nota { color: var(--suave); }
+
+.encabezado { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 4px; }
+.pendiente { color: var(--aviso); font-weight: 600; }
+.grupo { margin-top: 20px; }
+.grupo h3 { font-size: 14px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--suave); padding-bottom: 6px; border-bottom: 1px solid var(--borde); }
+.parametro {
+  display: grid; grid-template-columns: minmax(0, 1fr) 190px; gap: 4px 20px; padding: 12px 0;
+  border-bottom: 1px solid var(--borde);
+}
+@media (max-width: 700px) { .parametro { grid-template-columns: 1fr; } }
+.parametro:last-child { border-bottom: 0; }
+.parametro label { font-weight: 600; }
+.parametro .clave { font-weight: 400; color: var(--suave); font-size: 12px; margin-left: 6px; }
+.parametro .descripcion { color: var(--suave); margin: 2px 0 0; }
+.control { display: flex; flex-direction: column; gap: 4px; }
+.control .fila { display: flex; gap: 6px; }
+.control input[type=number] {
+  flex: 1; min-width: 0; font: inherit; padding: 7px 8px; border-radius: 6px;
+  border: 1px solid var(--borde); background: var(--fondo); color: var(--texto);
+}
+.control input[aria-invalid=true] { border-color: var(--error); background: var(--error-fondo); }
+.control .rango { font-size: 12px; color: var(--suave); }
+.control .error { font-size: 12px; color: var(--error); min-height: 1em; }
+.control .cambiado { font-size: 12px; color: var(--aviso); }
+.control button { padding: 5px 10px; font-size: 13px; }
+
+pre.json {
+  margin: 12px 0 0; padding: 12px; overflow: auto; max-height: 70vh; border-radius: 6px;
+  background: var(--fondo); border: 1px solid var(--borde);
+}
+.insignia { display: inline-block; padding: 1px 8px; border-radius: 10px; font-size: 12px; background: var(--fondo); border: 1px solid var(--borde); color: var(--suave); }
+
+dialog { max-width: 640px; width: calc(100% - 32px); border: 1px solid var(--borde); border-radius: 10px; background: var(--panel); color: var(--texto); padding: 20px; }
+dialog::backdrop { background: rgba(0, 0, 0, 0.45); }
+dialog h2 { font-size: 18px; margin-bottom: 10px; }
+dialog menu { margin: 16px 0 0; padding: 0; display: flex; justify-content: flex-end; }
+.comando { padding: 10px 12px; margin: 8px 0; background: var(--fondo); border: 1px solid var(--borde); border-radius: 6px; overflow-x: auto; white-space: pre-wrap; word-break: break-all; }
+.informe { list-style: none; margin: 8px 0 0; padding: 0; max-height: 40vh; overflow: auto; }
+.informe li { padding: 4px 0; border-bottom: 1px solid var(--borde); }
+.informe .ok { color: var(--ok); }
+.informe .error { color: var(--error); }
+.informe .omitido { color: var(--aviso); }
+.informe .detalle { display: block; margin-left: 1.5em; color: var(--error); font-family: ui-monospace, Consolas, monospace; font-size: 12px; }

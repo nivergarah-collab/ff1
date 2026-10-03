@@ -89,10 +89,10 @@ Reglas de la fase:
 - **Salida:** validar cualquier carpeta de contenido con un solo comando; documentado en `docs/pruebas.md`.
 
 ### H10 · Editor de la configuración
-- [ ] `herramientas/editor/index.html`: abrir la carpeta de contenido con la API de archivos del navegador, listar los documentos y mostrar `configuracion.json` como formulario (todos los parámetros, con rangos y descripciones tomados del contrato).
-- [ ] Guardado con copia de seguridad `.bak` y aviso de cambios sin guardar.
-- [ ] Validación en el editor (rangos y tipos del contrato) y botón para revisar con `scripts/validar-contenido.sh`.
-- [ ] `herramientas/editor/LEEME.md`: cómo abrirlo y qué hace.
+- [x] `herramientas/editor/index.html`: abrir la carpeta de contenido con la API de archivos del navegador, listar los documentos y mostrar `configuracion.json` como formulario (todos los parámetros, con rangos y descripciones tomados del contrato).
+- [x] Guardado con copia de seguridad `.bak` y aviso de cambios sin guardar.
+- [x] Validación en el editor (rangos y tipos del contrato) y botón para revisar con `scripts/validar-contenido.sh`.
+- [x] `herramientas/editor/LEEME.md`: cómo abrirlo y qué hace.
 - **Salida:** cambiar el ritmo del combate o los pasos entre encuentros desde un formulario y verlo en el juego.
 
 ### H11 · Editor de contenido
