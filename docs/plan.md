@@ -98,7 +98,7 @@ Reglas de la fase:
 ### H11 · Editor de contenido
 - [x] Editores de tabla para `combatientes`, `habilidades`, `objetos`, `botin`, `encuentros` y `servicios` (añadir, duplicar, borrar filas; referencias por id con lista desplegable y aviso de ids rotos).
 - [x] Vista de balance: daño esperado, turnos para vencer a un enemigo y experiencia por nivel, calculados con las mismas fórmulas del motor (reutilizar el motor desde una prueba que exporte las tablas, o replicarlas con una prueba que compare ambos resultados).
-- [ ] Mapas y escenas: vista de solo lectura del mapa por casillas y edición de textos de escenas.
+- [x] Mapas y escenas: vista de solo lectura del mapa por casillas y edición de textos de escenas.
 - **Salida:** crear un enemigo nuevo y su encuentro desde el editor sin escribir JSON a mano.
 
 ### H12 · Conexión con el juego

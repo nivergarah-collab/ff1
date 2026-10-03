@@ -133,7 +133,8 @@ test('clasificarDocumentos reconoce el tipo de cada archivo', () => {
   assert.equal(docs[0].editable, true);
   assert.equal(docs[1].editable, true, 'las tablas de contenido se editan desde H11');
   assert.equal(docs[2].tipo, 'mapa');
-  assert.equal(docs[2].editable, false, 'mapas y escenas siguen en solo lectura');
+  assert.equal(docs[3].editable, true, 'las escenas se editan desde H11');
+  assert.equal(docs[2].editable, false, 'los mapas siguen en solo lectura');
 });
 
 test('interpretarInforme lee la salida --json del validador', () => {

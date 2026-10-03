@@ -176,3 +176,19 @@ dialog menu { margin: 16px 0 0; padding: 0; display: flex; justify-content: flex
 .tabla-balance { width: 100%; border-collapse: collapse; margin: 6px 0 14px; font-size: 13px; }
 .tabla-balance th, .tabla-balance td { text-align: left; padding: 5px 8px; border-bottom: 1px solid var(--borde); }
 .tabla-balance th { color: var(--suave); font-weight: 600; background: var(--fondo); }
+
+/* ---- Mapas y escenas (H11) ---- */
+.mapa-contenedor { overflow: auto; max-width: 100%; padding: 6px; border: 1px solid var(--borde); border-radius: 8px; background: var(--fondo); margin: 10px 0; }
+.mapa-rejilla { display: grid; gap: 1px; width: max-content; }
+.casilla { width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.9); background: #888; text-shadow: 0 0 2px #000; }
+.casilla.bloqueada { opacity: 0.92; }
+.muestra { display: inline-block; width: 14px; height: 14px; border-radius: 3px; border: 1px solid var(--borde); vertical-align: -2px; background: #888; }
+.marcas { margin: 4px 0 0 18px; padding: 0; }
+.lineas-escena { display: flex; flex-direction: column; gap: 10px; margin: 10px 0; }
+.linea-escena { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; gap: 12px; padding: 10px; border: 1px solid var(--borde); border-radius: 8px; background: var(--fondo); align-items: start; }
+.linea-escena .numero { font-weight: 700; color: var(--suave); padding-top: 4px; }
+.campos-linea { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 10px 14px; }
+@media (max-width: 900px) { .campos-linea { grid-template-columns: 1fr; } .linea-escena { grid-template-columns: 1fr; } }
+.campo textarea { font: inherit; padding: 6px 8px; border-radius: 6px; border: 1px solid var(--borde); background: var(--panel); color: var(--texto); resize: vertical; width: 100%; }
+.botones-linea { display: flex; flex-direction: column; gap: 4px; }
+.botones-linea button { padding: 3px 8px; font-size: 12px; }

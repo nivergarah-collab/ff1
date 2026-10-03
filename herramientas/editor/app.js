@@ -7,6 +7,8 @@
   const T = window.Tablas;
   const ET = window.EditorTablas;
   const VB = window.VistaBalance;
+  const EM = window.EditorMundo;
+  const MU = window.Mundo;
   const $ = (id) => document.getElementById(id);
 
   const TIPOS = {
@@ -22,6 +24,7 @@
     actual: null,
     config: null, // {original, textoOriginal, entradas: {nombre: texto}, errores: {nombre: msg}, problemas, sucio}
     informe: null,
+    escenas: {}, // ruta -> {doc, original, sucio} (escenas/<id>.json, se cargan al abrirlas)
     tablas: {}, // ruta -> {doc, original (texto normalizado), invalido, sucio}
   };
 
@@ -93,7 +96,7 @@
 
   function actualizarBarra() {
     const c = estado.config;
-    const tabla = estado.tablas[estado.actual];
+    const tabla = estado.tablas[estado.actual] || estado.escenas[estado.actual];
     $('guardar').disabled = tabla ? !tabla.sucio : !(c && c.sucio && !hayErrores());
     $('revisar').disabled = !estado.almacen;
     const sucio = algunSucio();
@@ -101,7 +104,7 @@
     document.title = (sucio ? '● ' : '') + 'Editor de parámetros · ff1';
     for (const b of $('documentos').querySelectorAll('[data-ruta]')) {
       const ruta = b.getAttribute('data-ruta');
-      const sucioDoc = ruta === 'configuracion.json' ? !!(c && c.sucio) : !!(estado.tablas[ruta] && estado.tablas[ruta].sucio);
+      const sucioDoc = ruta === 'configuracion.json' ? !!(c && c.sucio) : !!((estado.tablas[ruta] && estado.tablas[ruta].sucio) || (estado.escenas[ruta] && estado.escenas[ruta].sucio));
       b.classList.toggle('sucio', sucioDoc);
     }
     const pendiente = document.querySelector('.pendiente');
@@ -234,7 +237,7 @@
   }
 
   function algunSucio() {
-    return !!(estado.config && estado.config.sucio) || Object.values(estado.tablas).some((t) => t.sucio);
+    return !!(estado.config && estado.config.sucio) || Object.values(estado.tablas).some((t) => t.sucio) || Object.values(estado.escenas).some((t) => t.sucio);
   }
 
   async function guardarTabla(ruta) {
@@ -275,6 +278,57 @@
     }
   }
 
+  async function dibujarEscena(doc) {
+    const cont = $('editor');
+    cont.hidden = false;
+    $('bienvenida').hidden = true;
+    let e = estado.escenas[doc.ruta];
+    if (!e) {
+      const r = L.analizar(await estado.almacen.leer(doc.ruta));
+      e = estado.escenas[doc.ruta] = r.ok ? { doc: r.valor, original: L.serializar(r.valor), sucio: false } : { invalido: r.error, sucio: false };
+    }
+    if (e.invalido || !e.doc || !Array.isArray(e.doc.lineas)) {
+      cont.replaceChildren(el('h2', { texto: doc.ruta }), el('p', { clase: 'aviso error', texto: e.invalido || 'La escena no tiene una lista «lineas».' }),
+        el('p', { texto: 'Corrige el archivo a mano; luego vuelve a abrir la carpeta.' }));
+      actualizarBarra();
+      return;
+    }
+    const id = doc.ruta.replace(/^escenas\//, '').replace(/\.json$/, '');
+    EM.dibujarEscena(cont, { doc: e.doc, id, onCambio: () => { e.sucio = L.serializar(e.doc) !== e.original; actualizarBarra(); } });
+    actualizarBarra();
+  }
+
+  async function dibujarMapa(doc) {
+    const cont = $('editor');
+    cont.hidden = false;
+    $('bienvenida').hidden = true;
+    const r = L.analizar(await estado.almacen.leer(doc.ruta));
+    if (!r.ok) { cont.replaceChildren(el('h2', { texto: doc.ruta }), el('p', { clase: 'aviso error', texto: r.error })); actualizarBarra(); return; }
+    EM.dibujarMapa(cont, r.valor, doc.ruta);
+    actualizarBarra();
+  }
+
+  async function guardarEscena(ruta) {
+    const e = estado.escenas[ruta];
+    const id = ruta.replace(/^escenas\//, '').replace(/\.json$/, '');
+    const errores = MU.validarEscena(e.doc, id);
+    if (errores.length) {
+      const x = errores[0];
+      avisar('No se puede guardar: ' + errores.length + ' problema(s). Primero: ' + (x.linea >= 0 ? 'línea ' + (x.linea + 1) + ', ' : '') + x.campo + ' ' + x.mensaje, 'error');
+      return;
+    }
+    try {
+      const texto = L.serializar(e.doc);
+      const r = await L.guardarConCopia(estado.almacen, ruta, texto);
+      e.original = texto;
+      e.sucio = false;
+      avisar('Guardado ' + ruta + (r.copia ? ' (la versión anterior quedó en ' + r.copia + ')' : '') + '. Revísalo con el motor para confirmar que el juego lo acepta.', 'ok');
+      await seleccionar(ruta);
+    } catch (err) {
+      avisar('No se pudo guardar: ' + err.message, 'error');
+    }
+  }
+
   async function dibujarBalance() {
     const cont = $('editor');
     cont.hidden = false;
@@ -306,6 +360,8 @@
       dibujarConfiguracion();
       return;
     }
+    if (doc.tipo === 'escena') { await dibujarEscena(doc); return; }
+    if (doc.tipo === 'mapa') { await dibujarMapa(doc); return; }
     if (TABLAS_DE[doc.ruta] && estado.tablas[doc.ruta]) {
       dibujarTablas(doc);
       return;
@@ -345,7 +401,7 @@
         avisar('En "' + handle.name + '" no hay configuracion.json: no parece una carpeta de contenido.', 'error');
         return;
       }
-      Object.assign(estado, { almacen, carpeta: handle.name, documentos, config: null, informe: null, actual: null, tablas: {} });
+      Object.assign(estado, { almacen, carpeta: handle.name, documentos, config: null, informe: null, actual: null, tablas: {}, escenas: {} });
       await cargarTablas();
       avisar('');
       await seleccionar('configuracion.json');
@@ -356,6 +412,7 @@
 
   async function guardar() {
     if (estado.tablas[estado.actual]) { await guardarTabla(estado.actual); return; }
+    if (estado.escenas[estado.actual]) { await guardarEscena(estado.actual); return; }
     const c = estado.config;
     const { nuevo } = revalidar();
     if (hayErrores()) { avisar('Corrige los valores marcados antes de guardar.', 'error'); return; }
