@@ -84,3 +84,10 @@ El usuario probó el APK con H5–H7 y funciona. La tarea programada vuelve a Op
 - **Paquete mínimo como recurso de prueba:** el segundo paquete vive en `app/src/test/resources/contenido-minimo/`, fuera de los assets, para que no entre en el APK. Sirve de plantilla para empezar otro juego.
 - **Balance del jefe:** con una simulación (atacar sin más, 10 semillas por nivel) el Soterrado caía siempre a nivel 2. Ahora se vence a nivel 4–5 atacando y antes con magia y objetos, en línea con `investigacion-ritmo.md` (jefe superable a nivel 3–4 jugando bien). Los enemigos comunes no se tocaron.
 - **Nombres de los héroes:** al repasar la definición de terminado se vio que el punto 3 de la misión ("el jugador elige los nombres") no estaba hecho; se añadió como tarea de H8 antes de marcar el MVP listo.
+
+## 2026-10-03 · Bloque 12 (Opus)
+- **Pantalla de nombres con el cursor en "Fin":** cada héroe ya trae el nombre de `inicio.json`, así que quien no quiera cambiarlo solo pulsa Aceptar; para escribir se baja a la rejilla (la cruceta da la vuelta). Mayúsculas, minúsculas y la ñ, sin espacios ni tildes, para que la rejilla quepa en 9 columnas. El largo máximo (`juego.largoNombre`) va en la configuración y no en el código. La pantalla se salta si el grupo está vacío.
+- **Ventana de listas común:** `Estilo.desdeVentana` calcula la primera fila visible para combate, tienda y objetos. La disposición de cada lista (columnas, precios, cantidades) sigue siendo de su pantalla, para no cambiar lo que se ve.
+- **Accesos genéricos de `Nodo` sin uso (`esNulo`, `booleanoO`, `decimalO`):** se conservan porque forman la interfaz del lector de datos del motor, pensada para otros paquetes; no son código muerto del juego.
+- **MVP listo para revisión:** se cumplen los 8 puntos de la definición de terminado salvo la confirmación de GitHub Actions en la última rama, que se anota en `docs/estado.md`, y el recorrido en emulador, que verifica el usuario.
+

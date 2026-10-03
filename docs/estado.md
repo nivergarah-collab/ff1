@@ -1,11 +1,11 @@
 # Estado · ff1
 
 ## Control
-- Estado del MVP: EN CURSO
-- Bloques ejecutados: 11 de 50
+- Estado del MVP: LISTO PARA REVISIÓN
+- Bloques ejecutados: 12 de 50
 - Bloques seguidos sin avance: 0
 
-Última actualización: 2026-10-03, bloque 11 (Opus: limpieza tras H5–H7 y casi todo H8)
+Última actualización: 2026-10-03, bloque 12 (Opus: H8 terminado, MVP listo para revisión)
 
 ## Hecho
 - Proyecto movido a `Desktop\Android\ff1`.
@@ -41,26 +41,35 @@
 - Pull requests #16, #17 (H5–H7) y #18 fusionados en `main` por el usuario; reanudado con Opus.
 - Bloque 11 (Opus, limpieza tras H5–H7, rama `chore/limpieza-h5-h7` desde `main`): guardado separado de `Partida` en `juego.Guardado`; registro de lugares en vez de `if` por tipo (`Mapa.TIPOS_LUGAR`, `Servicios.Servicio`/`servicio(lugar)`, `PantallaExploracion.lugares()`); `Bando.contrario` sin uso quitado; tope del oro en `Partida.ORO_MAXIMO`. Sin cambios de comportamiento.
 - Bloque 11 (Opus, H8, rama `feature/h8-integracion` desde `chore/limpieza-h5-h7`): segundo paquete de contenido mínimo "El faro de la ensenada" en `app/src/test/resources/contenido-minimo/` y `PaqueteMinimoTest` (partida entera sin tocar código); `RecorridoCompletoTest` (título → apertura → Pozaluz → encuentro → puerta con llave → jefe → cierre → guardar → Continuar); contrato y receta al día; balance del Soterrado (vida 420, ataque 24, defensa 10, Sacudida 30: atacando sin más se vence a nivel 4–5, antes bastaba el 2). 257 pruebas. Nota: el primer commit de H8 (paquete mínimo) quedó también en la rama de limpieza, que se fusiona antes.
+- Pull requests #19 (limpieza) y #20 (H8, primera parte) fusionados en `main` por el usuario.
+- Bloque 12 (Opus, H8 terminado, rama `feature/h8-cierre` desde `main`): el jugador elige el nombre de cada héroe al empezar una partida nueva (`EditorNombre`, `PantallaNombres`, `juego.largoNombre`; propone el de `inicio.json` con el cursor en "Fin", Cancelar borra); ventana de listas común `Estilo.desdeVentana` (combate, tienda y objetos se desplazan si la lista no cabe); README final; contrato y receta al día. 262 pruebas. **MVP listo para revisión.**
 - Autorizado por el usuario el 2026-10-02: límite de 50 bloques (antes 24), quitar el código nativo de la plantilla (ver `skills/01-trabajo-autonomo.md`) y bloques de hasta unos 25 minutos, una sesión por hora.
 
 ## Siguiente
-1. **Elegir los nombres de los héroes** (punto 3 de la misión, faltaba; nueva tarea de H8 en `docs/plan.md`).
-2. README final y revisión de la definición de terminado; luego pull request de H8 y estado `LISTO PARA REVISIÓN`.
-3. El usuario puede ir fusionando en orden los pull requests de abajo.
+El MVP cumple la definición de terminado de `docs/mision-mvp.md` y queda **LISTO PARA REVISIÓN**. Lo que debe hacer el usuario:
+1. **Revisar y fusionar** el pull request de `feature/h8-cierre` (con "Merge commit").
+2. **Recorrido completo en emulador o celular** (única tarea sin marcar de `docs/plan.md`): seguir "Cómo probar el APK" de abajo, de "Nueva partida" a la escena de cierre, y después Guardar, cerrar la app y Continuar.
+3. **Revisar en especial:**
+   - La pantalla de nombres (nueva): que la rejilla se lea bien, que el marcador `>` se vea y que el nombre largo (8 letras) quepa en las escenas y en el combate.
+   - El ritmo del jefe: se pensó para vencerlo a nivel 4–5 atacando sin más (antes con magia y objetos). Si queda muy duro o muy fácil, se ajusta en `combatientes.json` y `habilidades.json` sin tocar código.
+   - Tamaño de letra y de los botones táctiles en un celular real.
+   - El README final (`README.md`).
+4. **Decidir:** si se acepta el MVP, pausar o borrar la tarea programada (mientras siga activa, cada sesión sale de inmediato porque el estado no es `EN CURSO`). Para pedir cambios, anotarlos en "Preguntas pendientes" y volver el estado a `EN CURSO`.
 
-La ruta completa está en `docs/plan.md`.
+Lo que queda fuera del MVP o como deuda aceptada está en "Deuda técnica" de `docs/plan.md`.
 
 ## Cómo probar el APK
-1. **Bajarlo:** en GitHub, pestaña **Actions** del repositorio → ejecución **APK** de la rama (`feature/h5-pueblo`, o `main` cuando esté fusionada) → sección **Artifacts** → **ff1-debug-apk** (un .zip con el .apk; dura 14 días). Enlace directo a las ejecuciones: https://github.com/nivergarah-collab/ff1/actions/workflows/apk.yml
+1. **Bajarlo:** en GitHub, pestaña **Actions** del repositorio → ejecución **APK** de la rama (`feature/h8-cierre`, o `main` cuando esté fusionada) → sección **Artifacts** → **ff1-debug-apk** (un .zip con el .apk; dura 14 días). Enlace directo a las ejecuciones: https://github.com/nivergarah-collab/ff1/actions/workflows/apk.yml
 2. **Instalarlo:** pasar el .apk al celular (Android 11 o superior), abrirlo y permitir "instalar apps de origen desconocido" para la app con que se abrió. Si había una versión anterior de ff1 instalada con otra firma, desinstalarla primero.
-3. **Qué probar** (unos 8 minutos, en vertical):
+3. **Qué probar** (en vertical):
    - Título "Crónica de la Cantera": "Continuar" aparece apagado hasta que exista un guardado; "Aceptar" en "Nueva partida".
+   - **Nombres (H8):** una pantalla por héroe con su clase y el nombre propuesto. "Aceptar" sobre "Fin" lo deja así. Para cambiarlo: la cruceta mueve por la rejilla de letras, "Aceptar" escribe la letra (hasta 8), "Borrar" o "Cancelar" quitan la última y "Fin" pasa al siguiente héroe (un nombre vacío no se acepta). Los nombres elegidos se ven en la apertura, en el menú, en el combate y tras Continuar.
    - **Apertura:** una escena de texto de 7 líneas (Aceptar avanza; los personajes usan los nombres del grupo) y después el mapa.
    - **Pozaluz (H5):** tras la apertura el grupo está en la plaza (la fuente azul no se pisa). Mirando al mostrador amarillo de arriba a la derecha, "Aceptar" abre la **Tienda de Lupe**: izquierda/derecha cambian entre Comprar y Vender, "Aceptar" compra o vende una unidad (se vende a la mitad del precio). El mostrador rojo de la izquierda es la **Posada de Casilda** (15 de oro: cura a todos y levanta a los caídos; no cobra si nadie lo necesita). Los dos vecinos (violeta y turquesa) tienen su escena. El camino de arriba lleva al campo.
    - **La Cantera Hundida (H6):** en el campo, la puerta de hierro oscura de arriba (centro) se abre porque el grupo lleva la Llave de cantera. Dos galerías con escalera entre ellas y enemigos nuevos (murciélagos de cal, escarabajos de roca, sombras de sal). Al fondo de la galería baja, a la izquierda, está la grieta: "Aceptar" frente a ella lanza la escena previa y el combate contra el Soterrado (no se puede huir; cada 3 turnos da una sacudida fuerte). Al vencerlo, escena de cierre y el grupo vuelve a Pozaluz.
    - **Guardar (H7):** Menú → Guardar escribe la partida ("Partida guardada."). Al cerrar y abrir la app, "Continuar" en el título la retoma en el mismo sitio, con el grupo, el oro, los objetos, el equipo, la formación, los jefes vencidos y los ajustes.
    - Mapa: la cruceta mueve al grupo (cuadro amarillo); mantenerla pulsada lo hace caminar. Los riscos, la laguna y la arboleda no se pueden pisar. Por el sendero no hay encuentros; por la pradera y el matorral salta uno cada 15–30 pasos.
-   - **Menú del grupo:** en el mapa, "Cancelar" abre el menú; "Cancelar" otra vez vuelve al mismo sitio. "Guardar" está apagado (llega en H7).
+   - **Menú del grupo:** en el mapa, "Cancelar" abre el menú; "Cancelar" otra vez vuelve al mismo sitio.
    - **Objetos:** elegir un Tónico de raíz y un héroe herido (tras algún combate): cura y gasta una unidad; con la vida llena avisa y no gasta. La Pluma de alba levanta a un héroe caído con un tercio de vida.
    - **Magia:** con Mirta, "Bálsamo" cura a un aliado y gasta PM; "Muro de ramas" avisa que solo sirve en combate; el Guardián no conoce magia.
    - **Equipo:** el grupo empieza con una hoja, una vara, dos jubones y un cordel en el inventario. Al elegir una pieza se ve la comparación (por ejemplo Ataque +4) antes de confirmar; "(Quitar)" la devuelve al inventario.
@@ -75,14 +84,14 @@ Limitaciones conocidas: una sola ranura de guardado; no se guarda a mitad de un 
 
 ## Ramas y pull requests pendientes
 Orden de fusión: de la más antigua a la más nueva, con "Merge commit".
-1. `feature/h8-integracion` (parte de `chore/limpieza-h5-h7`, ya fusionada en `main` con el pull request #19): H8 en curso; su pull request se abre al terminar el hito.
+1. `feature/h8-cierre` (desde `main` tras el pull request #20): nombres de los héroes, ventana de listas común y README final. Pull request abierto al cerrar el bloque 12.
 
 ## Preguntas pendientes
 - Las ramas `chore/**` no disparan los flujos `Pruebas` ni `APK` (solo `main`, `feature/**` y `fix/**`); `chore/limpieza-h5-h7` no tiene ejecuciones, pero su contenido está incluido en `feature/h8-integracion`, que sí está en verde. Si se quiere CI en `chore/**`, lo añade el usuario en `.github/`.
 - `gradle/libs.versions.toml` conserva la entrada `games-activity`, ya sin uso; quitarla es opcional y lo decide el usuario (`gradle/` no lo toca el agente).
 
 ## Pruebas
-Nube, 2026-10-03 (bloque 11): `scripts/probar-logica.sh` 257 de 257 pruebas pasan en `feature/h8-integracion`. GitHub Actions: `Pruebas` y `APK` en verde en `feature/h8-integracion` (d1f292b); `chore/limpieza-h5-h7` sin ejecuciones (ver "Preguntas pendientes").
+Nube, 2026-10-03 (bloque 12): `scripts/probar-logica.sh` 262 de 262 pruebas pasan en `feature/h8-cierre`. GitHub Actions: `Pruebas` y `APK` en verde en `main` (ac64682, tras el pull request #20); en `feature/h8-cierre` ver el resultado en Actions (en curso al cerrar el bloque).
 
 ## Notas
 - `ExampleUnitTest` y `ExampleInstrumentedTest` son de la plantilla y se reemplazarán.
