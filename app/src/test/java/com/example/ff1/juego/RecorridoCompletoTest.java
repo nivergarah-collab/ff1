@@ -21,7 +21,7 @@ import org.junit.Test;
 public class RecorridoCompletoTest {
 
     private static void saltarEscena(Juego j) {
-        for (int i = 0; i < 50 && j.pantalla() instanceof PantallaEscena; i++) {
+        for (int i = 0; i < 50 && (j.pantalla() instanceof PantallaNombres || j.pantalla() instanceof PantallaEscena); i++) {
             j.pulsar(Boton.ACEPTAR);
         }
     }
@@ -33,6 +33,10 @@ public class RecorridoCompletoTest {
         assertFalse(j.hayGuardado());
 
         j.pulsar(Boton.ACEPTAR); // Nueva partida
+        assertTrue(j.pantalla() instanceof PantallaNombres);
+        for (int i = 0; i < 4; i++) {
+            j.pulsar(Boton.ACEPTAR); // cada héroe conserva el nombre por defecto
+        }
         assertTrue(j.pantalla() instanceof PantallaEscena); // apertura
         saltarEscena(j);
         Partida p = j.partida();

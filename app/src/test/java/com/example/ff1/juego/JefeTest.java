@@ -93,7 +93,7 @@ public class JefeTest {
         Pantalla mapa = j.pantalla();
         j.pulsar(Boton.ACEPTAR);
         assertTrue(j.pantalla() instanceof PantallaEscena);
-        for (int i = 0; i < 20 && j.pantalla() instanceof PantallaEscena; i++) {
+        for (int i = 0; i < 20 && (j.pantalla() instanceof PantallaNombres || j.pantalla() instanceof PantallaEscena); i++) {
             j.pulsar(Boton.ACEPTAR);
         }
         assertTrue(j.pantalla() instanceof PantallaCombate);
@@ -108,7 +108,7 @@ public class JefeTest {
         assertEquals("pozaluz", p.explorador().mapa().id);
         Escena e = new Escena();
         j.dibujar(e);
-        for (int i = 0; i < 20 && j.pantalla() instanceof PantallaEscena; i++) {
+        for (int i = 0; i < 20 && (j.pantalla() instanceof PantallaNombres || j.pantalla() instanceof PantallaEscena); i++) {
             j.pulsar(Boton.ACEPTAR);
         }
         assertEquals(mapa, j.pantalla());

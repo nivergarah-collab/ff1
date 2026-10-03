@@ -31,7 +31,7 @@ public class PaqueteMinimoTest {
     }
 
     private static void saltarEscena(Juego j) {
-        for (int i = 0; i < 20 && j.pantalla() instanceof PantallaEscena; i++) {
+        for (int i = 0; i < 20 && (j.pantalla() instanceof PantallaNombres || j.pantalla() instanceof PantallaEscena); i++) {
             j.pulsar(Boton.ACEPTAR);
         }
     }
@@ -43,7 +43,9 @@ public class PaqueteMinimoTest {
         j.dibujar(titulo);
         assertTrue(titulo.contieneTexto("El faro de la ensenada"));
 
-        j.pulsar(Boton.ACEPTAR); // Nueva partida: sin apertura, directo al mapa
+        j.pulsar(Boton.ACEPTAR); // Nueva partida
+        assertTrue(j.pantalla() instanceof PantallaNombres); // un solo héroe
+        j.pulsar(Boton.ACEPTAR); // sin apertura: directo al mapa
         assertTrue(j.pantalla() instanceof PantallaExploracion);
         Pantalla mapa = j.pantalla();
         Partida p = j.partida();

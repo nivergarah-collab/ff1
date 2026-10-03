@@ -90,6 +90,7 @@ Parámetros declarados: se listan aquí a medida que cada hito los añade.
 | `mundo.pasosMaximos` | entero | 1–999 | 30 (si es menor que el mínimo, se usa el mínimo) | H3 |
 | `juego.msMensaje` | entero | 100–5000 | 900 (milisegundos que se ve cada mensaje del combate) | H3.6 |
 | `juego.rapidoAlEmpezar` | entero | 0–1 | 0 (1 = el avance rápido empieza encendido en una partida nueva) | H3.6 |
+| `juego.largoNombre` | entero | 1–12 | 8 (letras como máximo al nombrar a un héroe en la partida nueva) | H8 |
 | `pueblo.ventaPorCiento` | entero | 0–100 | 50 (por ciento del precio que paga la tienda por un objeto del grupo) | H5 |
 
 Barra de tiempo: en cada tick, cada combatiente vivo que no espera turno suma `max(1, velocidad × velocidadBarra / 10)`; con la carga llena entra en la cola de turnos. Empates en un mismo tick: primero el que más se pasó y, a igualdad, el inscrito antes.
@@ -273,7 +274,7 @@ Partida nueva (`juego.Partida.nueva`), en `inicio.json`. Valida que el mapa exis
 |---|---|---|
 | `titulo` | texto | Opcional. Se muestra en la pantalla de título. |
 | `mapa` | texto | Id de un archivo de `mapas/`. El grupo aparece en su `inicio`. |
-| `grupo` | lista | 1–6 héroes: `clase` (id de combatiente con `bando` `heroe`) y `nombre`. |
+| `grupo` | lista | 1–6 héroes: `clase` (id de combatiente con `bando` `heroe`) y `nombre` (el que se propone en la pantalla de nombres de la partida nueva; el jugador puede cambiarlo). |
 | `objetos` | lista | Opcional. `id` de `objetos` y `cantidad` 1–999 (limitada por `inventario.maximoPorObjeto`). |
 | `oro` | entero | Opcional, 0–999999, defecto 0. |
 | `introduccion` | texto | Opcional. Id de una escena de `escenas/` que se muestra al empezar la partida nueva, antes del mapa. Si no existe o no es válida, se muestra la pantalla de error. |

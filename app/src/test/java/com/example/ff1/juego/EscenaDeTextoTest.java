@@ -83,6 +83,9 @@ public class EscenaDeTextoTest {
     public void laPartidaNuevaMuestraLaAperturaConLosNombresDelJugadorYLuegoElMapa() {
         Juego j = JuegoTest.nuevo(1);
         j.pulsar(Boton.ACEPTAR);
+        for (int i = 0; i < 4; i++) {
+            j.pulsar(Boton.ACEPTAR); // nombres por defecto
+        }
         assertTrue(j.pantalla() instanceof PantallaEscena);
         PantallaEscena p = (PantallaEscena) j.pantalla();
         Escena e = new Escena();

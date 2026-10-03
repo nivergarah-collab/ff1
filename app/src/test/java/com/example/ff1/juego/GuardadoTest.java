@@ -118,7 +118,7 @@ public class GuardadoTest {
         Juego j = new Juego(PaqueteDelJuego.fuente(), new AzarSemilla(1), almacen);
         assertFalse(j.hayGuardado());
         j.pulsar(Boton.ACEPTAR); // Nueva partida
-        for (int i = 0; i < 50 && j.pantalla() instanceof PantallaEscena; i++) {
+        for (int i = 0; i < 50 && (j.pantalla() instanceof PantallaNombres || j.pantalla() instanceof PantallaEscena); i++) {
             j.pulsar(Boton.ACEPTAR);
         }
         j.pulsar(Boton.ARRIBA); // (6, 5) → (6, 4) es la fuente: solo gira

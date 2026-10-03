@@ -71,7 +71,7 @@ Hito insertado por el usuario el 2026-10-02 (ver `decisiones.md`): el juego nece
 - [x] Prueba con un segundo paquete de contenido mínimo: el motor funciona sin cambiar código. (`app/src/test/resources/contenido-minimo`, "El faro de la ensenada", y `PaqueteMinimoTest`.)
 - [x] Actualizar `docs/contrato-de-datos.md` con lo que quedó (documentos obligatorios y opcionales, paquete mínimo, tipos de lugar, `juego.Guardado`, textos de la interfaz).
 - [ ] Recorrido completo en emulador (lo verifica el usuario; pasos en `docs/estado.md`).
-- [ ] Elegir los nombres de los héroes al empezar (punto 3 de `mision-mvp.md`, que faltaba: hoy salen de `inicio.json`). Pantalla de nombres en Java puro con rejilla de letras manejada con la cruceta, nombre por defecto el de `inicio.json`, antes de la apertura; con pruebas. Añadida en el bloque 11 al repasar la definición de terminado.
+- [x] Elegir los nombres de los héroes al empezar (punto 3 de `mision-mvp.md`, que faltaba: hoy salen de `inicio.json`). Pantalla de nombres en Java puro con rejilla de letras manejada con la cruceta, nombre por defecto el de `inicio.json`, antes de la apertura; con pruebas. Añadida en el bloque 11 al repasar la definición de terminado. Hecho en el bloque 12: `EditorNombre`, `PantallaNombres`, `juego.largoNombre` y `NombresTest`.
 - [ ] Refactorización, eliminación de código muerto, balance y README final. (Hecho en el bloque 11: guardado separado en `juego.Guardado`, registro de lugares, `Bando.contrario` quitado, tope del oro unificado, prueba `RecorridoCompletoTest` y balance del Soterrado. Queda el README final, tras los nombres.)
 
 ## Deuda técnica
