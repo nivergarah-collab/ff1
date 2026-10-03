@@ -76,3 +76,11 @@ Más reciente primero.
 
 ## 2026-10-03 · Vuelta a Opus (usuario)
 El usuario probó el APK con H5–H7 y funciona. La tarea programada vuelve a Opus: primero la limpieza tras H5–H7 (ver "Deuda técnica" de `docs/plan.md`) y luego H8.
+
+## 2026-10-03 · Bloque 11 (Opus)
+- **Guardado aparte:** `juego.Guardado` escribe y lee el documento `partida`; `Partida.guardar/cargar` se conservan como fachada para no cambiar a quien los usa. `Partida` expone a su paquete solo `crearHeroe`, `jefesDerrotados` y `restaurar`, que reemplaza el estado de una vez cuando el documento ya se validó entero.
+- **Registro de lugares:** los tipos de lugar están en `Mapa.TIPOS_LUGAR`; `Servicios` guarda cada apartado por tipo (todos heredan de `Servicios.Servicio`, con `id` y `nombre`) y `PantallaExploracion` registra qué abre cada tipo en un `Registro`. Un tipo nuevo se añade en esos tres sitios.
+- **Textos de la interfaz en el código (deuda aceptada):** llevar los textos de la tienda y la posada a datos exigía un documento nuevo, y la misión pedía no cambiar el contrato en la limpieza; quedan, como el resto de textos fijos de menús y combate, en el código. Los nombres de personas, lugares, objetos y escenas siempre vienen del paquete.
+- **Paquete mínimo como recurso de prueba:** el segundo paquete vive en `app/src/test/resources/contenido-minimo/`, fuera de los assets, para que no entre en el APK. Sirve de plantilla para empezar otro juego.
+- **Balance del jefe:** con una simulación (atacar sin más, 10 semillas por nivel) el Soterrado caía siempre a nivel 2. Ahora se vence a nivel 4–5 atacando y antes con magia y objetos, en línea con `investigacion-ritmo.md` (jefe superable a nivel 3–4 jugando bien). Los enemigos comunes no se tocaron.
+- **Nombres de los héroes:** al repasar la definición de terminado se vio que el punto 3 de la misión ("el jugador elige los nombres") no estaba hecho; se añadió como tarea de H8 antes de marcar el MVP listo.

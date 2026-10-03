@@ -4,6 +4,17 @@ Formato: más reciente primero, con fecha en `AAAA-MM-DD`.
 
 ## 2026-10-03
 
+### Añadido (bloque 11, H8)
+- Segundo paquete de contenido mínimo "El faro de la ensenada" (`app/src/test/resources/contenido-minimo/`) y `PaqueteMinimoTest`: el motor juega una partida entera con él sin cambiar código.
+- `RecorridoCompletoTest`: una partida de principio a fin con el paquete del juego, guardado y Continuar incluidos. 257 pruebas.
+- Contrato de datos: documentos obligatorios y opcionales, paquete mínimo de referencia, tipos de lugar y textos de la interfaz. Receta: tipo de lugar nuevo y cómo empezar un paquete.
+
+### Cambiado (bloque 11, limpieza tras H5–H7 y balance)
+- El guardado sale de `Partida` a `juego.Guardado` (mismo documento `partida` v1).
+- Lugares del mapa por registro (`Mapa.TIPOS_LUGAR`, `Servicios.servicio`, `PantallaExploracion.lugares()`) en vez de `if` por tipo.
+- Quitado `Bando.contrario` (sin uso); el tope del oro está en un solo sitio.
+- Balance: el Soterrado tiene vida 420, ataque 24 y defensa 10, y su Sacudida de piedra poder 30.
+
 ### Cambiado (usuario)
 - Tarea reanudada con Opus (EN CURSO) para la limpieza tras H5–H7 y el hito H8.
 
