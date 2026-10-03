@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Editor de parámetros · ff1</title>
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+  <header class="barra">
+    <h1>Editor de parámetros <span class="marca">ff1</span></h1>
+    <div class="carpeta" id="carpeta">Ninguna carpeta abierta</div>
+    <div class="acciones">
+      <button id="abrir" class="primario" type="button">Abrir carpeta de contenido…</button>
+      <button id="guardar" type="button" disabled>Guardar</button>
+      <button id="revisar" type="button" disabled>Revisar con el motor</button>
+    </div>
+    <div id="aviso" class="aviso" role="status" hidden></div>
+  </header>
+
+  <div class="cuerpo">
+    <nav class="lateral" aria-label="Documentos">
+      <h2>Documentos</h2>
+      <ul id="documentos" class="documentos"></ul>
+    </nav>
+
+    <main class="principal" id="principal">
+      <section class="bienvenida" id="bienvenida">
+        <h2>Cómo empezar</h2>
+        <ol>
+          <li>Pulsa <strong>Abrir carpeta de contenido…</strong> y elige <code>app/src/main/assets/contenido</code> (o la carpeta de otro paquete).</li>
+          <li>Elige <strong>configuracion.json</strong> a la izquierda y cambia los parámetros en el formulario.</li>
+          <li><strong>Guardar</strong> escribe el archivo y deja la versión anterior en <code>configuracion.json.bak</code>.</li>
+          <li><strong>Revisar con el motor</strong> te da el comando que valida la carpeta con las reglas reales del juego.</li>
+        </ol>
+        <p class="nota" id="sinApi" hidden>Este navegador no permite abrir carpetas. Usa Chrome, Edge u otro navegador basado en Chromium.</p>
+      </section>
+      <section id="editor" hidden></section>
+    </main>
+  </div>
+
+  <dialog id="dialogoRevisar">
+    <form method="dialog">
+      <h2>Revisar con el motor</h2>
+      <p>El navegador no puede ejecutar el juego. Corre este comando en la raíz del proyecto; valida la carpeta con las mismas reglas que usa el juego:</p>
+      <pre class="comando" id="comando"></pre>
+      <p><button type="button" id="copiarComando">Copiar comando</button></p>
+      <p>Luego carga aquí el <code>informe.json</code> para ver el resultado junto a los documentos:</p>
+      <p><input type="file" id="archivoInforme" accept=".json,application/json"></p>
+      <div id="resultadoInforme"></div>
+      <menu><button value="cerrar">Cerrar</button></menu>
+    </form>
+  </dialog>
+
+  <script src="esquema-configuracion.js"></script>
+  <script src="logica.js"></script>
+  <script src="almacen.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

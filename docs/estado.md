@@ -2,10 +2,10 @@
 
 ## Control
 - Estado del MVP: EN CURSO
-- Bloques ejecutados: 12 de 50
+- Bloques ejecutados: 13 de 50
 - Bloques seguidos sin avance: 0
 
-Última actualización: 2026-10-03 (usuario: nueva fase, editor de parámetros; el MVP queda terminado)
+Última actualización: 2026-10-03 (bloque 13, Sonnet: H9 y H10 terminados; sigue H11)
 
 ## Hecho
 - Proyecto movido a `Desktop\Android\ff1`.
@@ -44,11 +44,13 @@
 - Pull requests #19 (limpieza) y #20 (H8, primera parte) fusionados en `main` por el usuario.
 - Bloque 12 (Opus, H8 terminado, rama `feature/h8-cierre` desde `main`): el jugador elige el nombre de cada héroe al empezar una partida nueva (`EditorNombre`, `PantallaNombres`, `juego.largoNombre`; propone el de `inicio.json` con el cursor en "Fin", Cancelar borra); ventana de listas común `Estilo.desdeVentana` (combate, tienda y objetos se desplazan si la lista no cabe); README final; contrato y receta al día. 262 pruebas. **MVP listo para revisión.**
 - Autorizado por el usuario el 2026-10-02: límite de 50 bloques (antes 24), quitar el código nativo de la plantilla (ver `skills/01-trabajo-autonomo.md`) y bloques de hasta unos 25 minutos, una sesión por hora.
+- Bloque 13 (Sonnet, Fase 2: H9 y H10 terminados, rama `feature/h9-validador` desde `main`): **H9** `herramientas.ValidadorContenido` (Java puro, usa los cargadores reales del motor) y `scripts/validar-contenido.sh <carpeta> [--json]`: una línea por documento (`OK`/`ERROR`/`OMITIDO`), detalle con la ruta del campo solo en los errores, código de salida 0/1/2; `ValidadorContenidoTest` (paquete del juego, paquete mínimo, referencia rota, JSON mal formado, rango, documento ausente, salida JSON). `LectorArchivos` ahora lanza `FileNotFoundException` si falta el archivo y `CatalogoCombate.cargar` antepone el documento (`habilidades.json:`/`combatientes.json:`) a sus errores. **H10** `herramientas/editor/` (`index.html`, `estilo.css`, `app.js`, `logica.js`, `almacen.js`, `esquema-configuracion.js`, `LEEME.md`): abre la carpeta con la API de archivos, lista los documentos, formulario de `configuracion.json` con rango, descripción y valor por defecto de los 17 parámetros, validación al escribir, guardado con `.bak`, aviso de cambios sin guardar y cuadro "Revisar con el motor" (comando + carga de `informe.json`). `EsquemaConfiguracion` expone `nombres/esEntero/minimo/maximo/defecto` de solo lectura y `EsquemaEditorTest` compara el esquema del editor con el del motor. `scripts/probar-editor.sh` (node, sin dependencias): 23 pruebas, entre ellas que el motor acepta lo que el editor guarda (mínimos, máximos y un cambio normal). Humo en Chromium sin cabeza con una carpeta simulada: abrir, editar, error de rango, guardar y `.bak` correctos, sin errores de consola. 274 pruebas Java.
 
 ## Siguiente
-1. **Fase 2, editor de parámetros** (ver `docs/plan.md`): H9 (validador de contenido por línea de comandos), H10 (editor de la configuración), H11 (editor de contenido) y H12 (conexión con el juego). Rama `feature/h9-validador` desde `main`.
-2. Reglas: la herramienta va en `herramientas/editor/` sin dependencias; lo que guarda pasa la validación real del motor; no se cambia el contrato de datos de forma incompatible. Si el agente se atasca (2 bloques sin avance o `Pruebas` en rojo 2 bloques seguidos), pone `PAUSA: volver a Opus (motivo)`.
-3. Pixel art con modelos de personajes, monstruos y escenarios: fase posterior, requiere definir antes un contrato de arte.
+1. **H11 · Editor de contenido** (ver `docs/plan.md`), en una rama nueva `feature/h11-contenido` encadenada a `feature/h9-validador` si esta sigue sin fusionar. Pendiente de diseño: las tablas de `combatientes`, `habilidades`, `objetos`, `botin`, `encuentros` y `servicios` tienen campos anidados (`efecto`, `bonos`, `estado`, `golpeFuerte`, listas de ids); la idea es un modelo declarativo de columnas (`herramientas/editor/tablas.js`, con rutas tipo `efecto.poder`) y funciones puras para añadir, duplicar y borrar filas y detectar ids rotos, todo con pruebas de node; después la vista de balance (replicando las fórmulas de `Acciones` con una prueba que compare con el motor) y la vista de mapas y escenas.
+2. H12 (conexión con el juego) y cierre de la fase con `LISTO PARA REVISIÓN`.
+3. Cada dos hitos terminados toca un bloque de limpieza: H9 y H10 ya cumplen; hacerla antes de H12 (o al terminar H11).
+4. Pixel art: fase posterior, requiere un contrato de arte.
 
 ## Cómo probar el APK
 1. **Bajarlo:** en GitHub, pestaña **Actions** del repositorio → ejecución **APK** de la rama (`feature/h8-cierre`, o `main` cuando esté fusionada) → sección **Artifacts** → **ff1-debug-apk** (un .zip con el .apk; dura 14 días). Enlace directo a las ejecuciones: https://github.com/nivergarah-collab/ff1/actions/workflows/apk.yml
@@ -76,14 +78,14 @@ Limitaciones conocidas: una sola ranura de guardado; no se guarda a mitad de un 
 
 ## Ramas y pull requests pendientes
 Orden de fusión: de la más antigua a la más nueva, con "Merge commit".
-1. `feature/h8-cierre` (desde `main` tras el pull request #20): nombres de los héroes, ventana de listas común y README final. Pull request #21.
+1. `feature/h9-validador` (desde `main`, tras el pull request #22): H9 (validador de contenido) y H10 (editor de la configuración). Pull request abierto al cerrar el bloque 13 (ver abajo).
 
 ## Preguntas pendientes
 - Las ramas `chore/**` no disparan los flujos `Pruebas` ni `APK` (solo `main`, `feature/**` y `fix/**`); `chore/limpieza-h5-h7` no tiene ejecuciones, pero su contenido está incluido en `feature/h8-integracion`, que sí está en verde. Si se quiere CI en `chore/**`, lo añade el usuario en `.github/`.
 - `gradle/libs.versions.toml` conserva la entrada `games-activity`, ya sin uso; quitarla es opcional y lo decide el usuario (`gradle/` no lo toca el agente).
 
 ## Pruebas
-Nube, 2026-10-03 (bloque 12): `scripts/probar-logica.sh` 262 de 262 pruebas pasan en `feature/h8-cierre`. GitHub Actions: `Pruebas` y `APK` en verde en `main` (ac64682, tras el pull request #20); en `feature/h8-cierre`, `Pruebas` y `APK` en verde (7a2a6bc). Un push anterior (3c48504) dejó `Pruebas` en rojo porque el README nuevo había perdido las secciones que exige `scripts/verificar-estructura.ps1`; corregido en el commit siguiente.
+Nube, 2026-10-03 (bloque 13): `scripts/probar-logica.sh` 274 de 274 pruebas pasan en `feature/h9-validador`; `scripts/probar-editor.sh` 23 de 23 (node 22). GitHub Actions en `feature/h9-validador` (3584aee): `Pruebas` y `APK` en verde. Pull request #23 abierto.
 
 ## Notas
 - `ExampleUnitTest` y `ExampleInstrumentedTest` son de la plantilla y se reemplazarán.

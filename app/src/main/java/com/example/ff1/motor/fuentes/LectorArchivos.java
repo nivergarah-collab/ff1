@@ -26,6 +26,9 @@ public final class LectorArchivos implements LectorTexto {
         if (!f.toPath().startsWith(base.toPath())) {
             throw new ErrorDeDatos(ruta + ": ruta fuera de la carpeta de contenido");
         }
+        if (!f.isFile()) {
+            throw new java.io.FileNotFoundException(ruta);
+        }
         return new String(Files.readAllBytes(f.toPath()), StandardCharsets.UTF_8);
     }
 }
