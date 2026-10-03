@@ -75,8 +75,7 @@ Limitaciones conocidas: una sola ranura de guardado; no se guarda a mitad de un 
 
 ## Ramas y pull requests pendientes
 Orden de fusión: de la más antigua a la más nueva, con "Merge commit".
-1. `chore/limpieza-h5-h7` (parte de `main`): limpieza tras H5–H7 (y el primer commit de H8). Pull request: ver abajo.
-2. `feature/h8-integracion` (parte de `chore/limpieza-h5-h7`): H8 en curso; su pull request se abre al terminar el hito.
+1. `feature/h8-integracion` (parte de `chore/limpieza-h5-h7`, ya fusionada en `main` con el pull request #19): H8 en curso; su pull request se abre al terminar el hito.
 
 ## Preguntas pendientes
 - Las ramas `chore/**` no disparan los flujos `Pruebas` ni `APK` (solo `main`, `feature/**` y `fix/**`); `chore/limpieza-h5-h7` no tiene ejecuciones, pero su contenido está incluido en `feature/h8-integracion`, que sí está en verde. Si se quiere CI en `chore/**`, lo añade el usuario en `.github/`.
