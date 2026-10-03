@@ -73,7 +73,7 @@
       "nombre": "Sacudida de piedra",
       "tipo": "danio",
       "coste": 0,
-      "poder": 24,
+      "poder": 30,
       "objetivo": "enemigo"
     }
   ]

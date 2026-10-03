@@ -2,10 +2,10 @@
 
 ## Control
 - Estado del MVP: EN CURSO
-- Bloques ejecutados: 10 de 50
+- Bloques ejecutados: 11 de 50
 - Bloques seguidos sin avance: 0
 
-Última actualización: 2026-10-03 (usuario: APK de H5–H7 probado y funcionando; reanudado con Opus para la limpieza y H8)
+Última actualización: 2026-10-03, bloque 11 (Opus: limpieza tras H5–H7 y casi todo H8)
 
 ## Hecho
 - Proyecto movido a `Desktop\Android\ff1`.
@@ -38,11 +38,15 @@
 - Pull requests #14 (H3.6) y #15 (H4) fusionados en `main` por el usuario.
 - Bloque 9 (Sonnet, limpieza tras H3.6 y H4, rama `chore/limpieza-h36-h4` desde `main`): `Menu.vuelta` y `Estilo.marcador` sustituyen el giro de cursor y el `>` repetidos; prueba `MenuCursorTest`. 222 pruebas.
 - Bloque 10 (Sonnet, H5, H6 y H7 terminados, rama `feature/h5-pueblo` desde `chore/limpieza-h36-h4`): Pozaluz (mapa con tienda de Lupe, posada de Casilda y dos vecinos; la partida empieza ahí) con salidas entre mapas (`Mapa.Salida`, `requiere` para puertas con llave) y lugares (`Mapa.Lugar`), `servicios.json` (`pueblo.Servicios`), compra y venta (`pueblo.ventaPorCiento`), posada y escenas de vecinos; la Cantera Hundida (puerta de hierro con la Llave de cantera, galerías alta y baja con escalera y tres enemigos nuevos); el Soterrado (jefe con `golpeFuerte` cada 3 turnos, escena previa, combate sin huida y escena `cierre` que devuelve al grupo a Pozaluz); guardado y carga (`Partida.guardar/cargar`, documento `partida` v1, `AlmacenArchivos`, Guardar en el menú y Continuar en el título). 254 pruebas.
+- Pull requests #16, #17 (H5–H7) y #18 fusionados en `main` por el usuario; reanudado con Opus.
+- Bloque 11 (Opus, limpieza tras H5–H7, rama `chore/limpieza-h5-h7` desde `main`): guardado separado de `Partida` en `juego.Guardado`; registro de lugares en vez de `if` por tipo (`Mapa.TIPOS_LUGAR`, `Servicios.Servicio`/`servicio(lugar)`, `PantallaExploracion.lugares()`); `Bando.contrario` sin uso quitado; tope del oro en `Partida.ORO_MAXIMO`. Sin cambios de comportamiento.
+- Bloque 11 (Opus, H8, rama `feature/h8-integracion` desde `chore/limpieza-h5-h7`): segundo paquete de contenido mínimo "El faro de la ensenada" en `app/src/test/resources/contenido-minimo/` y `PaqueteMinimoTest` (partida entera sin tocar código); `RecorridoCompletoTest` (título → apertura → Pozaluz → encuentro → puerta con llave → jefe → cierre → guardar → Continuar); contrato y receta al día; balance del Soterrado (vida 420, ataque 24, defensa 10, Sacudida 30: atacando sin más se vence a nivel 4–5, antes bastaba el 2). 257 pruebas. Nota: el primer commit de H8 (paquete mínimo) quedó también en la rama de limpieza, que se fusiona antes.
 - Autorizado por el usuario el 2026-10-02: límite de 50 bloques (antes 24), quitar el código nativo de la plantilla (ver `skills/01-trabajo-autonomo.md`) y bloques de hasta unos 25 minutos, una sesión por hora.
 
 ## Siguiente
-1. **Pausa para volver a Opus:** H5, H6 y H7 están terminados. Queda **H8** (segundo paquete de contenido mínimo que pruebe el motor sin cambiar código, y contrato al día) y, antes, una **limpieza tras H5–H7** (ver "Deuda técnica" de `docs/plan.md`).
-2. El usuario prueba el APK de `feature/h5-pueblo` (ver abajo), fusiona en orden los pull requests pendientes y pone el Control en `EN CURSO` para seguir.
+1. **Elegir los nombres de los héroes** (punto 3 de la misión, faltaba; nueva tarea de H8 en `docs/plan.md`).
+2. README final y revisión de la definición de terminado; luego pull request de H8 y estado `LISTO PARA REVISIÓN`.
+3. El usuario puede ir fusionando en orden los pull requests de abajo.
 
 La ruta completa está en `docs/plan.md`.
 
@@ -71,14 +75,14 @@ Limitaciones conocidas: una sola ranura de guardado; no se guarda a mitad de un 
 
 ## Ramas y pull requests pendientes
 Orden de fusión: de la más antigua a la más nueva, con "Merge commit".
-1. `chore/limpieza-h36-h4` (parte de `main`): limpieza de las pantallas del menú. Pull request #16 https://github.com/nivergarah-collab/ff1/pull/16
-2. `feature/h5-pueblo` (parte de `chore/limpieza-h36-h4`): H5 Pozaluz, H6 Cantera y jefe, H7 guardado. Pull request #17 https://github.com/nivergarah-collab/ff1/pull/17
+1. `feature/h8-integracion` (parte de `chore/limpieza-h5-h7`, ya fusionada en `main` con el pull request #19): H8 en curso; su pull request se abre al terminar el hito.
 
 ## Preguntas pendientes
+- Las ramas `chore/**` no disparan los flujos `Pruebas` ni `APK` (solo `main`, `feature/**` y `fix/**`); `chore/limpieza-h5-h7` no tiene ejecuciones, pero su contenido está incluido en `feature/h8-integracion`, que sí está en verde. Si se quiere CI en `chore/**`, lo añade el usuario en `.github/`.
 - `gradle/libs.versions.toml` conserva la entrada `games-activity`, ya sin uso; quitarla es opcional y lo decide el usuario (`gradle/` no lo toca el agente).
 
 ## Pruebas
-Nube, 2026-10-02 (bloque 10): `scripts/probar-logica.sh` 254 de 254 pruebas pasan en `feature/h5-pueblo`. GitHub Actions: `Pruebas` y `APK` en verde en `feature/h5-pueblo` (confirmación 8b19a99, antes de este ajuste de documentos).
+Nube, 2026-10-03 (bloque 11): `scripts/probar-logica.sh` 257 de 257 pruebas pasan en `feature/h8-integracion`. GitHub Actions: `Pruebas` y `APK` en verde en `feature/h8-integracion` (d1f292b); `chore/limpieza-h5-h7` sin ejecuciones (ver "Preguntas pendientes").
 
 ## Notas
 - `ExampleUnitTest` y `ExampleInstrumentedTest` son de la plantilla y se reemplazarán.

@@ -262,7 +262,7 @@ Grupos de enemigos por zona (`mundo.TablaEncuentros`), en `encuentros.json`. `mu
 | `grupos[].peso` | entero | 1–100, defecto 1. Probabilidad relativa dentro de la zona. |
 
 ### `inicio` · versión 1
-Partida nueva (`juego.Partida.nueva`), en `inicio.json`. Valida que el mapa exista y que sus zonas estén en `encuentros`.
+Partida nueva (`juego.Partida.nueva`), en `inicio.json`. Valida que el mapa exista y que sus zonas estén en `encuentros`, y recorre todos los mapas enlazados por `salidas` (y los de `regreso` de los jefes) para validarlos antes de empezar.
 ```json
 { "tipo": "inicio", "version": 1, "titulo": "Crónica de la Cantera", "mapa": "campo",
   "grupo": [ { "clase": "guardian", "nombre": "Bruna" } ],
@@ -279,7 +279,7 @@ Partida nueva (`juego.Partida.nueva`), en `inicio.json`. Valida que el mapa exis
 | `introduccion` | texto | Opcional. Id de una escena de `escenas/` que se muestra al empezar la partida nueva, antes del mapa. Si no existe o no es válida, se muestra la pantalla de error. |
 
 ### `partida` · versión 1
-Guardado (`Partida.guardar` / `Partida.cargar`), un documento JSON en una ranura del `Almacen` (el juego usa la ranura `partida1`; en Android, `AlmacenArchivos` sobre `getFilesDir()`). Se carga sobre una partida nueva del mismo paquete: lo que el guardado no dice queda como en `inicio.json`. Si algo no vale, se rechaza con la ruta del campo y el juego muestra la pantalla de error sin cambiar nada.
+Guardado (`Partida.guardar` / `Partida.cargar`, formato en `juego.Guardado`), un documento JSON en una ranura del `Almacen` (el juego usa la ranura `partida1`; en Android, `AlmacenArchivos` sobre `getFilesDir()`). Se carga sobre una partida nueva del mismo paquete: lo que el guardado no dice queda como en `inicio.json`. Si algo no vale, se rechaza con la ruta del campo y el juego muestra la pantalla de error sin cambiar nada.
 ```json
 { "tipo": "partida", "version": 1, "mapa": "pozaluz", "x": 6, "y": 5, "oro": 50, "jefes": [],
   "grupo": [ { "clase": "guardian", "nombre": "Bruna", "experiencia": 0, "vida": 48, "magia": 0,
@@ -314,3 +314,9 @@ Marcadores: en `texto` y `quien`, `{heroe:<clase>}` se sustituye por el nombre q
 
 ### Tipos de contenido de juego
 Documentados arriba: `servicios` (tiendas, posadas, vecinos y jefes).
+
+### Tipos de lugar
+Los `tipo` de `mapa.lugares` están en `Mapa.TIPOS_LUGAR`; cada uno tiene su apartado en `servicios` (`Servicios`, por tipo) y su acción en el registro de `PantallaExploracion.lugares()`. Un tipo nuevo se añade en esos tres sitios (ver `receta-de-extension.md`, 5b).
+
+### Textos de la interfaz
+Los textos fijos de menús y mensajes (por ejemplo "No te alcanza el oro.") siguen en el código (`juego.Mensajes` y cada `Pantalla*`); los nombres de personas, lugares, objetos y escenas vienen siempre del paquete. Pasarlos a un documento propio quedó como deuda aceptada del MVP (ver `plan.md`).
