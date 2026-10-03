@@ -68,7 +68,7 @@ Hito insertado por el usuario el 2026-10-02 (ver `decisiones.md`): el juego nece
 - [x] Guardar y cargar partida, con pruebas de ida y vuelta (`Partida.guardar/cargar`, `AlmacenArchivos`, Guardar en el menú y Continuar en el título).
 
 ## H8 · Integración y limpieza
-- [ ] Prueba con un segundo paquete de contenido mínimo: el motor funciona sin cambiar código.
+- [x] Prueba con un segundo paquete de contenido mínimo: el motor funciona sin cambiar código. (`app/src/test/resources/contenido-minimo`, "El faro de la ensenada", y `PaqueteMinimoTest`.)
 - [ ] Actualizar `docs/contrato-de-datos.md` con lo que quedó.
 - [ ] Recorrido completo en emulador (lo verifica el usuario).
 - [ ] Refactorización, eliminación de código muerto, balance y README final.

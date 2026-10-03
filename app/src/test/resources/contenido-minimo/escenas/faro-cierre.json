@@ -1,0 +1,8 @@
+{
+  "tipo": "escena",
+  "version": 1,
+  "id": "faro-cierre",
+  "lineas": [
+    { "texto": "La lámpara vuelve a girar. A lo lejos, una vela responde." }
+  ]
+}

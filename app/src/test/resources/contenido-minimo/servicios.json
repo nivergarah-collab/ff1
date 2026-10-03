@@ -1,0 +1,9 @@
+{
+  "tipo": "servicios",
+  "version": 1,
+  "jefes": [
+    { "id": "farero", "nombre": "La puerta del faro", "enemigos": ["farero-hueco"],
+      "escenaPrevia": "faro-previa", "escenaFinal": "faro-cierre",
+      "regreso": { "mapa": "playa", "x": 1, "y": 3 } }
+  ]
+}

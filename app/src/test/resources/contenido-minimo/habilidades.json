@@ -1,0 +1,8 @@
+{
+  "tipo": "habilidades",
+  "version": 1,
+  "lista": [
+    { "id": "destello", "nombre": "Destello", "tipo": "danio", "coste": 3, "poder": 12, "objetivo": "enemigo" },
+    { "id": "ola-de-sal", "nombre": "Ola de sal", "tipo": "danio", "coste": 0, "poder": 14, "objetivo": "enemigo" }
+  ]
+}

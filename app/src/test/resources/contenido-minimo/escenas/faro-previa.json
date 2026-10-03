@@ -1,0 +1,9 @@
+{
+  "tipo": "escena",
+  "version": 1,
+  "id": "faro-previa",
+  "lineas": [
+    { "texto": "La puerta del faro cruje. Dentro, algo sin cara sube la escalera." },
+    { "quien": "{heroe:vigia}", "texto": "Si apaga la luz, los barcos no vuelven." }
+  ]
+}

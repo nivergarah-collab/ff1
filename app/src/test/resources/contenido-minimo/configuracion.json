@@ -1,0 +1,9 @@
+{
+  "tipo": "configuracion",
+  "version": 1,
+  "valores": {
+    "combate.ticksPorPaso": 2,
+    "mundo.pasosMinimos": 3,
+    "mundo.pasosMaximos": 6
+  }
+}
