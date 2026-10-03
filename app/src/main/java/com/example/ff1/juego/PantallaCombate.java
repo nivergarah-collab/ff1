@@ -406,7 +406,7 @@ public final class PantallaCombate implements Pantalla {
     /** Título y una ventana de {@link #VISIBLES} opciones que sigue al cursor. */
     private void lista(Escena e, int x, int y, String titulo, List<String> opciones, List<Boolean> hab) {
         e.texto(x, y, titulo, Estilo.LETRA, Estilo.RESALTE);
-        int desde = Math.max(0, Math.min(cursor - VISIBLES + 1, opciones.size() - VISIBLES));
+        int desde = Estilo.desdeVentana(cursor, opciones.size(), VISIBLES);
         int hasta = Math.min(opciones.size(), desde + VISIBLES);
         Estilo.menu(e, x, y + Estilo.LINEA, opciones.subList(desde, hasta), cursor - desde,
                 hab == null ? null : hab.subList(desde, hasta));

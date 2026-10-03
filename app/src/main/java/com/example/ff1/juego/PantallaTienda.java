@@ -14,6 +14,9 @@ import java.util.List;
  */
 public final class PantallaTienda implements Pantalla {
 
+    /** Filas de la lista que caben en la ventana; con más, la lista se desplaza con el cursor. */
+    static final int VISIBLES = 11;
+
     private final Juego juego;
     private final Partida partida;
     private final Servicios.Tienda tienda;
@@ -107,9 +110,10 @@ public final class PantallaTienda implements Pantalla {
         if (ids.isEmpty()) {
             e.texto(16, 64, vendiendo ? "No llevas nada." : "Sin existencias.", Estilo.LETRA, Estilo.APAGADO);
         }
-        for (int i = 0; i < ids.size(); i++) {
+        int desde = Estilo.desdeVentana(cursor, ids.size(), VISIBLES);
+        for (int i = desde; i < Math.min(ids.size(), desde + VISIBLES); i++) {
             DefinicionObjeto o = partida.objetos().objeto(ids.get(i));
-            int yy = 60 + i * Estilo.LINEA;
+            int yy = 60 + (i - desde) * Estilo.LINEA;
             int precio = vendiendo ? partida.precioVenta(o.id) : o.precio;
             boolean activo = vendiendo ? precio > 0 : precio <= partida.oro();
             int color = i == cursor ? Estilo.RESALTE : activo ? Estilo.TEXTO : Estilo.APAGADO;
