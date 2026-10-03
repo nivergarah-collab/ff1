@@ -1,0 +1,11 @@
+{
+  "tipo": "objetos",
+  "version": 1,
+  "ranuras": ["arma"],
+  "lista": [
+    { "id": "sal-de-faro", "nombre": "Sal de faro", "categoria": "consumible", "precio": 10,
+      "efecto": { "tipo": "curacion", "poder": 20, "objetivo": "aliado" } },
+    { "id": "remo-viejo", "nombre": "Remo viejo", "categoria": "equipo", "precio": 30, "ranura": "arma",
+      "bonos": { "ataque": 3 }, "clases": ["vigia"] }
+  ]
+}

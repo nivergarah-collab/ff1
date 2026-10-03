@@ -1,0 +1,7 @@
+{
+  "tipo": "encuentros",
+  "version": 1,
+  "zonas": [
+    { "zona": "arena", "grupos": [ { "enemigos": ["cangrejo-gris"], "peso": 1 } ] }
+  ]
+}

@@ -1,6 +1,7 @@
 package com.example.ff1.mundo;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -78,6 +79,9 @@ public final class Mapa {
     public static final String LUGAR_POSADA = "posada";
     public static final String LUGAR_VECINO = "vecino";
     public static final String LUGAR_JEFE = "jefe";
+    /** Tipos de lugar que entiende el motor; cada uno tiene su apartado en {@code servicios}. */
+    public static final List<String> TIPOS_LUGAR = Collections.unmodifiableList(
+            Arrays.asList(LUGAR_TIENDA, LUGAR_POSADA, LUGAR_VECINO, LUGAR_JEFE));
 
     public final String id;
     public final int ancho;
@@ -171,8 +175,7 @@ public final class Mapa {
                 if (!m.dentro(lx, ly)) {
                     throw new ErrorDeDatos(n.ruta() + ": (" + lx + ", " + ly + ") está fuera del mapa");
                 }
-                if (!tipo.equals(LUGAR_TIENDA) && !tipo.equals(LUGAR_POSADA) && !tipo.equals(LUGAR_VECINO)
-                        && !tipo.equals(LUGAR_JEFE)) {
+                if (!TIPOS_LUGAR.contains(tipo)) {
                     throw new ErrorDeDatos(n.ruta() + ".tipo: \"" + tipo + "\" no es tienda, posada, vecino ni jefe");
                 }
                 m.lugares.add(new Lugar(lx, ly, tipo, n.texto("ref")));

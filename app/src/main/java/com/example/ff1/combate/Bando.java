@@ -17,10 +17,6 @@ public enum Bando {
         return clave;
     }
 
-    public Bando contrario() {
-        return this == HEROE ? ENEMIGO : HEROE;
-    }
-
     /** Convierte el texto de los datos; {@code ruta} se usa en el mensaje de error. */
     public static Bando desde(String texto, String ruta) {
         for (Bando b : values()) {

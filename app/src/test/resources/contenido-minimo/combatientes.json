@@ -1,0 +1,13 @@
+{
+  "tipo": "combatientes",
+  "version": 1,
+  "lista": [
+    { "id": "vigia", "nombre": "Vigía", "bando": "heroe", "vida": 60, "magia": 10, "ataque": 14,
+      "defensa": 8, "poder": 6, "velocidad": 10, "habilidades": ["destello"] },
+    { "id": "cangrejo-gris", "nombre": "Cangrejo gris", "bando": "enemigo", "vida": 10, "ataque": 5,
+      "defensa": 2, "velocidad": 5, "experiencia": 6, "oro": 4 },
+    { "id": "farero-hueco", "nombre": "El farero hueco", "bando": "enemigo", "vida": 40, "ataque": 8,
+      "defensa": 3, "velocidad": 6, "experiencia": 30, "oro": 25,
+      "golpeFuerte": { "cada": 2, "habilidad": "ola-de-sal" } }
+  ]
+}

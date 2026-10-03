@@ -1,0 +1,12 @@
+{
+  "tipo": "inicio",
+  "version": 1,
+  "titulo": "El faro de la ensenada",
+  "mapa": "playa",
+  "grupo": [
+    { "clase": "vigia", "nombre": "Nemo" }
+  ],
+  "objetos": [
+    { "id": "sal-de-faro", "cantidad": 2 }
+  ]
+}

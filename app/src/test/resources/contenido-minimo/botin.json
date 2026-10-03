@@ -1,0 +1,7 @@
+{
+  "tipo": "botin",
+  "version": 1,
+  "lista": [
+    { "enemigo": "cangrejo-gris", "objetos": [ { "id": "remo-viejo", "probabilidad": 100 } ] }
+  ]
+}

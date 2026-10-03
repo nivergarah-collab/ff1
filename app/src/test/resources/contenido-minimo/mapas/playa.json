@@ -1,0 +1,22 @@
+{
+  "tipo": "mapa",
+  "version": 1,
+  "id": "playa",
+  "leyenda": {
+    ".": { "nombre": "arena", "color": "#D8C38A", "pasable": true, "zona": "arena" },
+    "=": { "nombre": "muelle", "color": "#8A6A44", "pasable": true },
+    "~": { "nombre": "mar", "color": "#2F5D8C", "pasable": false },
+    "F": { "nombre": "faro", "color": "#E8E8E8", "pasable": false }
+  },
+  "filas": [
+    "~~~~~~",
+    "~..F.~",
+    "~....~",
+    "~=...~",
+    "~~~~~~"
+  ],
+  "inicio": { "x": 1, "y": 3 },
+  "lugares": [
+    { "x": 3, "y": 1, "tipo": "jefe", "ref": "farero" }
+  ]
+}

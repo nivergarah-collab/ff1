@@ -26,53 +26,53 @@ public final class Servicios {
     public static final String TIPO = "servicios";
     public static final int VERSION = 1;
 
-    public static final class Tienda {
+    /** Lo común a todo servicio que un lugar del mapa puede referir. */
+    public abstract static class Servicio {
         public final String id;
         public final String nombre;
+
+        Servicio(String id, String nombre) {
+            this.id = id;
+            this.nombre = nombre;
+        }
+    }
+
+    public static final class Tienda extends Servicio {
         public final String vendedor;
         /** Ids de objetos que vende, en orden. */
         public final List<String> objetos;
 
         Tienda(String id, String nombre, String vendedor, List<String> objetos) {
-            this.id = id;
-            this.nombre = nombre;
+            super(id, nombre);
             this.vendedor = vendedor;
             this.objetos = Collections.unmodifiableList(objetos);
         }
     }
 
-    public static final class Posada {
-        public final String id;
-        public final String nombre;
+    public static final class Posada extends Servicio {
         public final String posadero;
         /** Oro que cuesta una noche. */
         public final int precio;
 
         Posada(String id, String nombre, String posadero, int precio) {
-            this.id = id;
-            this.nombre = nombre;
+            super(id, nombre);
             this.posadero = posadero;
             this.precio = precio;
         }
     }
 
-    public static final class Vecino {
-        public final String id;
-        public final String nombre;
+    public static final class Vecino extends Servicio {
         /** Id de una escena de {@code escenas/}. */
         public final String escena;
 
         Vecino(String id, String nombre, String escena) {
-            this.id = id;
-            this.nombre = nombre;
+            super(id, nombre);
             this.escena = escena;
         }
     }
 
     /** Encuentro único con escena previa, combate sin huida y escena final. */
-    public static final class Jefe {
-        public final String id;
-        public final String nombre;
+    public static final class Jefe extends Servicio {
         public final List<String> enemigos;
         public final String escenaPrevia;
         public final String escenaFinal;
@@ -82,8 +82,7 @@ public final class Servicios {
 
         Jefe(String id, String nombre, List<String> enemigos, String escenaPrevia, String escenaFinal,
                 String regresoMapa, int regresoX, int regresoY) {
-            this.id = id;
-            this.nombre = nombre;
+            super(id, nombre);
             this.enemigos = Collections.unmodifiableList(enemigos);
             this.escenaPrevia = escenaPrevia;
             this.escenaFinal = escenaFinal;
@@ -98,7 +97,14 @@ public final class Servicios {
     private final Map<String, Posada> posadas = new LinkedHashMap<>();
     private final Map<String, Vecino> vecinos = new LinkedHashMap<>();
 
+    /** Tipo de lugar del mapa → servicios de ese tipo, por id. */
+    private final Map<String, Map<String, ? extends Servicio>> porTipo = new LinkedHashMap<>();
+
     private Servicios() {
+        porTipo.put(Mapa.LUGAR_TIENDA, tiendas);
+        porTipo.put(Mapa.LUGAR_POSADA, posadas);
+        porTipo.put(Mapa.LUGAR_VECINO, vecinos);
+        porTipo.put(Mapa.LUGAR_JEFE, jefes);
     }
 
     /** Sin servicios (paquete sin {@code servicios.json}). */
@@ -171,25 +177,16 @@ public final class Servicios {
     /** Comprueba que cada lugar del mapa apunta a un servicio que existe. */
     public void validarMapa(Mapa mapa) {
         for (Mapa.Lugar l : mapa.lugares()) {
-            boolean ok;
-            switch (l.tipo) {
-                case Mapa.LUGAR_TIENDA:
-                    ok = tiendas.containsKey(l.ref);
-                    break;
-                case Mapa.LUGAR_POSADA:
-                    ok = posadas.containsKey(l.ref);
-                    break;
-                case Mapa.LUGAR_JEFE:
-                    ok = jefes.containsKey(l.ref);
-                    break;
-                default:
-                    ok = vecinos.containsKey(l.ref);
-            }
-            if (!ok) {
+            if (!porTipo.get(l.tipo).containsKey(l.ref)) {
                 throw new ErrorDeDatos("mapas/" + mapa.id + ".lugares: " + l.tipo + " \"" + l.ref
                         + "\" no está en servicios");
             }
         }
+    }
+
+    /** Servicio al que apunta un lugar del mapa (para su nombre). */
+    public Servicio servicio(Mapa.Lugar l) {
+        return buscar(porTipo.get(l.tipo), l.ref, l.tipo);
     }
 
     public Tienda tienda(String id) {

@@ -1,0 +1,8 @@
+{
+  "tipo": "progresion",
+  "version": 1,
+  "experiencia": [0, 8, 20, 40],
+  "clases": [
+    { "id": "vigia", "crecimiento": { "vida": 5, "magia": 1, "ataque": 2, "defensa": 1, "poder": 1, "velocidad": 0 } }
+  ]
+}
