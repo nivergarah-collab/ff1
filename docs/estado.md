@@ -84,7 +84,7 @@ Limitaciones conocidas: una sola ranura de guardado; no se guarda a mitad de un 
 
 ## Ramas y pull requests pendientes
 Orden de fusión: de la más antigua a la más nueva, con "Merge commit".
-1. `feature/h8-cierre` (desde `main` tras el pull request #20): nombres de los héroes, ventana de listas común y README final. Pull request abierto al cerrar el bloque 12.
+1. `feature/h8-cierre` (desde `main` tras el pull request #20): nombres de los héroes, ventana de listas común y README final. Pull request #21.
 
 ## Preguntas pendientes
 - Las ramas `chore/**` no disparan los flujos `Pruebas` ni `APK` (solo `main`, `feature/**` y `fix/**`); `chore/limpieza-h5-h7` no tiene ejecuciones, pero su contenido está incluido en `feature/h8-integracion`, que sí está en verde. Si se quiere CI en `chore/**`, lo añade el usuario en `.github/`.
