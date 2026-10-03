@@ -91,3 +91,6 @@ El usuario probó el APK con H5–H7 y funciona. La tarea programada vuelve a Op
 - **Accesos genéricos de `Nodo` sin uso (`esNulo`, `booleanoO`, `decimalO`):** se conservan porque forman la interfaz del lector de datos del motor, pensada para otros paquetes; no son código muerto del juego.
 - **MVP listo para revisión:** se cumplen los 8 puntos de la definición de terminado salvo la confirmación de GitHub Actions en la última rama, que se anota en `docs/estado.md`, y el recorrido en emulador, que verifica el usuario.
 
+
+## 2026-10-03 · Fase 2: editor de parámetros (usuario)
+Tras terminar el MVP, el usuario eligió una interfaz paralela que adapta parámetros (opción 1) antes que el pixel art (opción 2). Se hace como herramienta aparte del juego (`herramientas/editor/`, HTML y JavaScript sin dependencias), con validación real del motor por línea de comandos. El pixel art queda para una fase posterior, con un contrato de arte previo.
