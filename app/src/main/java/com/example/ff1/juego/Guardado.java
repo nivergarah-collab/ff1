@@ -118,7 +118,7 @@ final class Guardado {
             p.servicios().jefe(j.comoTexto());
             vencidos.add(j.comoTexto());
         }
-        int oro = Documentos.rango(doc, "oro", 0, 999_999);
+        int oro = Documentos.rango(doc, "oro", 0, Partida.ORO_MAXIMO);
         Configuracion ajustes = p.config().actual();
         if (doc.tiene("ajustes")) {
             Nodo na = doc.objeto("ajustes");

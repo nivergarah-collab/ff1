@@ -54,6 +54,8 @@ public final class Partida {
 
     public static final String TIPO_INICIO = "inicio";
     public static final int VERSION_INICIO = 1;
+    /** Tope del oro (el mismo que admiten {@code inicio} y {@code partida}). */
+    static final int ORO_MAXIMO = 999_999;
 
     /** Lo que dejó un combate al terminar. */
     public static final class Desenlace {
@@ -154,7 +156,7 @@ public final class Partida {
             }
         }
         Guion introduccion = inicio.tiene("introduccion") ? Guion.cargar(fuente, inicio.texto("introduccion")) : null;
-        int oro = Documentos.rangoO(inicio, "oro", 0, 999_999, 0);
+        int oro = Documentos.rangoO(inicio, "oro", 0, ORO_MAXIMO, 0);
         Acciones acciones = new Acciones(config, azar, tipos, estados);
         Partida p = new Partida(fuente, tabla, servicios, config, azar, catalogo, objetos, botin, progresion, acciones, tipos, grupo,
                 inventario, new Explorador(mapa), new Encuentros(config, tabla, azar), introduccion, oro);
@@ -297,7 +299,7 @@ public final class Partida {
             return Venta.NO_VENDIBLE;
         }
         inventario.quitar(idObjeto, 1);
-        oro = (int) Math.min(999_999L, (long) oro + precio);
+        sumarOro(precio);
         return Venta.HECHA;
     }
 
@@ -373,6 +375,11 @@ public final class Partida {
 
     public int oro() {
         return oro;
+    }
+
+    /** Suma oro sin pasar del tope que admite el guardado. */
+    private void sumarOro(int cantidad) {
+        oro = (int) Math.min(ORO_MAXIMO, (long) oro + cantidad);
     }
 
     /** Si el objeto se puede usar en combate (revivir, por ejemplo, solo vale fuera de él). */
@@ -581,7 +588,7 @@ public final class Partida {
         }
         Recompensa r = combate.recompensa();
         Map<Heroe, Integer> niveles = Reparto.experiencia(grupo, r);
-        oro = (int) Math.min(999_999L, (long) oro + r.oro);
+        sumarOro(r.oro);
         Map<String, Integer> tirado = botin.tirar(combate.enemigos(), azar);
         TablaBotin.recoger(tirado, inventario);
         return new Desenlace(combate.estado(), r, niveles, new LinkedHashMap<>(tirado));
