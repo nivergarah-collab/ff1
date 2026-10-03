@@ -5,7 +5,7 @@ Juego de rol por turnos para Android al estilo de los RPG clásicos, con histori
 ## Estado
 MVP completo, listo para revisión: título (nueva partida y continuar), elección de los nombres del grupo, escenas de texto, pueblo con tienda, posada y vecinos, mapa exterior con encuentros aleatorios, mazmorra con jefe, combate con barra de tiempo (atacar, magia, objeto y huir), experiencia, niveles, botín, inventario y equipo, menú del grupo, ajustes en caliente, interruptor de avance rápido, escena de cierre y guardado. Todo se dibuja con `Canvas` en Java. Detalle y qué revisar en `docs/estado.md`.
 
-## Cómo jugarlo
+## Cómo ejecutarlo
 - **APK sin Android Studio:** en GitHub, pestaña Actions → ejecución `APK` de la rama → "Artifacts" → `ff1-debug-apk`. Requiere Android 11 o superior.
 - **Desde Android Studio:** abrir la carpeta `ff1`, sincronizar Gradle y ejecutar el módulo `app` en un dispositivo o emulador con API 30 o superior.
 
@@ -38,4 +38,12 @@ Contrato de cada documento en `docs/contrato-de-datos.md`; cómo añadir conteni
 - Contenido original: nada de nombres, personajes, tramas, diálogos, música ni arte de otras franquicias.
 - Limitaciones aceptadas del MVP: una ranura de guardado, no se guarda dentro de un combate, solo el jefe usa habilidades, textos fijos de la interfaz en el código.
 
-Detalle en `docs/decisiones.md`; historial en `CHANGELOG.md`.
+Detalle en `docs/decisiones.md`.
+
+## Documentación relacionada
+- `docs/estado.md`: estado, cómo probar el APK y qué revisar.
+- `docs/mision-mvp.md` y `docs/plan.md`: alcance del MVP y ruta por hitos.
+- `docs/historia.md`: historia y personajes.
+- `docs/contrato-de-datos.md` y `docs/receta-de-extension.md`: datos y extensión del motor.
+- `docs/decisiones.md`, `docs/pruebas.md` y `CHANGELOG.md`.
+- `skills/00-iniciar.md`: reglas del proyecto.
