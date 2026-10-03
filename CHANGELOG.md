@@ -4,6 +4,11 @@ Formato: más reciente primero, con fecha en `AAAA-MM-DD`.
 
 ## 2026-10-03
 
+### Añadido (bloque 15, Fase 2: H12)
+- `scripts/exportar-contenido.sh <origen> <destino>`: valida con el motor y exporta el paquete a una carpeta nueva o vacía, sin `.bak`; no copia nada si hay errores y no pisa un destino ocupado.
+- Botón **Exportar copia…** en el editor (`Almacen.exportarPaquete`): copia los documentos guardados a una carpeta vacía.
+- `LEEME.md` con el flujo «Del editor al juego»; `exportar.test.js` (7 pruebas, entre ellas el flujo completo editar → guardar → validar → exportar). `scripts/probar-editor.sh`: 57 pruebas.
+
 ### Cambiado (bloque 15, limpieza de la Fase 2)
 - `herramientas/editor/dom.js`: la función `el()` que estaba copiada en `app.js`, `editor-tablas.js`, `vista-balance.js` y `editor-mundo.js` es ahora común (`Dom.el`). Sin cambios de comportamiento.
 

@@ -46,3 +46,5 @@ El script compila los `.java` de `app/src/main/java` y `app/src/test/java` que n
 
 ## Último resultado
 2026-10-02, nube (bloque 7): `scripts/probar-logica.sh` 175 de 175 pruebas pasan en `chore/quitar-codigo-nativo`. GitHub Actions en `feature/h35-jugable`: `Pruebas` y `APK` en verde. El flujo `APK` también se puede lanzar a mano (`workflow_dispatch`) en ramas que no lo disparan al hacer push.
+
+`scripts/exportar-contenido.sh <origen> <destino>` valida el origen con el motor y, si es válido, lo copia a una carpeta nueva o vacía (sin `.bak`); `exportar.test.js` prueba la función del editor y el script (contenido inválido, destino ocupado, `.bak`) y el flujo completo editar → guardar → validar → exportar.

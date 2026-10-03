@@ -19,6 +19,18 @@
     };
   };
 
+  /**
+   * Copia todos los documentos de `origen` a `destino` (dos almacenes). Se niega si el destino ya
+   * tiene documentos, para no mezclar paquetes ni pisar nada. Devuelve { copiados }.
+   */
+  A.exportarPaquete = async function (origen, destino) {
+    const rutas = await origen.listar();
+    if (rutas.length === 0) throw new Error('La carpeta de origen no tiene documentos.');
+    if ((await destino.listar()).length > 0) throw new Error('La carpeta de destino no está vacía: elige o crea una carpeta vacía.');
+    for (const ruta of rutas) await destino.escribir(ruta, await origen.leer(ruta));
+    return { copiados: rutas.length };
+  };
+
   A.crearAlmacenCarpeta = function (raizHandle) {
     async function carpetaDe(partes, crear) {
       let dir = raizHandle;

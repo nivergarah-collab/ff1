@@ -89,6 +89,7 @@
     const tabla = estado.tablas[estado.actual] || estado.escenas[estado.actual];
     $('guardar').disabled = tabla ? !tabla.sucio : !(c && c.sucio && !hayErrores());
     $('revisar').disabled = !estado.almacen;
+    $('exportar').disabled = !estado.almacen;
     const sucio = algunSucio();
     $('carpeta').replaceChildren(estado.almacen ? el('strong', { texto: estado.carpeta }) : 'Ninguna carpeta abierta');
     document.title = (sucio ? '● ' : '') + 'Editor de parámetros · ff1';
@@ -469,6 +470,29 @@
     }
   }
 
+  // ---- Exportar una copia (H12) ----
+
+  async function exportar() {
+    if (algunSucio()) {
+      avisar('Guarda los cambios antes de exportar: la copia lleva solo lo guardado.', 'error');
+      return;
+    }
+    let handle;
+    try {
+      handle = await window.showDirectoryPicker({ mode: 'readwrite' });
+    } catch (e) {
+      if (e && e.name === 'AbortError') return;
+      avisar('No se pudo abrir la carpeta de destino: ' + e.message, 'error');
+      return;
+    }
+    try {
+      const r = await A.exportarPaquete(estado.almacen, A.crearAlmacenCarpeta(handle));
+      avisar('Exportados ' + r.copiados + ' documentos a «' + handle.name + '». Valida la copia con scripts/validar-contenido.sh antes de usarla.', 'ok');
+    } catch (e) {
+      avisar('No se exportó: ' + e.message, 'error');
+    }
+  }
+
   // ---- Arranque ----
 
   window.addEventListener('beforeunload', (e) => {
@@ -477,6 +501,7 @@
   $('abrir').addEventListener('click', abrirCarpeta);
   $('guardar').addEventListener('click', guardar);
   $('revisar').addEventListener('click', abrirRevisar);
+  $('exportar').addEventListener('click', exportar);
   $('copiarComando').addEventListener('click', copiarComando);
   $('archivoInforme').addEventListener('change', cargarInforme);
   if (!window.showDirectoryPicker) {
