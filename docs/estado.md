@@ -91,7 +91,7 @@ Orden de fusión: de la más antigua a la más nueva, con "Merge commit".
 - `gradle/libs.versions.toml` conserva la entrada `games-activity`, ya sin uso; quitarla es opcional y lo decide el usuario (`gradle/` no lo toca el agente).
 
 ## Pruebas
-Nube, 2026-10-03 (bloque 12): `scripts/probar-logica.sh` 262 de 262 pruebas pasan en `feature/h8-cierre`. GitHub Actions: `Pruebas` y `APK` en verde en `main` (ac64682, tras el pull request #20); en `feature/h8-cierre` ver el resultado en Actions (en curso al cerrar el bloque).
+Nube, 2026-10-03 (bloque 12): `scripts/probar-logica.sh` 262 de 262 pruebas pasan en `feature/h8-cierre`. GitHub Actions: `Pruebas` y `APK` en verde en `main` (ac64682, tras el pull request #20); en `feature/h8-cierre`, `Pruebas` y `APK` en verde (7a2a6bc). Un push anterior (3c48504) dejó `Pruebas` en rojo porque el README nuevo había perdido las secciones que exige `scripts/verificar-estructura.ps1`; corregido en el commit siguiente.
 
 ## Notas
 - `ExampleUnitTest` y `ExampleInstrumentedTest` son de la plantilla y se reemplazarán.
