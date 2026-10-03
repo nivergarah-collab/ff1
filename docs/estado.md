@@ -2,10 +2,10 @@
 
 ## Control
 - Estado del MVP: EN CURSO
-- Bloques ejecutados: 14 de 50
+- Bloques ejecutados: 15 de 50
 - Bloques seguidos sin avance: 0
 
-Última actualización: 2026-10-03 (bloque 14, Sonnet: H11 terminado; sigue un bloque de limpieza y luego H12)
+Última actualización: 2026-10-03 (bloque 15, Sonnet: limpieza del editor hecha; sigue H12)
 
 ## Hecho
 - Proyecto movido a `Desktop\Android\ff1`.
@@ -45,13 +45,14 @@
 - Bloque 12 (Opus, H8 terminado, rama `feature/h8-cierre` desde `main`): el jugador elige el nombre de cada héroe al empezar una partida nueva (`EditorNombre`, `PantallaNombres`, `juego.largoNombre`; propone el de `inicio.json` con el cursor en "Fin", Cancelar borra); ventana de listas común `Estilo.desdeVentana` (combate, tienda y objetos se desplazan si la lista no cabe); README final; contrato y receta al día. 262 pruebas. **MVP listo para revisión.**
 - Pull request #23 (H9 y H10) fusionado en `main` por el usuario.
 - Bloque 14 (Sonnet, Fase 2: H11 terminado, rama `feature/h11-contenido` desde `main`): **editores de tabla** (`tablas.js` con el modelo declarativo de columnas y las funciones puras; `editor-tablas.js` con la interfaz): combatientes, habilidades, objetos, botín, encuentros y servicios (tiendas, posadas, vecinos y jefes en pestañas), con añadir, duplicar (id libre `x-copia`) y borrar (avisa dónde se usa el id), referencias por lista desplegable, ids rotos marcados, y guardado bloqueado mientras haya problemas. **Vista de balance** (`balance.js`, `vista-balance.js`): daño y golpes héroe↔enemigo por nivel y tabla de experiencia con las fórmulas de `Acciones`; `BalanceEditorTest` (Java) y `balance.test.js` leen el mismo `pruebas/balance-casos.json`, así que el motor real y el editor no pueden discrepar. **Mapas y escenas** (`mundo.js`, `editor-mundo.js`): cuadrícula del mapa en solo lectura con inicio, salidas y lugares, y edición de los textos de las escenas. Humo en Chromium sin cabeza con una carpeta simulada: crear un enemigo y guardar, botín con id, pestañas de servicios, balance, mapa y escena con `.bak`, sin errores de consola. 275 pruebas Java y 50 de node.
+- Pull request #24 (H11) fusionado en `main` por el usuario.
+- Bloque 15 (Sonnet, limpieza tras H9–H11, rama `chore/limpieza-editor` desde `main`): `herramientas/editor/dom.js` con `Dom.el` sustituye las cuatro copias de `el()`; sin cambios de comportamiento. 275 pruebas Java y 50 de node.
 - Autorizado por el usuario el 2026-10-02: límite de 50 bloques (antes 24), quitar el código nativo de la plantilla (ver `skills/01-trabajo-autonomo.md`) y bloques de hasta unos 25 minutos, una sesión por hora.
 - Bloque 13 (Sonnet, Fase 2: H9 y H10 terminados, rama `feature/h9-validador` desde `main`): **H9** `herramientas.ValidadorContenido` (Java puro, usa los cargadores reales del motor) y `scripts/validar-contenido.sh <carpeta> [--json]`: una línea por documento (`OK`/`ERROR`/`OMITIDO`), detalle con la ruta del campo solo en los errores, código de salida 0/1/2; `ValidadorContenidoTest` (paquete del juego, paquete mínimo, referencia rota, JSON mal formado, rango, documento ausente, salida JSON). `LectorArchivos` ahora lanza `FileNotFoundException` si falta el archivo y `CatalogoCombate.cargar` antepone el documento (`habilidades.json:`/`combatientes.json:`) a sus errores. **H10** `herramientas/editor/` (`index.html`, `estilo.css`, `app.js`, `logica.js`, `almacen.js`, `esquema-configuracion.js`, `LEEME.md`): abre la carpeta con la API de archivos, lista los documentos, formulario de `configuracion.json` con rango, descripción y valor por defecto de los 17 parámetros, validación al escribir, guardado con `.bak`, aviso de cambios sin guardar y cuadro "Revisar con el motor" (comando + carga de `informe.json`). `EsquemaConfiguracion` expone `nombres/esEntero/minimo/maximo/defecto` de solo lectura y `EsquemaEditorTest` compara el esquema del editor con el del motor. `scripts/probar-editor.sh` (node, sin dependencias): 23 pruebas, entre ellas que el motor acepta lo que el editor guarda (mínimos, máximos y un cambio normal). Humo en Chromium sin cabeza con una carpeta simulada: abrir, editar, error de rango, guardar y `.bak` correctos, sin errores de consola. 274 pruebas Java.
 
 ## Siguiente
-1. **Bloque de limpieza** (H9, H10 y H11 terminados): revisar `herramientas/editor/` (las tres funciones `el()` repetidas en `app.js`, `editor-tablas.js`, `vista-balance.js` y `editor-mundo.js` podrían pasar a un archivo común; `app.js` ya pasa de 450 líneas) y `ValidadorContenido`. Rama `chore/limpieza-editor`, encadenada a `feature/h11-contenido` si sigue sin fusionar.
-2. **H12 · Conexión con el juego** (ver `docs/plan.md`): documentar y probar el flujo editar → validar → copiar → compilar, opción de exportar un paquete como carpeta lista, revisión final y, al terminar, `LISTO PARA REVISIÓN` con los pasos para que el usuario pruebe el editor.
-3. Pixel art: fase posterior, requiere un contrato de arte.
+1. **H12 · Conexión con el juego** (ver `docs/plan.md`): documentar y probar el flujo editar → validar → copiar → compilar, opción de exportar un paquete como carpeta lista, revisión final y, al terminar, `LISTO PARA REVISIÓN` con los pasos para que el usuario pruebe el editor.
+2. Pixel art: fase posterior, requiere un contrato de arte.
 
 ## Cómo probar el APK
 1. **Bajarlo:** en GitHub, pestaña **Actions** del repositorio → ejecución **APK** de la rama (`feature/h8-cierre`, o `main` cuando esté fusionada) → sección **Artifacts** → **ff1-debug-apk** (un .zip con el .apk; dura 14 días). Enlace directo a las ejecuciones: https://github.com/nivergarah-collab/ff1/actions/workflows/apk.yml
@@ -79,14 +80,14 @@ Limitaciones conocidas: una sola ranura de guardado; no se guarda a mitad de un 
 
 ## Ramas y pull requests pendientes
 Orden de fusión: de la más antigua a la más nueva, con "Merge commit".
-1. `feature/h11-contenido` (desde `main`, tras el pull request #23): H11 (editor de contenido). Pull request abierto al cerrar el bloque 14.
+1. `chore/limpieza-editor` (desde `main`): limpieza del editor (`Dom.el`). Sin pull request: las ramas `chore/**` se abren al cerrar el hito siguiente; H12 parte de esta rama.
 
 ## Preguntas pendientes
 - Las ramas `chore/**` no disparan los flujos `Pruebas` ni `APK` (solo `main`, `feature/**` y `fix/**`); `chore/limpieza-h5-h7` no tiene ejecuciones, pero su contenido está incluido en `feature/h8-integracion`, que sí está en verde. Si se quiere CI en `chore/**`, lo añade el usuario en `.github/`.
 - `gradle/libs.versions.toml` conserva la entrada `games-activity`, ya sin uso; quitarla es opcional y lo decide el usuario (`gradle/` no lo toca el agente).
 
 ## Pruebas
-Nube, 2026-10-03 (bloque 14): `scripts/probar-logica.sh` 275 de 275 pruebas pasan en `feature/h11-contenido`; `scripts/probar-editor.sh` 50 de 50 (node 22). GitHub Actions en `feature/h11-contenido` (259a0e0): `Pruebas` y `APK` en verde. Pull request #24 abierto.
+Nube, 2026-10-03 (bloque 15): `scripts/probar-logica.sh` 275 de 275 pruebas pasan en `chore/limpieza-editor`; `scripts/probar-editor.sh` 50 de 50 (node 22). Las ramas `chore/**` no disparan Actions.
 
 ## Notas
 - `ExampleUnitTest` y `ExampleInstrumentedTest` son de la plantilla y se reemplazarán.

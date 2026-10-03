@@ -4,6 +4,9 @@ Formato: más reciente primero, con fecha en `AAAA-MM-DD`.
 
 ## 2026-10-03
 
+### Cambiado (bloque 15, limpieza de la Fase 2)
+- `herramientas/editor/dom.js`: la función `el()` que estaba copiada en `app.js`, `editor-tablas.js`, `vista-balance.js` y `editor-mundo.js` es ahora común (`Dom.el`). Sin cambios de comportamiento.
+
 ### Añadido (bloque 14, Fase 2: H11)
 - Editor de contenido en `herramientas/editor/`: editores de tabla para combatientes, habilidades, objetos, botín, encuentros, tiendas, posadas, vecinos y jefes (`tablas.js`, `editor-tablas.js`) con añadir, duplicar y borrar, referencias por lista desplegable, aviso de ids rotos y de usos al borrar, y guardado bloqueado mientras haya problemas.
 - Vista de balance (`balance.js`, `vista-balance.js`) con las fórmulas de `Acciones` y la experiencia por nivel; `BalanceEditorTest` (Java) la ata al motor real con `pruebas/balance-casos.json`.
