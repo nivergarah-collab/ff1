@@ -80,6 +80,27 @@ public final class EsquemaConfiguracion {
         return p;
     }
 
+    /** Nombres de los parámetros declarados, en el orden de declaración (los usan las herramientas). */
+    public java.util.List<String> nombres() {
+        return new java.util.ArrayList<>(parametros.keySet());
+    }
+
+    public boolean esEntero(String nombre) {
+        return parametro(nombre).entero;
+    }
+
+    public double minimo(String nombre) {
+        return parametro(nombre).minimo;
+    }
+
+    public double maximo(String nombre) {
+        return parametro(nombre).maximo;
+    }
+
+    public double defecto(String nombre) {
+        return parametro(nombre).defecto;
+    }
+
     Map<String, Parametro> parametros() {
         return Collections.unmodifiableMap(parametros);
     }
