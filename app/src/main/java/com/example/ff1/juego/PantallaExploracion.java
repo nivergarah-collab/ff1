@@ -2,6 +2,7 @@ package com.example.ff1.juego;
 
 import com.example.ff1.dibujo.Escena;
 import com.example.ff1.entrada.Boton;
+import com.example.ff1.motor.config.Registro;
 import com.example.ff1.mundo.Direccion;
 import com.example.ff1.mundo.Explorador;
 import com.example.ff1.mundo.Mapa;
@@ -26,11 +27,13 @@ public final class PantallaExploracion implements Pantalla {
 
     private final Juego juego;
     private final Partida partida;
+    private final Registro<AccionLugar> lugares;
     private String mensaje = "";
 
     PantallaExploracion(Juego juego, Partida partida) {
         this.juego = juego;
         this.partida = partida;
+        this.lugares = lugares();
     }
 
     @Override
@@ -60,27 +63,27 @@ public final class PantallaExploracion implements Pantalla {
         }
     }
 
-    /** Aceptar frente a una tienda, una posada o un vecino abre su pantalla. */
+    /** Aceptar frente a un lugar abre lo que registró su tipo (ver {@link #lugares()}). */
     private void hablar() {
         Mapa.Lugar l = partida.lugarDelante();
-        if (l == null) {
-            return;
+        if (l != null) {
+            lugares.obtener(l.tipo).abrir(partida.servicios(), l.ref);
         }
-        Servicios sv = partida.servicios();
-        switch (l.tipo) {
-            case Mapa.LUGAR_TIENDA:
-                juego.apilar(new PantallaTienda(juego, partida, sv.tienda(l.ref)));
-                break;
-            case Mapa.LUGAR_POSADA:
-                juego.apilar(new PantallaPosada(juego, partida, sv.posada(l.ref)));
-                break;
-            case Mapa.LUGAR_JEFE:
-                encararJefe(sv.jefe(l.ref));
-                break;
-            default:
-                juego.irA(new PantallaEscena(juego, partida.escena(sv.vecino(l.ref).escena),
-                        partida.nombresPorClase(), this));
-        }
+    }
+
+    /** Qué se abre al hablar con un lugar, según su tipo. */
+    interface AccionLugar {
+        void abrir(Servicios sv, String ref);
+    }
+
+    /** Un tipo de lugar nuevo se registra aquí (y en {@code Mapa.TIPOS_LUGAR} y {@code Servicios}). */
+    private Registro<AccionLugar> lugares() {
+        return new Registro<AccionLugar>("tipo de lugar")
+                .registrar(Mapa.LUGAR_TIENDA, (sv, ref) -> juego.apilar(new PantallaTienda(juego, partida, sv.tienda(ref))))
+                .registrar(Mapa.LUGAR_POSADA, (sv, ref) -> juego.apilar(new PantallaPosada(juego, partida, sv.posada(ref))))
+                .registrar(Mapa.LUGAR_JEFE, (sv, ref) -> encararJefe(sv.jefe(ref)))
+                .registrar(Mapa.LUGAR_VECINO, (sv, ref) -> juego.irA(new PantallaEscena(juego,
+                        partida.escena(sv.vecino(ref).escena), partida.nombresPorClase(), this)));
     }
 
     /** Escena previa → combate sin huida → escena final → regreso al sitio indicado. */
@@ -162,10 +165,7 @@ public final class PantallaExploracion implements Pantalla {
         }
         Mapa.Lugar l = partida.lugarDelante();
         if (mensaje.isEmpty() && l != null) {
-            Servicios sv = partida.servicios();
-            String nombre = l.tipo.equals(Mapa.LUGAR_TIENDA) ? sv.tienda(l.ref).nombre
-                    : l.tipo.equals(Mapa.LUGAR_POSADA) ? sv.posada(l.ref).nombre
-                    : l.tipo.equals(Mapa.LUGAR_JEFE) ? sv.jefe(l.ref).nombre : sv.vecino(l.ref).nombre;
+            String nombre = partida.servicios().servicio(l).nombre;
             e.texto(Escena.ANCHO / 2, 6, nombre + " (Aceptar)", Estilo.LETRA, Estilo.RESALTE, Escena.Alineacion.CENTRO);
         }
     }

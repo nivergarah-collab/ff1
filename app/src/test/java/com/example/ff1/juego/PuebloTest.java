@@ -254,4 +254,15 @@ public class PuebloTest {
             assertTrue(esperado.getMessage().contains("tienda-de-lupe"));
         }
     }
+
+    @Test
+    public void cadaLugarDelPuebloTieneSuServicioConNombre() {
+        Partida p = enPozaluz().partida();
+        assertFalse(p.explorador().mapa().lugares().isEmpty());
+        for (Mapa.Lugar l : p.explorador().mapa().lugares()) {
+            Servicios.Servicio s = p.servicios().servicio(l);
+            assertEquals(l.ref, s.id);
+            assertFalse(s.nombre.isEmpty());
+        }
+    }
 }
