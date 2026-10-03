@@ -80,6 +80,7 @@ Salidas entre mapas y lugares son listas opcionales del mapa; lo que hay en cada
 - **Salida con llave:** añadir `"requiere": "llave-de-cantera"` (id de un objeto) a la salida; sin el objeto la puerta no cede. El destino debe ser una casilla pasable que no sea salida.
 - **Tienda / posada / vecino:** una entrada en `tiendas`, `posadas` o `vecinos` de `servicios.json` con un id nuevo, y un `lugar` del mapa que lo nombre en `ref`. El lugar suele ser una casilla no pasable (mostrador); se usa con Aceptar estando enfrente. Un vecino necesita una escena (receta 6).
 - **Jefe:** una entrada en `jefes` (enemigos, escena previa, escena final y sitio de regreso) y un `lugar` de tipo `jefe`. El enemigo puede llevar `golpeFuerte` en `combatientes.json` (`cada` N turnos usa una habilidad sin coste; ver el contrato).
+- **Tipo de lugar nuevo** (código, no datos): añadirlo a `Mapa.TIPOS_LUGAR`, darle su apartado en `Servicios` (un mapa de id → `Servicios.Servicio` registrado en `porTipo`) y registrar qué abre en `PantallaExploracion.lugares()`. Nada más cambia: el nombre que se ve sobre el mapa sale de `Servicios.servicio(lugar)`.
 - **Prueba:** `juego/PuebloTest` (tienda, posada, vecinos), `juego/CanteraTest` (puerta con llave y escaleras: recorrer con `Partida.irAMapa` y `Explorador.mover`) y `juego/JefeTest`. `Partida.nueva` ya rechaza al empezar un mapa con una salida mal puesta, un `ref` que no existe o un objeto `requiere` inexistente.
 
 ## 6. Una escena de texto
@@ -135,4 +136,6 @@ El menú (`PantallaMenu`) se abre desde el mapa con Cancelar y apila una pantall
 Son cuatro clases y no deberían cambiar al añadir contenido: `MainActivity` (crea el `Juego` con los assets y el almacén de guardado), `android/VistaJuego` (bucle, toques y teclas), `android/LienzoCanvas` (escena → Canvas) y `android/LectorAssets`. No se pueden probar en la nube: las compila el flujo `Pruebas` y el APK lo construye el flujo `APK`.
 
 ## Comprobar un paquete nuevo
+Para empezar un juego distinto, copiar `app/src/test/resources/contenido-minimo/` (el paquete mínimo de referencia) y crecer desde ahí; `juego/PaqueteMinimoTest` muestra cómo jugarlo entero en una prueba.
+
 Para otro juego, copiar la carpeta `contenido/` con sus propios datos y cargarla con `new FuenteContenidoJson(new LectorArchivos(carpeta))` (o `LectorMemoria` en pruebas). Desde H3.5 un paquete necesita además `configuracion.json` e `inicio.json`; si falta algo, el juego muestra `PantallaError` en lugar de cerrarse. Ningún cargador conoce ids concretos: si los datos son válidos, el motor funciona sin cambiar código (lo verificará H8 con un segundo paquete mínimo).
