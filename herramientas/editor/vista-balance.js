@@ -5,17 +5,7 @@
   const B = raiz.Balance;
   const V = {};
 
-  function el(etiqueta, atributos, ...hijos) {
-    const nodo = document.createElement(etiqueta);
-    for (const [k, v] of Object.entries(atributos || {})) {
-      if (k === 'texto') nodo.textContent = v;
-      else if (k === 'clase') nodo.className = v;
-      else if (k.startsWith('on')) nodo.addEventListener(k.slice(2), v);
-      else nodo.setAttribute(k, v);
-    }
-    for (const h of hijos) nodo.append(h);
-    return nodo;
-  }
+  const el = raiz.Dom.el;
 
   const num = (x) => (Number.isInteger(x) ? String(x) : x.toFixed(1));
   const rango = (r) => (r.min === r.max ? String(r.min) : r.min + '–' + r.max) + ' (≈' + num(r.medio) + ')';

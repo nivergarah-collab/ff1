@@ -38,17 +38,7 @@
 
   // ---- Utilidades de DOM ----
 
-  function el(etiqueta, atributos, ...hijos) {
-    const nodo = document.createElement(etiqueta);
-    for (const [k, v] of Object.entries(atributos || {})) {
-      if (k === 'texto') nodo.textContent = v;
-      else if (k === 'clase') nodo.className = v;
-      else if (k.startsWith('on')) nodo.addEventListener(k.slice(2), v);
-      else nodo.setAttribute(k, v);
-    }
-    for (const h of hijos) nodo.append(h);
-    return nodo;
-  }
+  const el = window.Dom.el;
 
   function avisar(texto, clase) {
     const a = $('aviso');
