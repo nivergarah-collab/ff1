@@ -4,6 +4,9 @@ Formato: más reciente primero, con fecha en `AAAA-MM-DD`.
 
 ## 2026-10-02
 
+### Cambiado (bloque 9, limpieza tras H3.6 y H4)
+- `Menu.vuelta` (giro del cursor) y `Estilo.marcador` (marcador `>`) sustituyen a las copias repetidas en las pantallas del menú y del combate; sin cambios de comportamiento. Prueba nueva `MenuCursorTest` (222 pruebas).
+
 ### Añadido (bloque 8, H4 narrativa)
 - `docs/historia.md`: historia original de "Crónica de la Cantera" (Pozaluz, la cantera hundida y el Soterrado) con escenas por etapa.
 - Escenas de texto: documento `escena` v1 (`guion.Guion`, marcadores `{heroe:<clase>}`), `PantallaEscena` y escena `apertura` enganchada a la partida nueva con el campo opcional `introduccion` de `inicio.json`. 6 pruebas nuevas.

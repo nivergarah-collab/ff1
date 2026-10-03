@@ -71,10 +71,10 @@ public final class PantallaObjetos implements Pantalla {
         if (b == Boton.CANCELAR) {
             juego.cerrar();
         } else if (b == Boton.ARRIBA && !ids.isEmpty()) {
-            cursor = Math.floorMod(cursor - 1, ids.size());
+            cursor = Menu.vuelta(cursor, -1, ids.size());
             mensaje = "";
         } else if (b == Boton.ABAJO && !ids.isEmpty()) {
-            cursor = Math.floorMod(cursor + 1, ids.size());
+            cursor = Menu.vuelta(cursor, 1, ids.size());
             mensaje = "";
         } else if (b == Boton.ACEPTAR && actual() != null) {
             if (usable(actual())) {
@@ -92,9 +92,9 @@ public final class PantallaObjetos implements Pantalla {
         if (b == Boton.CANCELAR) {
             eligiendoHeroe = false;
         } else if (b == Boton.ARRIBA) {
-            heroe = Math.floorMod(heroe - 1, n);
+            heroe = Menu.vuelta(heroe, -1, n);
         } else if (b == Boton.ABAJO) {
-            heroe = Math.floorMod(heroe + 1, n);
+            heroe = Menu.vuelta(heroe, 1, n);
         } else if (b == Boton.ACEPTAR) {
             DefinicionObjeto o = actual();
             Heroe h = partida.grupo().get(heroe);
@@ -133,7 +133,7 @@ public final class PantallaObjetos implements Pantalla {
             int yy = 40 + i * Estilo.LINEA;
             int color = i == cursor ? Estilo.RESALTE : usable(o) ? Estilo.TEXTO : Estilo.APAGADO;
             if (i == cursor) {
-                e.texto(12, yy, ">", Estilo.LETRA, Estilo.RESALTE);
+                Estilo.marcador(e, 12, yy);
             }
             e.texto(26, yy, o.nombre, Estilo.LETRA, color);
             e.texto(Escena.ANCHO - 16, yy, "x" + partida.inventario().cantidad(o.id), Estilo.LETRA, color,
@@ -147,7 +147,7 @@ public final class PantallaObjetos implements Pantalla {
                 int yy = y0 + 10 + i * Estilo.LINEA;
                 int color = i == heroe ? Estilo.RESALTE : Estilo.TEXTO;
                 if (i == heroe) {
-                    e.texto(12, yy, ">", Estilo.LETRA, Estilo.RESALTE);
+                    Estilo.marcador(e, 12, yy);
                 }
                 e.texto(26, yy, h.nombre(), Estilo.LETRA, color);
                 e.texto(Escena.ANCHO - 16, yy, "PV " + h.vida() + "/" + h.estadisticas().vida, Estilo.LETRA, color,

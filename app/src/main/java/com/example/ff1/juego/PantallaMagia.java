@@ -73,7 +73,7 @@ public final class PantallaMagia implements Pantalla {
                 if (b == Boton.CANCELAR) {
                     fase = Fase.HEROE;
                 } else if (b == Boton.ARRIBA || b == Boton.ABAJO) {
-                    habilidad = Math.floorMod(habilidad + (b == Boton.ABAJO ? 1 : -1), habilidades().size());
+                    habilidad = Menu.vuelta(habilidad, b == Boton.ABAJO ? 1 : -1, habilidades().size());
                     mensaje = "";
                 } else if (b == Boton.ACEPTAR) {
                     Habilidad h = habilidades().get(habilidad);
@@ -92,7 +92,7 @@ public final class PantallaMagia implements Pantalla {
                 if (b == Boton.CANCELAR) {
                     fase = Fase.HABILIDAD;
                 } else if (b == Boton.ARRIBA || b == Boton.ABAJO) {
-                    objetivo = Math.floorMod(objetivo + (b == Boton.ABAJO ? 1 : -1), partida.grupo().size());
+                    objetivo = Menu.vuelta(objetivo, b == Boton.ABAJO ? 1 : -1, partida.grupo().size());
                 } else if (b == Boton.ACEPTAR) {
                     lanzar(habilidades().get(habilidad), partida.grupo().get(objetivo));
                 }
@@ -103,7 +103,7 @@ public final class PantallaMagia implements Pantalla {
         if (b != Boton.ARRIBA && b != Boton.ABAJO) {
             return false;
         }
-        heroe = Math.floorMod(heroe + (b == Boton.ABAJO ? 1 : -1), n);
+        heroe = Menu.vuelta(heroe, b == Boton.ABAJO ? 1 : -1, n);
         return true;
     }
 
@@ -141,7 +141,7 @@ public final class PantallaMagia implements Pantalla {
             boolean activo = fase == Fase.HEROE ? i == heroe : fase == Fase.OBJETIVO ? i == objetivo : i == heroe;
             int color = activo ? Estilo.RESALTE : Estilo.TEXTO;
             if (activo) {
-                e.texto(12, yy, ">", Estilo.LETRA, Estilo.RESALTE);
+                Estilo.marcador(e, 12, yy);
             }
             e.texto(26, yy, h.nombre(), Estilo.LETRA, color);
             e.texto(150, yy, "PV " + h.vida() + "/" + h.estadisticas().vida, Estilo.LETRA, color);
@@ -158,7 +158,7 @@ public final class PantallaMagia implements Pantalla {
                 int color = !Partida.sirveFueraDeCombate(h) ? Estilo.APAGADO
                         : i == habilidad ? Estilo.RESALTE : Estilo.TEXTO;
                 if (i == habilidad) {
-                    e.texto(12, yy, ">", Estilo.LETRA, Estilo.RESALTE);
+                    Estilo.marcador(e, 12, yy);
                 }
                 e.texto(26, yy, h.nombre, Estilo.LETRA, color);
                 e.texto(Escena.ANCHO - 16, yy, "PM " + h.coste, Estilo.LETRA, color, Escena.Alineacion.DERECHA);
