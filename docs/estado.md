@@ -90,15 +90,15 @@ Limitaciones conocidas: una sola ranura de guardado; no se guarda a mitad de un 
 
 ## Ramas y pull requests pendientes
 Orden de fusión: de la más antigua a la más nueva, con "Merge commit".
-1. `chore/limpieza-editor` (desde `main`): limpieza del editor (`Dom.el`). Pull request abierto con H12.
-2. `feature/h12-conexion` (desde `chore/limpieza-editor`): H12 (exportar y flujo documentado). Pull request abierto al cerrar el bloque 15.
+1. `chore/limpieza-editor` (desde `main`): limpieza del editor (`Dom.el`). Pull request #25.
+2. `feature/h12-conexion` (desde `chore/limpieza-editor`): H12 (exportar y flujo documentado). Pull request #26.
 
 ## Preguntas pendientes
 - Las ramas `chore/**` no disparan los flujos `Pruebas` ni `APK` (solo `main`, `feature/**` y `fix/**`); `chore/limpieza-h5-h7` no tiene ejecuciones, pero su contenido está incluido en `feature/h8-integracion`, que sí está en verde. Si se quiere CI en `chore/**`, lo añade el usuario en `.github/`.
 - `gradle/libs.versions.toml` conserva la entrada `games-activity`, ya sin uso; quitarla es opcional y lo decide el usuario (`gradle/` no lo toca el agente).
 
 ## Pruebas
-Nube, 2026-10-03 (bloque 15): `scripts/probar-logica.sh` 275 de 275 pruebas pasan en `feature/h12-conexion`; `scripts/probar-editor.sh` 57 de 57 (node 22). Las ramas `chore/**` no disparan Actions.
+Nube, 2026-10-03 (bloque 15): `scripts/probar-logica.sh` 275 de 275 pruebas pasan en `feature/h12-conexion`; `scripts/probar-editor.sh` 57 de 57 (node 22). GitHub Actions en `feature/h12-conexion` (5fb86ee): `Pruebas` y `APK` en verde. Pull requests #25 (limpieza) y #26 (H12) abiertos. Las ramas `chore/**` no disparan Actions.
 
 ## Notas
 - `ExampleUnitTest` y `ExampleInstrumentedTest` son de la plantilla y se reemplazarán.
