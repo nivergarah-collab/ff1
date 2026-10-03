@@ -1,0 +1,57 @@
+{
+  "tipo": "servicios",
+  "version": 1,
+  "tiendas": [
+    {
+      "id": "tienda-de-lupe",
+      "nombre": "Tienda de Lupe",
+      "vendedor": "Lupe",
+      "objetos": [
+        "tonico-de-raiz",
+        "agua-de-roca",
+        "pluma-de-alba",
+        "frasco-de-brasas",
+        "hoja-de-ensayo",
+        "vara-de-sauce",
+        "jubon-acolchado",
+        "cordel-de-viento"
+      ]
+    }
+  ],
+  "posadas": [
+    {
+      "id": "posada-de-casilda",
+      "nombre": "Posada de Casilda",
+      "posadero": "Casilda",
+      "precio": 15
+    }
+  ],
+  "vecinos": [
+    {
+      "id": "ofelia",
+      "nombre": "Ofelia",
+      "escena": "ofelia"
+    },
+    {
+      "id": "pastor",
+      "nombre": "Vecino pastor",
+      "escena": "pastor"
+    }
+  ],
+  "jefes": [
+    {
+      "id": "soterrado",
+      "nombre": "La grieta",
+      "enemigos": [
+        "soterrado"
+      ],
+      "escenaPrevia": "soterrado-previa",
+      "escenaFinal": "cierre",
+      "regreso": {
+        "mapa": "pozaluz",
+        "x": 6,
+        "y": 5
+      }
+    }
+  ]
+}

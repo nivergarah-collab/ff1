@@ -3,15 +3,46 @@
   "version": 1,
   "id": "campo",
   "leyenda": {
-    ".": { "nombre": "pradera", "color": "#4E8B3A", "pasable": true, "zona": "llanura" },
-    ",": { "nombre": "matorral", "color": "#6B7F2A", "pasable": true, "zona": "maleza" },
-    "=": { "nombre": "sendero", "color": "#B59A62", "pasable": true },
-    "^": { "nombre": "risco", "color": "#6E6A66", "pasable": false },
-    "~": { "nombre": "laguna", "color": "#2F5D8C", "pasable": false },
-    "T": { "nombre": "arboleda", "color": "#2C5A2A", "pasable": false }
+    ".": {
+      "nombre": "pradera",
+      "color": "#4E8B3A",
+      "pasable": true,
+      "zona": "llanura"
+    },
+    ",": {
+      "nombre": "matorral",
+      "color": "#6B7F2A",
+      "pasable": true,
+      "zona": "maleza"
+    },
+    "=": {
+      "nombre": "sendero",
+      "color": "#B59A62",
+      "pasable": true
+    },
+    "^": {
+      "nombre": "risco",
+      "color": "#6E6A66",
+      "pasable": false
+    },
+    "~": {
+      "nombre": "laguna",
+      "color": "#2F5D8C",
+      "pasable": false
+    },
+    "T": {
+      "nombre": "arboleda",
+      "color": "#2C5A2A",
+      "pasable": false
+    },
+    "D": {
+      "nombre": "puerta de hierro",
+      "color": "#3A3F4A",
+      "pasable": true
+    }
   },
   "filas": [
-    "^^^^^^^^^^^^^^^^",
+    "^^=^^^^^^D^^^^^^",
     "^..,,,....TT...^",
     "^.==========,,.^",
     "^.=..~~~...=,,.^",
@@ -22,5 +53,29 @@
     "^,,,,.=........^",
     "^^^^^^^^^^^^^^^^"
   ],
-  "inicio": { "x": 6, "y": 8 }
+  "inicio": {
+    "x": 6,
+    "y": 8
+  },
+  "salidas": [
+    {
+      "x": 2,
+      "y": 0,
+      "mapa": "pozaluz",
+      "destino": {
+        "x": 6,
+        "y": 1
+      }
+    },
+    {
+      "x": 9,
+      "y": 0,
+      "mapa": "cantera-alta",
+      "destino": {
+        "x": 5,
+        "y": 7
+      },
+      "requiere": "llave-de-cantera"
+    }
+  ]
 }

@@ -2,12 +2,96 @@
   "tipo": "encuentros",
   "version": 1,
   "zonas": [
-    { "zona": "llanura", "grupos": [
-      { "enemigos": [ "musgoso" ], "peso": 3 },
-      { "enemigos": [ "musgoso", "musgoso" ], "peso": 2 },
-      { "enemigos": [ "ala-de-hollin" ], "peso": 1 } ] },
-    { "zona": "maleza", "grupos": [
-      { "enemigos": [ "ala-de-hollin", "musgoso" ], "peso": 2 },
-      { "enemigos": [ "lagarto-de-cantera" ], "peso": 1 } ] }
+    {
+      "zona": "llanura",
+      "grupos": [
+        {
+          "enemigos": [
+            "musgoso"
+          ],
+          "peso": 3
+        },
+        {
+          "enemigos": [
+            "musgoso",
+            "musgoso"
+          ],
+          "peso": 2
+        },
+        {
+          "enemigos": [
+            "ala-de-hollin"
+          ],
+          "peso": 1
+        }
+      ]
+    },
+    {
+      "zona": "maleza",
+      "grupos": [
+        {
+          "enemigos": [
+            "ala-de-hollin",
+            "musgoso"
+          ],
+          "peso": 2
+        },
+        {
+          "enemigos": [
+            "lagarto-de-cantera"
+          ],
+          "peso": 1
+        }
+      ]
+    },
+    {
+      "zona": "galeria-alta",
+      "grupos": [
+        {
+          "enemigos": [
+            "murcielago-de-cal"
+          ],
+          "peso": 3
+        },
+        {
+          "enemigos": [
+            "murcielago-de-cal",
+            "murcielago-de-cal"
+          ],
+          "peso": 2
+        },
+        {
+          "enemigos": [
+            "escarabajo-de-roca"
+          ],
+          "peso": 2
+        }
+      ]
+    },
+    {
+      "zona": "galeria-baja",
+      "grupos": [
+        {
+          "enemigos": [
+            "escarabajo-de-roca",
+            "murcielago-de-cal"
+          ],
+          "peso": 2
+        },
+        {
+          "enemigos": [
+            "sombra-de-sal"
+          ],
+          "peso": 2
+        },
+        {
+          "enemigos": [
+            "sombra-de-sal",
+            "murcielago-de-cal"
+          ],
+          "peso": 1
+        }
+      ]
+    }
   ]
 }

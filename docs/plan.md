@@ -56,14 +56,16 @@ Hito insertado por el usuario el 2026-10-02 (ver `decisiones.md`): el juego nece
 - [x] Motor de escenas de texto y diálogos. (Escena de apertura enganchada a la partida nueva; las escenas del jefe y del cierre se escriben con H6.)
 
 ## H5 · Pueblo y servicios
-- [ ] Tienda, posada y personajes con diálogo.
+- [x] Salidas entre mapas y lugares del mapa (tienda, posada, vecino), con `servicios.json` y pruebas.
+- [x] Tienda (comprar y vender), posada y personajes con diálogo en Pozaluz; la partida empieza en el pueblo.
 
 ## H6 · Mazmorra y jefe
-- [ ] Mapa de la mazmorra, enemigos y jefe.
-- [ ] Escena de cierre.
+- [x] Cantera Hundida: puerta de hierro con llave, dos galerías enlazadas con escalera y enemigos propios (`cantera-alta`, `cantera-baja`).
+- [x] Jefe (el Soterrado): combatiente, golpe fuerte cada pocos turnos, escena previa y encuentro al final de la galería baja.
+- [x] Escena de cierre (`cierre`, tras vencer al jefe; el grupo vuelve a Pozaluz).
 
 ## H7 · Guardado y carga
-- [ ] Guardar y cargar partida, con pruebas de ida y vuelta.
+- [x] Guardar y cargar partida, con pruebas de ida y vuelta (`Partida.guardar/cargar`, `AlmacenArchivos`, Guardar en el menú y Continuar en el título).
 
 ## H8 · Integración y limpieza
 - [ ] Prueba con un segundo paquete de contenido mínimo: el motor funciona sin cambiar código.
@@ -79,3 +81,6 @@ Registrar aquí lo que se deja pendiente de refactorizar o limpiar.
 - Mundo: el mapa v1 no tiene salidas entre mapas; añadirlas en H5–H6.
 - H3.5: los textos de la interfaz (menús, mensajes de combate en `juego.Mensajes`) están en el código; pasarlos a datos si se quiere traducir o reutilizar (H8). Los héroes caídos siguen caídos tras ganar un combate hasta que exista la posada (H5).
 - Limpieza tras H3.6 y H4 hecha en el bloque 9 (`Menu.vuelta`, `Estilo.marcador`). Pendiente para H8: unificar el dibujo de listas con ventana y los textos de las pantallas del menú (siguen en el código).
+- Limpieza tras H5–H7 (pendiente, la hace el siguiente bloque con Opus antes de H8): `Partida` ya pasa de 600 líneas (separar el guardado en `juego/Guardado`), `PantallaExploracion.hablar` y los `if` por tipo de lugar podrían ser un registro de lugares, y los textos de `PantallaTienda`/`PantallaPosada` siguen en el código.
+- Enemigos con habilidades: solo el jefe usa `golpeFuerte`; los demás atacan (la IA general queda fuera del MVP).
+- Guardado: una sola ranura y no se guarda dentro de un combate.

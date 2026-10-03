@@ -2,7 +2,7 @@
 
 Describe cómo el motor recibe contenido, configuración, azar, tiempo y guardado, y el formato de cada documento. Es la base del futuro molde del motor (ver "Diseño adaptable" en `mision-mvp.md`). Se actualiza en cada hito que añada o cambie un tipo de dato.
 
-Estado: H3 terminado (`configuracion`, `habilidades`, `combatientes`, `progresion`, `objetos`, `botin`, `mapa` y `encuentros` v1). Los demás tipos de contenido se completan en sus hitos. Cómo añadir contenido: `docs/receta-de-extension.md`.
+Estado: H7 terminado (`configuracion`, `habilidades`, `combatientes`, `progresion`, `objetos`, `botin`, `mapa`, `encuentros`, `inicio`, `escena`, `servicios` y `partida` v1). Cómo añadir contenido: `docs/receta-de-extension.md`.
 
 ## Formato
 - **JSON** (RFC 8259), en UTF-8, leído con `motor.datos.LectorJson`, escrito en Java puro sin librerías. Funciona igual en la JVM de pruebas y en Android, y es el formato natural de una API futura.
@@ -46,6 +46,7 @@ contenido/
 ├── objetos.json         ← (H2)
 ├── botin.json           ← (H2)
 ├── encuentros.json      ← (H3)
+├── servicios.json       ← tipo "servicios": tiendas, posadas, vecinos y jefes (H5–H6, opcional)
 ├── mapas/<id>.json      ← (H3)
 └── escenas/<id>.json    ← (H4)
 ```
@@ -89,6 +90,7 @@ Parámetros declarados: se listan aquí a medida que cada hito los añade.
 | `mundo.pasosMaximos` | entero | 1–999 | 30 (si es menor que el mínimo, se usa el mínimo) | H3 |
 | `juego.msMensaje` | entero | 100–5000 | 900 (milisegundos que se ve cada mensaje del combate) | H3.6 |
 | `juego.rapidoAlEmpezar` | entero | 0–1 | 0 (1 = el avance rápido empieza encendido en una partida nueva) | H3.6 |
+| `pueblo.ventaPorCiento` | entero | 0–100 | 50 (por ciento del precio que paga la tienda por un objeto del grupo) | H5 |
 
 Barra de tiempo: en cada tick, cada combatiente vivo que no espera turno suma `max(1, velocidad × velocidadBarra / 10)`; con la carga llena entra en la cola de turnos. Empates en un mismo tick: primero el que más se pasó y, a igualdad, el inscrito antes.
 
@@ -138,6 +140,7 @@ Clases de héroe y tipos de enemigo. El nombre del héroe lo elige el jugador; `
 | `ataque`, `defensa` | entero | Obligatorios, 0–999. |
 | `poder` | entero | 0–999, defecto 0. Potencia mágica. |
 | `velocidad` | entero | Obligatorio, 1–255. Ritmo de la barra de tiempo. |
+| `golpeFuerte` | objeto | Opcional (H6), solo para enemigos: `{ "cada": N, "habilidad": "id" }`. Cada N turnos propios usa esa habilidad sobre un héroe al azar en vez de atacar. La habilidad debe existir y no costar magia. |
 | `habilidades` | lista de texto | Opcional. Cada `id` debe existir en `habilidades`. |
 | `experiencia`, `oro` | entero | 0–999999, defecto 0. Recompensa al vencerlo. |
 
@@ -215,7 +218,32 @@ Mapa por casillas (`mundo.Mapa`), un archivo por mapa en `mapas/<id>.json`. El g
 | `filas` | lista de textos | Al menos una; todas con el mismo ancho; cada carácter debe estar en la leyenda. La fila 0 es la de arriba. |
 | `inicio` | objeto `x`, `y` | Casilla pasable dentro del mapa donde aparece el grupo. |
 
+Campos opcionales (H5–H6):
+
+| Campo | Tipo | Regla |
+|---|---|---|
+| `salidas` | lista | Cada una: `x`, `y` (casilla **pasable** de este mapa), `mapa` (id de otro mapa) y `destino` (`x`, `y`: casilla pasable de ese mapa; conviene que no sea una salida, para no volver al instante). Se cruza al pisarla. `requiere` (texto, opcional): id de un objeto que el grupo debe llevar; sin él la salida no cede y el grupo vuelve a la casilla anterior. Al empezar una partida se recorren todos los mapas enlazados y cualquier error (mapa inexistente, destino no pasable, objeto inexistente) se muestra en la pantalla de error. |
+| `lugares` | lista | Cada uno: `x`, `y` (dentro del mapa; suele ser una casilla **no pasable**, un mostrador), `tipo` (`tienda`, `posada`, `vecino` o `jefe`) y `ref` (id del servicio en `servicios`). Se usa con Aceptar estando enfrente. |
+
 Fuera del mapa nada es pasable. Un paso hacia una casilla no pasable no mueve al grupo, solo lo gira.
+
+### `servicios` · versión 1
+Archivo opcional `servicios.json` (`pueblo.Servicios`): lo que hay en los lugares de los mapas. Sin el archivo, un mapa no puede tener `lugares`.
+```json
+{ "tipo": "servicios", "version": 1,
+  "tiendas": [ { "id": "tienda-de-lupe", "nombre": "Tienda de Lupe", "vendedor": "Lupe", "objetos": ["tonico-de-raiz"] } ],
+  "posadas": [ { "id": "posada-de-casilda", "nombre": "Posada de Casilda", "posadero": "Casilda", "precio": 15 } ],
+  "vecinos": [ { "id": "ofelia", "nombre": "Ofelia", "escena": "ofelia" } ],
+  "jefes":   [ { "id": "soterrado", "nombre": "La grieta", "enemigos": ["soterrado"], "escenaPrevia": "soterrado-previa",
+                 "escenaFinal": "cierre", "regreso": { "mapa": "pozaluz", "x": 6, "y": 5 } } ] }
+```
+| Campo | Regla |
+|---|---|
+| `tiendas[].objetos` | Ids de `objetos` con precio ≥ 1. Se compra al `precio` del objeto; se vende al `precio` por `pueblo.ventaPorCiento` (los objetos clave no se venden). |
+| `posadas[].precio` | 0–9999 de oro por noche: vida y magia al máximo y los caídos se levantan. No cobra si nadie lo necesita. |
+| `vecinos[].escena` | Id de una escena de `escenas/`; al terminar vuelve al mapa. |
+| `jefes[]` | `enemigos` (ids de `combatientes`), `escenaPrevia` → combate sin huida → `escenaFinal` → el grupo reaparece en `regreso` (casilla pasable). Cada jefe se vence una sola vez por partida. |
+Los ids deben ser únicos por tipo, y cada `lugar` de un mapa debe apuntar a uno que exista.
 
 ### `encuentros` · versión 1
 Grupos de enemigos por zona (`mundo.TablaEncuentros`), en `encuentros.json`. `mundo.Encuentros` lleva una cuenta atrás tirada entre `mundo.pasosMinimos` y `mundo.pasosMaximos`; solo baja con los pasos sobre casillas con `zona`, y al llegar a cero elige un grupo de esa zona por peso y vuelve a tirar.
@@ -250,8 +278,23 @@ Partida nueva (`juego.Partida.nueva`), en `inicio.json`. Valida que el mapa exis
 | `oro` | entero | Opcional, 0–999999, defecto 0. |
 | `introduccion` | texto | Opcional. Id de una escena de `escenas/` que se muestra al empezar la partida nueva, antes del mapa. Si no existe o no es válida, se muestra la pantalla de error. |
 
-### Guardado de partida
-Pendiente (H7). Será un documento JSON con `tipo` `"partida"` y `version`, escrito con `EscritorJson` y guardado en un `Almacen`. Incluirá la semilla del azar.
+### `partida` · versión 1
+Guardado (`Partida.guardar` / `Partida.cargar`), un documento JSON en una ranura del `Almacen` (el juego usa la ranura `partida1`; en Android, `AlmacenArchivos` sobre `getFilesDir()`). Se carga sobre una partida nueva del mismo paquete: lo que el guardado no dice queda como en `inicio.json`. Si algo no vale, se rechaza con la ruta del campo y el juego muestra la pantalla de error sin cambiar nada.
+```json
+{ "tipo": "partida", "version": 1, "mapa": "pozaluz", "x": 6, "y": 5, "oro": 50, "jefes": [],
+  "grupo": [ { "clase": "guardian", "nombre": "Bruna", "experiencia": 0, "vida": 48, "magia": 0,
+               "equipo": { "arma": "hoja-de-ensayo" } } ],
+  "inventario": { "tonico-de-raiz": 3 },
+  "ajustes": { "combate.ticksPorPaso": 4, "juego.msMensaje": 900, "juego.rapidoAlEmpezar": 0 } }
+```
+| Campo | Regla |
+|---|---|
+| `mapa`, `x`, `y` | Mapa existente y casilla pasable. |
+| `grupo` | 1–6 héroes **en el orden de la formación**; `clase` de bando héroe; `experiencia` ≥ 0 (de ella sale el nivel); `vida` y `magia` entre 0 y el máximo con el equipo puesto; `equipo`: ranura → id de una pieza que esa clase pueda llevar en esa ranura. |
+| `inventario` | Id de objeto existente → cantidad 1–999. |
+| `jefes` | Ids de `servicios.jefes` ya vencidos. |
+| `ajustes` | Los parámetros que el menú Ajustes cambia; deben estar dentro de su rango. |
+La semilla del azar no se guarda: cada sesión empieza con una nueva.
 
 ### `escena` · versión 1
 Escena de texto (`guion.Guion`), en `escenas/<id>.json`; el `id` interno debe coincidir con el nombre del archivo. Se muestra con `PantallaEscena`, que avanza una línea por cada Aceptar.
@@ -270,4 +313,4 @@ Escena de texto (`guion.Guion`), en `escenas/<id>.json`; el `id` interno debe co
 Marcadores: en `texto` y `quien`, `{heroe:<clase>}` se sustituye por el nombre que el jugador puso al héroe de esa clase (si no hay uno, se muestra el id de la clase). Cualquier otra llave se rechaza al cargar.
 
 ### Tipos de contenido de juego
-Pendiente: `tienda` (H5). Se documenta aquí con su versión, sus campos y un ejemplo al implementarlo.
+Documentados arriba: `servicios` (tiendas, posadas, vecinos y jefes).

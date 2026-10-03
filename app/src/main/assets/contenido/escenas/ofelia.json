@@ -1,0 +1,19 @@
+{
+  "tipo": "escena",
+  "version": 1,
+  "id": "ofelia",
+  "lineas": [
+    {
+      "quien": "Ofelia",
+      "texto": "La puerta de hierro de la cantera aguanta, pero la llave pesa más que ella."
+    },
+    {
+      "quien": "Ofelia",
+      "texto": "Seguid el sendero hacia el norte del campo y no os fieis de la maleza: allí hay lagartos."
+    },
+    {
+      "quien": "Ofelia",
+      "texto": "Volved con agua, aunque sea un hilo."
+    }
+  ]
+}

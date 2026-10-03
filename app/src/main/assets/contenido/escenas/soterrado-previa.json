@@ -1,0 +1,26 @@
+{
+  "tipo": "escena",
+  "version": 1,
+  "id": "soterrado-previa",
+  "lineas": [
+    {
+      "texto": "Al fondo, una grieta respira. Una figura de piedra fría bebe de ella."
+    },
+    {
+      "quien": "{heroe:herbolaria}",
+      "texto": "No es cruel. Tiene sed. ¿No podemos hablarle?"
+    },
+    {
+      "quien": "{heroe:arcanista}",
+      "texto": "Es lo que se llevaba el agua hacia abajo. Y no va a parar por una charla."
+    },
+    {
+      "quien": "El Soterrado",
+      "texto": "Agua... más... agua..."
+    },
+    {
+      "quien": "{heroe:guardian}",
+      "texto": "Entonces habrá que hacerlo parar. Firmes."
+    }
+  ]
+}

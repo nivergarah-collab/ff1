@@ -4,6 +4,14 @@ Formato: más reciente primero, con fecha en `AAAA-MM-DD`.
 
 ## 2026-10-02
 
+### Añadido (bloque 10, H5 pueblo, H6 mazmorra y jefe, H7 guardado)
+- Mapas con `salidas` (cruce entre mapas, con `requiere` para puertas con llave) y `lugares` (tienda, posada, vecino, jefe); `servicios.json` (`pueblo.Servicios`); `FuenteContenido.existe` (método por defecto). `Partida.nueva` valida todos los mapas enlazados.
+- Pozaluz: tienda (comprar y vender, `pueblo.ventaPorCiento`), posada, dos vecinos con escena; la partida empieza ahí. Pantallas `PantallaTienda` y `PantallaPosada`.
+- Cantera Hundida: puerta de hierro con la Llave de cantera, galerías `cantera-alta` y `cantera-baja`, tres enemigos nuevos con botín y encuentros.
+- El Soterrado: `golpeFuerte` en `combatientes` (habilidad sin coste cada N turnos), jefe sin huida, escenas `soterrado-previa` y `cierre`.
+- Guardado: documento `partida` v1, `Partida.guardar/cargar`, `AlmacenArchivos`, Guardar en el menú (ya no está apagado), Continuar en el título y `MainActivity` con el almacén en archivos. 254 pruebas (32 nuevas).
+- Contrato y receta al día (secciones 5b y 8c).
+
 ### Cambiado (bloque 9, limpieza tras H3.6 y H4)
 - `Menu.vuelta` (giro del cursor) y `Estilo.marcador` (marcador `>`) sustituyen a las copias repetidas en las pantallas del menú y del combate; sin cambios de comportamiento. Prueba nueva `MenuCursorTest` (222 pruebas).
 

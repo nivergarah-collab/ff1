@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Menú del grupo: se abre desde la exploración con Cancelar (encima del mapa, en la pila de
  * {@link Juego}) y lista las secciones. Cada sección es otra {@link Pantalla} que se apila encima.
- * "Guardar" aparece apagada hasta que exista el guardado (H7).
+ * "Guardar" escribe la partida en la ranura única de {@link Juego#RANURA}.
  */
 public final class PantallaMenu implements Pantalla {
 
@@ -31,6 +31,7 @@ public final class PantallaMenu implements Pantalla {
     private final List<Boolean> habilitadas = new ArrayList<>();
     private int cursor;
     private boolean confirmandoSalida;
+    private String mensaje = "";
 
     PantallaMenu(Juego juego, Partida partida) {
         this.juego = juego;
@@ -42,7 +43,7 @@ public final class PantallaMenu implements Pantalla {
         cursor = Menu.mover(-1, 1, habilitadas);
     }
 
-    /** Guardar espera a H7; las demás secciones se habilitan al implementarse. */
+    /** Todas las secciones están habilitadas. */
     static boolean habilitada(Seccion s) {
         switch (s) {
             case OBJETOS:
@@ -51,6 +52,7 @@ public final class PantallaMenu implements Pantalla {
             case ESTADO:
             case FORMACION:
             case AJUSTES:
+            case GUARDAR:
             case SALIR:
                 return true;
             default:
@@ -64,6 +66,10 @@ public final class PantallaMenu implements Pantalla {
 
     public Seccion seccion() {
         return Seccion.values()[cursor];
+    }
+
+    public String mensaje() {
+        return mensaje;
     }
 
     public boolean confirmandoSalida() {
@@ -102,11 +108,14 @@ public final class PantallaMenu implements Pantalla {
         }
         if (b == Boton.ARRIBA || b == Boton.ABAJO) {
             cursor = Menu.mover(cursor, b == Boton.ABAJO ? 1 : -1, habilitadas);
+            mensaje = "";
         } else if (b == Boton.CANCELAR) {
             juego.cerrar();
         } else if (b == Boton.ACEPTAR && habilitadas.get(cursor)) {
             if (seccion() == Seccion.SALIR) {
                 confirmandoSalida = true;
+            } else if (seccion() == Seccion.GUARDAR) {
+                mensaje = juego.guardar() ? "Partida guardada." : "No se pudo guardar.";
             } else {
                 Pantalla p = abrir(seccion());
                 if (p != null) {
@@ -127,6 +136,7 @@ public final class PantallaMenu implements Pantalla {
         Estilo.menu(e, 20, 38, etiquetas, cursor, habilitadas);
         e.texto(Escena.ANCHO - 8, 6, "Oro " + partida.oro(), Estilo.LETRA, Estilo.RESALTE, Escena.Alineacion.DERECHA);
         PantallaExploracion.dibujarGrupo(e, partida.grupo(), PantallaExploracion.PANEL_Y);
+        e.texto(8, 230, mensaje, Estilo.LETRA, Estilo.RESALTE);
         if (confirmandoSalida) {
             Estilo.ventana(e, 30, 200, Escena.ANCHO - 60, 90);
             e.texto(Escena.ANCHO / 2, 214, "¿Salir al título?", Estilo.LETRA, Estilo.RESALTE, Escena.Alineacion.CENTRO);

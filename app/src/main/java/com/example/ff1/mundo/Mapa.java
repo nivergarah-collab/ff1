@@ -39,6 +39,46 @@ public final class Mapa {
         }
     }
 
+    /** Casilla que lleva a otro mapa al pisarla. */
+    public static final class Salida {
+        public final int x;
+        public final int y;
+        public final String mapa;
+        public final int destinoX;
+        public final int destinoY;
+        /** Id del objeto que hace falta llevar para cruzar; {@code null} si la salida está abierta. */
+        public final String requiere;
+
+        Salida(int x, int y, String mapa, int destinoX, int destinoY, String requiere) {
+            this.requiere = requiere;
+            this.x = x;
+            this.y = y;
+            this.mapa = mapa;
+            this.destinoX = destinoX;
+            this.destinoY = destinoY;
+        }
+    }
+
+    /** Casilla con la que se habla estando enfrente (tienda, posada o vecino); {@code ref} es un id de {@code servicios}. */
+    public static final class Lugar {
+        public final int x;
+        public final int y;
+        public final String tipo;
+        public final String ref;
+
+        Lugar(int x, int y, String tipo, String ref) {
+            this.x = x;
+            this.y = y;
+            this.tipo = tipo;
+            this.ref = ref;
+        }
+    }
+
+    public static final String LUGAR_TIENDA = "tienda";
+    public static final String LUGAR_POSADA = "posada";
+    public static final String LUGAR_VECINO = "vecino";
+    public static final String LUGAR_JEFE = "jefe";
+
     public final String id;
     public final int ancho;
     public final int alto;
@@ -46,6 +86,8 @@ public final class Mapa {
     public final int inicioY;
     private final List<String> filas;
     private final Map<Character, Casilla> leyenda;
+    private final List<Salida> salidas = new ArrayList<>();
+    private final List<Lugar> lugares = new ArrayList<>();
 
     private Mapa(String id, List<String> filas, Map<Character, Casilla> leyenda, int inicioX, int inicioY) {
         this.id = id;
@@ -110,7 +152,61 @@ public final class Mapa {
         if (!m.dentro(x, y) || !m.pasable(x, y)) {
             throw new ErrorDeDatos(ni.ruta() + ": (" + x + ", " + y + ") no es una casilla pasable del mapa");
         }
+        if (doc.tiene("salidas")) {
+            for (Nodo n : doc.lista("salidas")) {
+                int sx = n.entero("x");
+                int sy = n.entero("y");
+                Nodo d = n.objeto("destino");
+                if (!m.pasable(sx, sy)) {
+                    throw new ErrorDeDatos(n.ruta() + ": (" + sx + ", " + sy + ") no es una casilla pasable del mapa");
+                }
+                m.salidas.add(new Salida(sx, sy, n.texto("mapa"), d.entero("x"), d.entero("y"), n.textoO("requiere", null)));
+            }
+        }
+        if (doc.tiene("lugares")) {
+            for (Nodo n : doc.lista("lugares")) {
+                int lx = n.entero("x");
+                int ly = n.entero("y");
+                String tipo = n.texto("tipo");
+                if (!m.dentro(lx, ly)) {
+                    throw new ErrorDeDatos(n.ruta() + ": (" + lx + ", " + ly + ") está fuera del mapa");
+                }
+                if (!tipo.equals(LUGAR_TIENDA) && !tipo.equals(LUGAR_POSADA) && !tipo.equals(LUGAR_VECINO)
+                        && !tipo.equals(LUGAR_JEFE)) {
+                    throw new ErrorDeDatos(n.ruta() + ".tipo: \"" + tipo + "\" no es tienda, posada, vecino ni jefe");
+                }
+                m.lugares.add(new Lugar(lx, ly, tipo, n.texto("ref")));
+            }
+        }
         return m;
+    }
+
+    /** Salida en (x, y), o {@code null}. */
+    public Salida salidaEn(int x, int y) {
+        for (Salida s : salidas) {
+            if (s.x == x && s.y == y) {
+                return s;
+            }
+        }
+        return null;
+    }
+
+    /** Lugar en (x, y), o {@code null}. */
+    public Lugar lugarEn(int x, int y) {
+        for (Lugar l : lugares) {
+            if (l.x == x && l.y == y) {
+                return l;
+            }
+        }
+        return null;
+    }
+
+    public List<Salida> salidas() {
+        return Collections.unmodifiableList(salidas);
+    }
+
+    public List<Lugar> lugares() {
+        return Collections.unmodifiableList(lugares);
     }
 
     public boolean dentro(int x, int y) {

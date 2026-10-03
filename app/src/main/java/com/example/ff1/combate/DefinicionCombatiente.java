@@ -21,10 +21,21 @@ public final class DefinicionCombatiente {
     public final List<String> habilidades;
     public final int experiencia;
     public final int oro;
+    /** Cada cuántos turnos propios usa {@link #golpeFuerte}; 0 = nunca (solo ataca). */
+    public final int golpeCada;
+    /** Habilidad sin coste que usa cada {@link #golpeCada} turnos; {@code null} si no tiene. */
+    public final Habilidad golpeFuerte;
 
     public DefinicionCombatiente(String id, String nombre, Bando bando, int vida, int magia,
             int ataque, int defensa, int poder, int velocidad, List<String> habilidades,
             int experiencia, int oro) {
+        this(id, nombre, bando, vida, magia, ataque, defensa, poder, velocidad, habilidades, experiencia, oro,
+                0, null);
+    }
+
+    public DefinicionCombatiente(String id, String nombre, Bando bando, int vida, int magia,
+            int ataque, int defensa, int poder, int velocidad, List<String> habilidades,
+            int experiencia, int oro, int golpeCada, Habilidad golpeFuerte) {
         this.id = id;
         this.nombre = nombre;
         this.bando = bando;
@@ -37,5 +48,7 @@ public final class DefinicionCombatiente {
         this.habilidades = Collections.unmodifiableList(habilidades);
         this.experiencia = experiencia;
         this.oro = oro;
+        this.golpeCada = golpeCada;
+        this.golpeFuerte = golpeFuerte;
     }
 }

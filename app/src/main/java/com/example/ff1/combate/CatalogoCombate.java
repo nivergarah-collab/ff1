@@ -127,12 +127,26 @@ public final class CatalogoCombate {
                     propias.add(idHabilidad);
                 }
             }
+            int golpeCada = 0;
+            Habilidad golpe = null;
+            if (n.tiene("golpeFuerte")) {
+                Nodo g = n.objeto("golpeFuerte");
+                golpeCada = Documentos.rango(g, "cada", 1, 99);
+                String idGolpe = g.texto("habilidad");
+                golpe = habilidades.get(idGolpe);
+                if (golpe == null) {
+                    throw new ErrorDeDatos(g.ruta() + ".habilidad: habilidad \"" + idGolpe + "\" no existe");
+                }
+                if (golpe.coste != 0) {
+                    throw new ErrorDeDatos(g.ruta() + ".habilidad: el golpe fuerte no puede costar magia");
+                }
+            }
             mapa.put(id, new DefinicionCombatiente(id, n.texto("nombre"),
                     Bando.desde(n.texto("bando"), n.ruta() + ".bando"),
                     Documentos.rango(n, "vida", 1, 99999), Documentos.rangoO(n, "magia", 0, 9999, 0),
                     Documentos.rango(n, "ataque", 0, 999), Documentos.rango(n, "defensa", 0, 999),
                     Documentos.rangoO(n, "poder", 0, 999, 0), Documentos.rango(n, "velocidad", 1, 255),
-                    propias, Documentos.rangoO(n, "experiencia", 0, 999999, 0), Documentos.rangoO(n, "oro", 0, 999999, 0)));
+                    propias, Documentos.rangoO(n, "experiencia", 0, 999999, 0), Documentos.rangoO(n, "oro", 0, 999999, 0), golpeCada, golpe));
         }
         return mapa;
     }

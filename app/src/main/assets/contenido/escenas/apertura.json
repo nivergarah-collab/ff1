@@ -3,12 +3,31 @@
   "version": 1,
   "id": "apertura",
   "lineas": [
-    { "texto": "Amanece en Pozaluz. La fuente de la plaza apenas gotea." },
-    { "quien": "{heroe:herbolaria}", "texto": "Las ovejas ya no beben, y hace nueve días que esto no mejora." },
-    { "quien": "{heroe:rastreador}", "texto": "Hay huellas por todo el campo. Todas van hacia la cantera vieja." },
-    { "quien": "{heroe:arcanista}", "texto": "El agua no se va a ningún lado: se está yendo hacia abajo. Lo digo en serio." },
-    { "quien": "Ofelia", "texto": "{heroe:guardian}, tu familia cerró esa cantera. Ahora la llave es tuya." },
-    { "quien": "{heroe:guardian}", "texto": "Entonces vamos. Antes de que la fuente se seque del todo." },
-    { "texto": "Pozaluz queda atrás. Más allá del sendero espera la pradera." }
+    {
+      "texto": "Amanece en Pozaluz. La fuente de la plaza apenas gotea."
+    },
+    {
+      "quien": "{heroe:herbolaria}",
+      "texto": "Las ovejas ya no beben, y hace nueve días que esto no mejora."
+    },
+    {
+      "quien": "{heroe:rastreador}",
+      "texto": "Hay huellas por todo el campo. Todas van hacia la cantera vieja."
+    },
+    {
+      "quien": "{heroe:arcanista}",
+      "texto": "El agua no se va a ningún lado: se está yendo hacia abajo. Lo digo en serio."
+    },
+    {
+      "quien": "Ofelia",
+      "texto": "{heroe:guardian}, tu familia cerró esa cantera. Ahora la llave es tuya."
+    },
+    {
+      "quien": "{heroe:guardian}",
+      "texto": "Entonces vamos. Antes de que la fuente se seque del todo."
+    },
+    {
+      "texto": "Antes de partir, el grupo puede pasar por la tienda de Lupe y la posada de Casilda."
+    }
   ]
 }

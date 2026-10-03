@@ -2,10 +2,64 @@
   "tipo": "botin",
   "version": 1,
   "lista": [
-    { "enemigo": "musgoso", "objetos": [ { "id": "tonico-de-raiz", "probabilidad": 25 } ] },
-    { "enemigo": "ala-de-hollin", "objetos": [ { "id": "frasco-de-brasas", "probabilidad": 15 } ] },
-    { "enemigo": "lagarto-de-cantera", "objetos": [
-      { "id": "tonico-de-raiz", "probabilidad": 40, "cantidad": 2 },
-      { "id": "jubon-acolchado", "probabilidad": 5 } ] }
+    {
+      "enemigo": "musgoso",
+      "objetos": [
+        {
+          "id": "tonico-de-raiz",
+          "probabilidad": 25
+        }
+      ]
+    },
+    {
+      "enemigo": "ala-de-hollin",
+      "objetos": [
+        {
+          "id": "frasco-de-brasas",
+          "probabilidad": 15
+        }
+      ]
+    },
+    {
+      "enemigo": "lagarto-de-cantera",
+      "objetos": [
+        {
+          "id": "tonico-de-raiz",
+          "probabilidad": 40,
+          "cantidad": 2
+        },
+        {
+          "id": "jubon-acolchado",
+          "probabilidad": 5
+        }
+      ]
+    },
+    {
+      "enemigo": "murcielago-de-cal",
+      "objetos": [
+        {
+          "id": "tonico-de-raiz",
+          "probabilidad": 20
+        }
+      ]
+    },
+    {
+      "enemigo": "escarabajo-de-roca",
+      "objetos": [
+        {
+          "id": "frasco-de-brasas",
+          "probabilidad": 20
+        }
+      ]
+    },
+    {
+      "enemigo": "sombra-de-sal",
+      "objetos": [
+        {
+          "id": "agua-de-roca",
+          "probabilidad": 20
+        }
+      ]
+    }
   ]
 }

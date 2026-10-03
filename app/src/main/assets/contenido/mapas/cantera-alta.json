@@ -1,0 +1,73 @@
+{
+  "tipo": "mapa",
+  "version": 1,
+  "id": "cantera-alta",
+  "leyenda": {
+    "#": {
+      "nombre": "roca",
+      "color": "#4A4440",
+      "pasable": false
+    },
+    ",": {
+      "nombre": "galería",
+      "color": "#7C7468",
+      "pasable": true,
+      "zona": "galeria-alta"
+    },
+    "=": {
+      "nombre": "tramo despejado",
+      "color": "#9A8F7C",
+      "pasable": true
+    },
+    "D": {
+      "nombre": "puerta de hierro",
+      "color": "#3A3F4A",
+      "pasable": true
+    },
+    "v": {
+      "nombre": "escalera hacia abajo",
+      "color": "#B59A62",
+      "pasable": true
+    },
+    "u": {
+      "nombre": "escalera hacia arriba",
+      "color": "#B59A62",
+      "pasable": true
+    }
+  },
+  "filas": [
+    "############",
+    "#,,,,,,,,,v#",
+    "#,########=#",
+    "#,,,,,,,,,,#",
+    "#########,##",
+    "#,,,,,,,,,,#",
+    "#,##########",
+    "#,,,,,,=,,,#",
+    "#####D######"
+  ],
+  "inicio": {
+    "x": 5,
+    "y": 7
+  },
+  "salidas": [
+    {
+      "x": 5,
+      "y": 8,
+      "mapa": "campo",
+      "destino": {
+        "x": 9,
+        "y": 1
+      }
+    },
+    {
+      "x": 10,
+      "y": 1,
+      "mapa": "cantera-baja",
+      "destino": {
+        "x": 2,
+        "y": 1
+      }
+    }
+  ]
+}

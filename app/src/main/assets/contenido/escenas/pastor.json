@@ -1,0 +1,15 @@
+{
+  "tipo": "escena",
+  "version": 1,
+  "id": "pastor",
+  "lineas": [
+    {
+      "quien": "Vecino pastor",
+      "texto": "Mis ovejas llevan nueve días mirando la fuente sin beber."
+    },
+    {
+      "quien": "Vecino pastor",
+      "texto": "Casilda cobra poco por la cama, y Lupe vende raíces que curan. Llevad de sobra."
+    }
+  ]
+}

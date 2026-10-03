@@ -1,0 +1,29 @@
+{
+  "tipo": "escena",
+  "version": 1,
+  "id": "cierre",
+  "lineas": [
+    {
+      "texto": "El Soterrado se deshace en arena fina. La grieta suelta de golpe el agua que guardaba."
+    },
+    {
+      "quien": "{heroe:rastreador}",
+      "texto": "Escuchad: el agua vuelve a correr bajo la cantera."
+    },
+    {
+      "quien": "{heroe:herbolaria}",
+      "texto": "Pobre. Solo quería beber."
+    },
+    {
+      "texto": "Al amanecer, la fuente de Pozaluz canta otra vez. Las ovejas beben."
+    },
+    {
+      "quien": "Ofelia",
+      "texto": "Mi familia cerró esa cantera por miedo. Vosotros la habéis abierto por una buena razón."
+    },
+    {
+      "quien": "Ofelia",
+      "texto": "Esta historia termina aquí. Las que vienen todavía no tienen nombre."
+    }
+  ]
+}

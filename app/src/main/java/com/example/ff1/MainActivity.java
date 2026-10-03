@@ -23,7 +23,8 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle estado) {
         super.onCreate(estado);
         Juego juego = new Juego(new FuenteContenidoJson(new LectorAssets(getAssets(), "contenido")),
-                new AzarSemilla(System.nanoTime()));
+                new AzarSemilla(System.nanoTime()),
+                new com.example.ff1.motor.fuentes.AlmacenArchivos(getFilesDir()));
         vista = new VistaJuego(this, juego);
         setContentView(vista);
     }

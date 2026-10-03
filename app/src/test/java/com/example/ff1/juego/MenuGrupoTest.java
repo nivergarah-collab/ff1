@@ -64,7 +64,7 @@ public class MenuGrupoTest {
         for (PantallaMenu.Seccion s : PantallaMenu.Seccion.values()) {
             assertTrue(s.etiqueta, e.contieneTexto(s.etiqueta));
         }
-        assertFalse(PantallaMenu.habilitada(PantallaMenu.Seccion.GUARDAR));
+        assertTrue(PantallaMenu.habilitada(PantallaMenu.Seccion.GUARDAR));
         assertEquals(PantallaMenu.Seccion.OBJETOS, m.seccion());
         for (int i = 0; i < 20; i++) {
             j.pulsar(Boton.ABAJO);

@@ -6,6 +6,7 @@ import com.example.ff1.mundo.Direccion;
 import com.example.ff1.mundo.Explorador;
 import com.example.ff1.mundo.Mapa;
 import com.example.ff1.progresion.Heroe;
+import com.example.ff1.pueblo.Servicios;
 
 import java.util.List;
 
@@ -25,6 +26,7 @@ public final class PantallaExploracion implements Pantalla {
 
     private final Juego juego;
     private final Partida partida;
+    private String mensaje = "";
 
     PantallaExploracion(Juego juego, Partida partida) {
         this.juego = juego;
@@ -37,14 +39,67 @@ public final class PantallaExploracion implements Pantalla {
             juego.apilar(new PantallaMenu(juego, partida));
             return;
         }
+        if (b == Boton.ACEPTAR) {
+            hablar();
+            return;
+        }
         Direccion d = direccion(b);
         if (d == null) {
             return;
         }
-        List<String> enemigos = partida.encuentros().mover(partida.explorador(), d);
+        mensaje = "";
+        Explorador ex = partida.explorador();
+        int antesX = ex.x();
+        int antesY = ex.y();
+        List<String> enemigos = partida.encuentros().mover(ex, d);
         if (enemigos != null) {
             juego.irA(new PantallaCombate(juego, partida, partida.empezarCombate(enemigos), this));
+        } else if (partida.cruzarSalida() == Partida.Cruce.CERRADA) {
+            ex.colocar(ex.mapa(), antesX, antesY);
+            mensaje = "Está cerrado: hace falta una llave.";
         }
+    }
+
+    /** Aceptar frente a una tienda, una posada o un vecino abre su pantalla. */
+    private void hablar() {
+        Mapa.Lugar l = partida.lugarDelante();
+        if (l == null) {
+            return;
+        }
+        Servicios sv = partida.servicios();
+        switch (l.tipo) {
+            case Mapa.LUGAR_TIENDA:
+                juego.apilar(new PantallaTienda(juego, partida, sv.tienda(l.ref)));
+                break;
+            case Mapa.LUGAR_POSADA:
+                juego.apilar(new PantallaPosada(juego, partida, sv.posada(l.ref)));
+                break;
+            case Mapa.LUGAR_JEFE:
+                encararJefe(sv.jefe(l.ref));
+                break;
+            default:
+                juego.irA(new PantallaEscena(juego, partida.escena(sv.vecino(l.ref).escena),
+                        partida.nombresPorClase(), this));
+        }
+    }
+
+    /** Escena previa → combate sin huida → escena final → regreso al sitio indicado. */
+    private void encararJefe(final Servicios.Jefe jefe) {
+        if (partida.jefeDerrotado(jefe.id)) {
+            mensaje = "Ya no queda nada aquí.";
+            return;
+        }
+        final Pantalla mapa = this;
+        PantallaCombate combate = new PantallaCombate(juego, partida,
+                partida.empezarCombate(jefe.enemigos, false), mapa);
+        combate.trasVictoria(new Runnable() {
+            @Override
+            public void run() {
+                partida.derrotarJefe(jefe);
+                juego.irA(new PantallaEscena(juego, partida.escena(jefe.escenaFinal), partida.nombresPorClase(), mapa));
+            }
+        });
+        juego.irA(new PantallaEscena(juego, partida.escena(jefe.escenaPrevia), partida.nombresPorClase(), combate));
     }
 
     static Direccion direccion(Boton b) {
@@ -64,6 +119,10 @@ public final class PantallaExploracion implements Pantalla {
 
     @Override
     public void avanzar(int ms) {
+    }
+
+    public String mensaje() {
+        return mensaje;
     }
 
     /** Primera columna (o fila) visible: centra al grupo sin salirse del mapa. */
@@ -98,6 +157,17 @@ public final class PantallaExploracion implements Pantalla {
         e.texto(jx + LADO / 2, jy + 5, flecha(ex.mirando()), 12, Estilo.FONDO, Escena.Alineacion.CENTRO);
 
         dibujarGrupo(e, partida.grupo(), PANEL_Y);
+        if (!mensaje.isEmpty()) {
+            e.texto(Escena.ANCHO / 2, 6, mensaje, Estilo.LETRA, Estilo.RESALTE, Escena.Alineacion.CENTRO);
+        }
+        Mapa.Lugar l = partida.lugarDelante();
+        if (mensaje.isEmpty() && l != null) {
+            Servicios sv = partida.servicios();
+            String nombre = l.tipo.equals(Mapa.LUGAR_TIENDA) ? sv.tienda(l.ref).nombre
+                    : l.tipo.equals(Mapa.LUGAR_POSADA) ? sv.posada(l.ref).nombre
+                    : l.tipo.equals(Mapa.LUGAR_JEFE) ? sv.jefe(l.ref).nombre : sv.vecino(l.ref).nombre;
+            e.texto(Escena.ANCHO / 2, 6, nombre + " (Aceptar)", Estilo.LETRA, Estilo.RESALTE, Escena.Alineacion.CENTRO);
+        }
     }
 
     static void dibujarGrupo(Escena e, List<Heroe> grupo, int y) {

@@ -19,10 +19,13 @@ import com.example.ff1.inventario.ConfiguracionInventario;
 import com.example.ff1.inventario.DefinicionObjeto;
 import com.example.ff1.inventario.Inventario;
 import com.example.ff1.inventario.TablaBotin;
+import com.example.ff1.motor.config.Configuracion;
 import com.example.ff1.motor.config.EsquemaConfiguracion;
 import com.example.ff1.motor.config.ProveedorConfiguracion;
 import com.example.ff1.motor.config.Registro;
 import com.example.ff1.motor.datos.Documentos;
+import com.example.ff1.motor.datos.EscritorJson;
+import com.example.ff1.motor.datos.LectorJson;
 import com.example.ff1.motor.datos.ErrorDeDatos;
 import com.example.ff1.motor.datos.Nodo;
 import com.example.ff1.motor.fuentes.Azar;
@@ -35,12 +38,15 @@ import com.example.ff1.mundo.TablaEncuentros;
 import com.example.ff1.progresion.Heroe;
 import com.example.ff1.progresion.Reparto;
 import com.example.ff1.progresion.TablaProgresion;
+import com.example.ff1.pueblo.Servicios;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.LinkedHashSet;
 
 /**
  * Estado de una partida y el ensamblaje de los módulos (combate, progresión, inventario y mundo)
@@ -82,16 +88,26 @@ public final class Partida {
     private final Explorador explorador;
     private final Encuentros encuentros;
     private final Guion introduccion;
+    private final FuenteContenido fuente;
+    private final TablaEncuentros tabla;
+    private final Servicios servicios;
+    private final Map<String, Mapa> mapas = new LinkedHashMap<>();
+    private final TablaProgresion progresion;
+    private final java.util.Set<String> jefesDerrotados = new java.util.LinkedHashSet<>();
     private int oro;
 
-    private Partida(ProveedorConfiguracion config, Azar azar, CatalogoCombate catalogo, CatalogoObjetos objetos,
-            TablaBotin botin, Acciones acciones, Registro<TipoHabilidad> tipos, List<Heroe> grupo, Inventario inventario, Explorador explorador,
+    private Partida(FuenteContenido fuente, TablaEncuentros tabla, Servicios servicios, ProveedorConfiguracion config, Azar azar, CatalogoCombate catalogo, CatalogoObjetos objetos,
+            TablaBotin botin, TablaProgresion progresion, Acciones acciones, Registro<TipoHabilidad> tipos, List<Heroe> grupo, Inventario inventario, Explorador explorador,
             Encuentros encuentros, Guion introduccion, int oro) {
+        this.fuente = fuente;
+        this.tabla = tabla;
+        this.servicios = servicios;
         this.config = config;
         this.azar = azar;
         this.catalogo = catalogo;
         this.objetos = objetos;
         this.botin = botin;
+        this.progresion = progresion;
         this.acciones = acciones;
         this.tipos = tipos;
         this.orden = grupo;
@@ -124,6 +140,8 @@ public final class Partida {
         Nodo inicio = fuente.cargar(TIPO_INICIO, TIPO_INICIO, VERSION_INICIO);
         Mapa mapa = Mapa.cargar(fuente, inicio.texto("mapa"));
         tabla.validarMapa(mapa);
+        Servicios servicios = Servicios.cargar(fuente, objetos, catalogo);
+        servicios.validarMapa(mapa);
         List<Nodo> ng = inicio.lista("grupo");
         Documentos.dentro(inicio, "grupo", ng.size(), 1, 6);
         List<Heroe> grupo = new ArrayList<>();
@@ -144,8 +162,170 @@ public final class Partida {
         Guion introduccion = inicio.tiene("introduccion") ? Guion.cargar(fuente, inicio.texto("introduccion")) : null;
         int oro = Documentos.rangoO(inicio, "oro", 0, 999_999, 0);
         Acciones acciones = new Acciones(config, azar, tipos, estados);
-        return new Partida(config, azar, catalogo, objetos, botin, acciones, tipos, grupo,
+        Partida p = new Partida(fuente, tabla, servicios, config, azar, catalogo, objetos, botin, progresion, acciones, tipos, grupo,
                 inventario, new Explorador(mapa), new Encuentros(config, tabla, azar), introduccion, oro);
+        p.mapas.put(mapa.id, mapa);
+        p.validarMundo(mapa);
+        return p;
+    }
+
+    /** Escena de texto del paquete (para los vecinos). */
+    public Guion escena(String id) {
+        return Guion.cargar(fuente, id);
+    }
+
+    public boolean jefeDerrotado(String id) {
+        return jefesDerrotados.contains(id);
+    }
+
+    /** Marca al jefe como vencido y lleva al grupo al sitio de regreso (tras la escena final). */
+    public void derrotarJefe(Servicios.Jefe j) {
+        jefesDerrotados.add(j.id);
+        irAMapa(j.regresoMapa, j.regresoX, j.regresoY);
+    }
+
+    public Servicios servicios() {
+        return servicios;
+    }
+
+    /** Mapa por id, cargado una vez y validado contra encuentros y servicios. */
+    public Mapa mapa(String id) {
+        Mapa m = mapas.get(id);
+        if (m == null) {
+            m = Mapa.cargar(fuente, id);
+            tabla.validarMapa(m);
+            servicios.validarMapa(m);
+            mapas.put(id, m);
+        }
+        return m;
+    }
+
+    /** Pone al grupo en (x, y) de otro mapa (al cruzar una salida) y reinicia la cuenta de encuentros. */
+    public void irAMapa(String id, int x, int y) {
+        explorador.colocar(mapa(id), x, y);
+        encuentros.reiniciar();
+    }
+
+    /** Recorre los mapas enlazados desde {@code inicial}: cada salida debe llevar a un mapa y una casilla válidos. */
+    private void validarMundo(Mapa inicial) {
+        List<Mapa> pendientes = new ArrayList<>();
+        pendientes.add(inicial);
+        for (int i = 0; i < pendientes.size(); i++) {
+            Mapa m = pendientes.get(i);
+            for (Mapa.Salida sal : m.salidas()) {
+                boolean nuevo = !mapas.containsKey(sal.mapa);
+                Mapa destino = mapa(sal.mapa);
+                if (!destino.pasable(sal.destinoX, sal.destinoY)) {
+                    throw new ErrorDeDatos("mapas/" + m.id + ".salidas: (" + sal.destinoX + ", " + sal.destinoY
+                            + ") no es una casilla pasable de " + sal.mapa);
+                }
+                if (sal.requiere != null) {
+                    objetos.objeto(sal.requiere);
+                }
+                if (nuevo) {
+                    pendientes.add(destino);
+                }
+            }
+            for (Mapa.Lugar l : m.lugares()) {
+                if (l.tipo.equals(Mapa.LUGAR_JEFE)) {
+                    Servicios.Jefe j = servicios.jefe(l.ref);
+                    if (!mapa(j.regresoMapa).pasable(j.regresoX, j.regresoY)) {
+                        throw new ErrorDeDatos("servicios.jefes." + j.id + ".regreso: (" + j.regresoX + ", "
+                                + j.regresoY + ") no es una casilla pasable de " + j.regresoMapa);
+                    }
+                }
+            }
+        }
+    }
+
+    public enum Cruce { NINGUNO, CRUZO, CERRADA }
+
+    /**
+     * Cruza la salida si la casilla del grupo tiene una. Si pide un objeto que el grupo no lleva,
+     * no se cruza y devuelve {@link Cruce#CERRADA}.
+     */
+    public Cruce cruzarSalida() {
+        Mapa.Salida s = explorador.mapa().salidaEn(explorador.x(), explorador.y());
+        if (s == null) {
+            return Cruce.NINGUNO;
+        }
+        if (s.requiere != null && inventario.cantidad(s.requiere) < 1) {
+            return Cruce.CERRADA;
+        }
+        irAMapa(s.mapa, s.destinoX, s.destinoY);
+        return Cruce.CRUZO;
+    }
+
+    /** Lugar (tienda, posada, vecino) justo delante del grupo, o {@code null}. */
+    public Mapa.Lugar lugarDelante() {
+        Explorador ex = explorador;
+        int x = ex.x() + ex.mirando().dx;
+        int y = ex.y() + ex.mirando().dy;
+        return ex.mapa().dentro(x, y) ? ex.mapa().lugarEn(x, y) : null;
+    }
+
+    public enum Compra { HECHA, SIN_ORO, SIN_ESPACIO }
+
+    public enum Venta { HECHA, NO_VENDIBLE, NO_LLEVA }
+
+    public enum Descanso { HECHO, SIN_ORO, NADA_QUE_CURAR }
+
+    /** Oro que se paga por un objeto del inventario: su precio por {@code pueblo.ventaPorCiento}. */
+    public int precioVenta(String idObjeto) {
+        DefinicionObjeto o = objetos.objeto(idObjeto);
+        if (o.categoria == DefinicionObjeto.Categoria.CLAVE) {
+            return 0;
+        }
+        return o.precio * config.actual().entero(ConfiguracionJuego.VENTA_POR_CIENTO) / 100;
+    }
+
+    /** Compra una unidad al precio del objeto. */
+    public Compra comprar(String idObjeto) {
+        DefinicionObjeto o = objetos.objeto(idObjeto);
+        if (oro < o.precio) {
+            return Compra.SIN_ORO;
+        }
+        if (inventario.espacio(idObjeto) < 1) {
+            return Compra.SIN_ESPACIO;
+        }
+        oro -= o.precio;
+        inventario.agregar(idObjeto, 1);
+        return Compra.HECHA;
+    }
+
+    /** Vende una unidad del inventario; los objetos clave y los de precio 0 no se venden. */
+    public Venta vender(String idObjeto) {
+        if (inventario.cantidad(idObjeto) < 1) {
+            return Venta.NO_LLEVA;
+        }
+        int precio = precioVenta(idObjeto);
+        if (precio < 1) {
+            return Venta.NO_VENDIBLE;
+        }
+        inventario.quitar(idObjeto, 1);
+        oro = (int) Math.min(999_999L, (long) oro + precio);
+        return Venta.HECHA;
+    }
+
+    /** Una noche en la posada: vida y magia al máximo y los caídos se levantan. Si nadie lo necesita, no cobra. */
+    public Descanso descansar(Servicios.Posada posada) {
+        boolean necesario = false;
+        for (Heroe h : grupo) {
+            if (h.vida() < h.estadisticas().vida || h.magia() < h.estadisticas().magia) {
+                necesario = true;
+            }
+        }
+        if (!necesario) {
+            return Descanso.NADA_QUE_CURAR;
+        }
+        if (oro < posada.precio) {
+            return Descanso.SIN_ORO;
+        }
+        oro -= posada.precio;
+        for (Heroe h : grupo) {
+            h.restaurar();
+        }
+        return Descanso.HECHO;
     }
 
     public ProveedorConfiguracion config() {
@@ -328,13 +508,145 @@ public final class Partida {
         return Uso.USADO;
     }
 
+    // --- Guardado ---------------------------------------------------------------------------
+
+    public static final String TIPO_PARTIDA = "partida";
+    public static final int VERSION_PARTIDA = 1;
+    private static final String[] AJUSTES = {
+        ConfiguracionCombate.TICKS_POR_PASO, ConfiguracionJuego.MS_MENSAJE, ConfiguracionJuego.RAPIDO_AL_EMPEZAR };
+
+    /** Texto JSON con todo lo que cambia durante el juego (documento {@code "partida"}, ver el contrato). */
+    public String guardar() {
+        Map<String, Object> doc = new LinkedHashMap<>();
+        doc.put("tipo", TIPO_PARTIDA);
+        doc.put("version", VERSION_PARTIDA);
+        doc.put("mapa", explorador.mapa().id);
+        doc.put("x", explorador.x());
+        doc.put("y", explorador.y());
+        doc.put("oro", oro);
+        doc.put("jefes", new ArrayList<>(jefesDerrotados));
+        List<Object> heroes = new ArrayList<>();
+        for (Heroe h : grupo) {
+            Map<String, Object> m = new LinkedHashMap<>();
+            m.put("clase", h.clase().id);
+            m.put("nombre", h.nombre());
+            m.put("experiencia", h.experiencia());
+            m.put("vida", h.vida());
+            m.put("magia", h.magia());
+            Map<String, Object> equipo = new LinkedHashMap<>();
+            for (Map.Entry<String, DefinicionObjeto> e : h.equipo().entrySet()) {
+                equipo.put(e.getKey(), e.getValue().id);
+            }
+            m.put("equipo", equipo);
+            heroes.add(m);
+        }
+        doc.put("grupo", heroes);
+        doc.put("inventario", new LinkedHashMap<String, Object>(inventario.contenido()));
+        Map<String, Object> ajustes = new LinkedHashMap<>();
+        for (String a : AJUSTES) {
+            ajustes.put(a, config.actual().entero(a));
+        }
+        doc.put("ajustes", ajustes);
+        return EscritorJson.escribir(Nodo.desde(doc));
+    }
+
+    /**
+     * Partida guardada con {@link #guardar()}: parte de una partida nueva del mismo paquete y le pone
+     * encima lo guardado. Lanza {@link ErrorDeDatos} (con la ruta del campo) si el texto no vale.
+     */
+    public static Partida cargar(FuenteContenido fuente, Azar azar, String texto) {
+        Nodo doc = LectorJson.leer(texto);
+        Documentos.exigir(doc, TIPO_PARTIDA, VERSION_PARTIDA);
+        Partida p = nueva(fuente, azar);
+        try {
+            p.aplicar(doc);
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            throw new ErrorDeDatos("partida: " + e.getMessage(), e);
+        }
+        return p;
+    }
+
+    private void aplicar(Nodo doc) {
+        List<Nodo> ng = doc.lista("grupo");
+        Documentos.dentro(doc, "grupo", ng.size(), 1, 6);
+        List<Heroe> nuevos = new ArrayList<>();
+        for (Nodo n : ng) {
+            DefinicionCombatiente clase = catalogo.combatiente(n.texto("clase"));
+            if (clase.bando != Bando.HEROE) {
+                throw new ErrorDeDatos(n.ruta() + ".clase: \"" + clase.id + "\" no es un héroe");
+            }
+            Heroe h = new Heroe(clase, n.texto("nombre"), progresion);
+            Nodo eq = n.objeto("equipo");
+            for (String ranura : eq.claves()) {
+                DefinicionObjeto o = objetos.objeto(eq.texto(ranura));
+                if (!o.equipablePor(clase.id) || !ranura.equals(o.ranura)) {
+                    throw new ErrorDeDatos(eq.ruta() + "." + ranura + ": \"" + o.id + "\" no se puede equipar ahí");
+                }
+                h.equipar(o);
+            }
+            try {
+                h.restaurarEstado(Documentos.rango(n, "experiencia", 0, 99_999_999),
+                        Documentos.rango(n, "vida", 0, 99999), Documentos.rango(n, "magia", 0, 9999));
+            } catch (IllegalArgumentException e) {
+                throw new ErrorDeDatos(n.ruta() + ": " + e.getMessage());
+            }
+            nuevos.add(h);
+        }
+        Nodo ni = doc.objeto("inventario");
+        Map<String, Integer> cantidades = new LinkedHashMap<>();
+        for (String id : ni.claves()) {
+            objetos.objeto(id);
+            cantidades.put(id, Documentos.rango(ni, id, 1, 999));
+        }
+        Mapa m = mapa(doc.texto("mapa"));
+        int x = doc.entero("x");
+        int y = doc.entero("y");
+        if (!m.pasable(x, y)) {
+            throw new ErrorDeDatos(doc.ruta() + ".x/y: (" + x + ", " + y + ") no es una casilla pasable de " + m.id);
+        }
+        Set<String> vencidos = new LinkedHashSet<>();
+        for (Nodo j : doc.lista("jefes")) {
+            servicios.jefe(j.comoTexto());
+            vencidos.add(j.comoTexto());
+        }
+        int oroGuardado = Documentos.rango(doc, "oro", 0, 999_999);
+        Configuracion nuevaConfig = config.actual();
+        if (doc.tiene("ajustes")) {
+            Nodo na = doc.objeto("ajustes");
+            for (String a : AJUSTES) {
+                if (na.tiene(a)) {
+                    nuevaConfig = nuevaConfig.con(a, na.entero(a));
+                }
+            }
+        }
+        // Todo es válido: ahora sí se cambia el estado.
+        orden.clear();
+        orden.addAll(nuevos);
+        for (String id : new ArrayList<>(inventario.contenido().keySet())) {
+            inventario.quitar(id, inventario.cantidad(id));
+        }
+        for (Map.Entry<String, Integer> e : cantidades.entrySet()) {
+            inventario.agregar(e.getKey(), e.getValue());
+        }
+        oro = oroGuardado;
+        jefesDerrotados.clear();
+        jefesDerrotados.addAll(vencidos);
+        config.reemplazar(nuevaConfig);
+        irAMapa(m.id, x, y);
+    }
+
     /** Combate contra los enemigos de un encuentro; los héroes entran con su vida y magia actuales. */
     public Combate empezarCombate(List<String> enemigos) {
+        return empezarCombate(enemigos, true);
+    }
+
+    /** Igual, indicando si se puede huir (los jefes no se rehúyen). */
+    public Combate empezarCombate(List<String> enemigos, boolean huidaPermitida) {
         List<Combatiente> heroes = new ArrayList<>();
         for (Heroe h : grupo) {
             heroes.add(h.entrarEnCombate());
         }
-        return new Combate(config, acciones, azar, heroes, Encuentros.crearEnemigos(enemigos, catalogo), true);
+        return new Combate(config, acciones, azar, heroes, Encuentros.crearEnemigos(enemigos, catalogo), huidaPermitida);
     }
 
     /** Guarda en los héroes cómo terminaron y, si hubo victoria, reparte experiencia, oro y botín. */

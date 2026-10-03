@@ -68,8 +68,19 @@ Archivo `mapas/<id>.json` (el `id` interno igual al nombre). Ejemplo real abrevi
   "filas": [ "^^^^^", "^.=.^", "^^^^^" ],
   "inicio": { "x": 2, "y": 1 } }
 ```
-Cada `zona` usada debe existir en `encuentros.json`; las casillas sin `zona` son seguras. `color` (`#RRGGBB`) es opcional: es el color con que se dibuja la casilla; sin él se usa un verde (pasable) o gris (no pasable) con el símbolo encima. Se carga con `Mapa.cargar(fuente, "campo")` y se recorre con `Explorador` y `Encuentros.mover`. Las salidas entre mapas aún no existen (llegan con el pueblo y la mazmorra, H5–H6); cuando se añadan, documentar el campo en el contrato.
+Cada `zona` usada debe existir en `encuentros.json`; las casillas sin `zona` son seguras. `color` (`#RRGGBB`) es opcional: es el color con que se dibuja la casilla; sin él se usa un verde (pasable) o gris (no pasable) con el símbolo encima. Se carga con `Mapa.cargar(fuente, "campo")` y se recorre con `Explorador` y `Encuentros.mover`. Las salidas entre mapas y los lugares con servicios son campos opcionales del mapa (receta 5b).
 - **Prueba:** en `mundo/MapaTest`, cargar el mapa del paquete y comprobar que el inicio es pasable; en `mundo/EncuentrosTest`, `tabla.validarMapa(mapa)`. Si el mapa tiene un camino obligatorio, una prueba que lo recorra con `Explorador.mover` y verifique la posición final.
+
+## 5b. Una salida, una tienda, una posada, un vecino o un jefe
+Salidas entre mapas y lugares son listas opcionales del mapa; lo que hay en cada lugar se describe en `servicios.json` (ver el contrato). Ejemplo real de `mapas/pozaluz.json`:
+```json
+"salidas": [ { "x": 6, "y": 0, "mapa": "campo", "destino": { "x": 2, "y": 1 } } ],
+"lugares": [ { "x": 8, "y": 1, "tipo": "tienda", "ref": "tienda-de-lupe" } ]
+```
+- **Salida con llave:** añadir `"requiere": "llave-de-cantera"` (id de un objeto) a la salida; sin el objeto la puerta no cede. El destino debe ser una casilla pasable que no sea salida.
+- **Tienda / posada / vecino:** una entrada en `tiendas`, `posadas` o `vecinos` de `servicios.json` con un id nuevo, y un `lugar` del mapa que lo nombre en `ref`. El lugar suele ser una casilla no pasable (mostrador); se usa con Aceptar estando enfrente. Un vecino necesita una escena (receta 6).
+- **Jefe:** una entrada en `jefes` (enemigos, escena previa, escena final y sitio de regreso) y un `lugar` de tipo `jefe`. El enemigo puede llevar `golpeFuerte` en `combatientes.json` (`cada` N turnos usa una habilidad sin coste; ver el contrato).
+- **Prueba:** `juego/PuebloTest` (tienda, posada, vecinos), `juego/CanteraTest` (puerta con llave y escaleras: recorrer con `Partida.irAMapa` y `Explorador.mover`) y `juego/JefeTest`. `Partida.nueva` ya rechaza al empezar un mapa con una salida mal puesta, un `ref` que no existe o un objeto `requiere` inexistente.
 
 ## 6. Una escena de texto
 Archivo `escenas/<id>.json` (el `id` interno igual al nombre). Ejemplo real abreviado de `escenas/apertura.json`:
@@ -117,8 +128,11 @@ El menú (`PantallaMenu`) se abre desde el mapa con Cancelar y apila una pantall
 3. Si la sección cambia un parámetro, declararlo en un `Configuracion*.declarar` y documentarlo en el contrato; se cambia con `config.reemplazar(config.actual().con(nombre, valor))` y un valor fuera de rango lanza `ErrorDeDatos` (ver `PantallaAjustes`).
 - **Prueba:** abrir el menú con `j.pulsar(Boton.CANCELAR)`, bajar hasta la sección, `ACEPTAR`, y comprobar el efecto en la `Partida` y lo dibujado (ejemplos en `MenuGrupoTest`, `EquipoMenuTest`, `EstadoFormacionTest` y `AjustesTest`). Los héroes de prueba se hieren con `Heroe.entrarEnCombate()` + `recibirDanio` + `salirDeCombate`.
 
+## 8c. Guardar y cargar
+`Partida.guardar()` devuelve el texto del guardado y `Partida.cargar(fuente, azar, texto)` lo aplica sobre una partida nueva (formato en el contrato, documento `partida`). Si añades algo que cambie durante el juego (una bandera, un contador), hay que escribirlo en `guardar()` y leerlo en `aplicar()` con su validación, y ampliar `juego/GuardadoTest` (ida y vuelta: el texto de la partida cargada debe ser idéntico al original). El `Almacen` lo elige quien crea el `Juego`: `AlmacenMemoria` en pruebas y `AlmacenArchivos` en Android.
+
 ## 9. La capa Android
-Son cuatro clases y no deberían cambiar al añadir contenido: `MainActivity` (crea el `Juego` con los assets), `android/VistaJuego` (bucle, toques y teclas), `android/LienzoCanvas` (escena → Canvas) y `android/LectorAssets`. No se pueden probar en la nube: las compila el flujo `Pruebas` y el APK lo construye el flujo `APK`.
+Son cuatro clases y no deberían cambiar al añadir contenido: `MainActivity` (crea el `Juego` con los assets y el almacén de guardado), `android/VistaJuego` (bucle, toques y teclas), `android/LienzoCanvas` (escena → Canvas) y `android/LectorAssets`. No se pueden probar en la nube: las compila el flujo `Pruebas` y el APK lo construye el flujo `APK`.
 
 ## Comprobar un paquete nuevo
 Para otro juego, copiar la carpeta `contenido/` con sus propios datos y cargarla con `new FuenteContenidoJson(new LectorArchivos(carpeta))` (o `LectorMemoria` en pruebas). Desde H3.5 un paquete necesita además `configuracion.json` e `inicio.json`; si falta algo, el juego muestra `PantallaError` en lugar de cerrarse. Ningún cargador conoce ids concretos: si los datos son válidos, el motor funciona sin cambiar código (lo verificará H8 con un segundo paquete mínimo).
