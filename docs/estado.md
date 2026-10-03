@@ -1,11 +1,11 @@
 # Estado · ff1
 
 ## Control
-- Estado del MVP: EN CURSO
+- Estado del MVP: LISTO PARA REVISIÓN
 - Bloques ejecutados: 15 de 50
 - Bloques seguidos sin avance: 0
 
-Última actualización: 2026-10-03 (bloque 15, Sonnet: limpieza del editor hecha; sigue H12)
+Última actualización: 2026-10-03 (bloque 15, Sonnet: limpieza del editor y H12 terminados; Fase 2 lista para revisión)
 
 ## Hecho
 - Proyecto movido a `Desktop\Android\ff1`.
@@ -47,12 +47,22 @@
 - Bloque 14 (Sonnet, Fase 2: H11 terminado, rama `feature/h11-contenido` desde `main`): **editores de tabla** (`tablas.js` con el modelo declarativo de columnas y las funciones puras; `editor-tablas.js` con la interfaz): combatientes, habilidades, objetos, botín, encuentros y servicios (tiendas, posadas, vecinos y jefes en pestañas), con añadir, duplicar (id libre `x-copia`) y borrar (avisa dónde se usa el id), referencias por lista desplegable, ids rotos marcados, y guardado bloqueado mientras haya problemas. **Vista de balance** (`balance.js`, `vista-balance.js`): daño y golpes héroe↔enemigo por nivel y tabla de experiencia con las fórmulas de `Acciones`; `BalanceEditorTest` (Java) y `balance.test.js` leen el mismo `pruebas/balance-casos.json`, así que el motor real y el editor no pueden discrepar. **Mapas y escenas** (`mundo.js`, `editor-mundo.js`): cuadrícula del mapa en solo lectura con inicio, salidas y lugares, y edición de los textos de las escenas. Humo en Chromium sin cabeza con una carpeta simulada: crear un enemigo y guardar, botín con id, pestañas de servicios, balance, mapa y escena con `.bak`, sin errores de consola. 275 pruebas Java y 50 de node.
 - Pull request #24 (H11) fusionado en `main` por el usuario.
 - Bloque 15 (Sonnet, limpieza tras H9–H11, rama `chore/limpieza-editor` desde `main`): `herramientas/editor/dom.js` con `Dom.el` sustituye las cuatro copias de `el()`; sin cambios de comportamiento. 275 pruebas Java y 50 de node.
+- Bloque 15 (Sonnet, H12 terminado, rama `feature/h12-conexion` desde `chore/limpieza-editor`): `scripts/exportar-contenido.sh` (valida y exporta a una carpeta vacía), botón «Exportar copia…» y `Almacen.exportarPaquete`, flujo «Del editor al juego» en `herramientas/editor/LEEME.md`, `exportar.test.js` con el flujo completo. 275 pruebas Java y 57 de node. **Fase 2 lista para revisión.**
 - Autorizado por el usuario el 2026-10-02: límite de 50 bloques (antes 24), quitar el código nativo de la plantilla (ver `skills/01-trabajo-autonomo.md`) y bloques de hasta unos 25 minutos, una sesión por hora.
 - Bloque 13 (Sonnet, Fase 2: H9 y H10 terminados, rama `feature/h9-validador` desde `main`): **H9** `herramientas.ValidadorContenido` (Java puro, usa los cargadores reales del motor) y `scripts/validar-contenido.sh <carpeta> [--json]`: una línea por documento (`OK`/`ERROR`/`OMITIDO`), detalle con la ruta del campo solo en los errores, código de salida 0/1/2; `ValidadorContenidoTest` (paquete del juego, paquete mínimo, referencia rota, JSON mal formado, rango, documento ausente, salida JSON). `LectorArchivos` ahora lanza `FileNotFoundException` si falta el archivo y `CatalogoCombate.cargar` antepone el documento (`habilidades.json:`/`combatientes.json:`) a sus errores. **H10** `herramientas/editor/` (`index.html`, `estilo.css`, `app.js`, `logica.js`, `almacen.js`, `esquema-configuracion.js`, `LEEME.md`): abre la carpeta con la API de archivos, lista los documentos, formulario de `configuracion.json` con rango, descripción y valor por defecto de los 17 parámetros, validación al escribir, guardado con `.bak`, aviso de cambios sin guardar y cuadro "Revisar con el motor" (comando + carga de `informe.json`). `EsquemaConfiguracion` expone `nombres/esEntero/minimo/maximo/defecto` de solo lectura y `EsquemaEditorTest` compara el esquema del editor con el del motor. `scripts/probar-editor.sh` (node, sin dependencias): 23 pruebas, entre ellas que el motor acepta lo que el editor guarda (mínimos, máximos y un cambio normal). Humo en Chromium sin cabeza con una carpeta simulada: abrir, editar, error de rango, guardar y `.bak` correctos, sin errores de consola. 274 pruebas Java.
 
 ## Siguiente
-1. **H12 · Conexión con el juego** (ver `docs/plan.md`): documentar y probar el flujo editar → validar → copiar → compilar, opción de exportar un paquete como carpeta lista, revisión final y, al terminar, `LISTO PARA REVISIÓN` con los pasos para que el usuario pruebe el editor.
-2. Pixel art: fase posterior, requiere un contrato de arte.
+1. Revisión del usuario de la Fase 2 (pasos abajo). Si todo va bien, fusionar en orden los pull requests de "Ramas y pull requests pendientes".
+2. Pixel art: fase posterior, requiere un contrato de arte. Idea pendiente: editar `inicio.json`, `progresion.json` y la forma de los mapas desde el editor (no está en el plan).
+
+## Cómo probar el editor (Fase 2)
+Necesitas Chrome o Edge en el computador, el repositorio con las ramas fusionadas (o la rama `feature/h12-conexion`) y, para validar, Java 11+ en la terminal.
+1. **Abrirlo:** abre `herramientas/editor/index.html` en Chrome/Edge (doble clic o arrastrarlo al navegador). Pulsa **Abrir carpeta de contenido…**, elige `app/src/main/assets/contenido` y concede permiso de lectura y escritura. Debe listar los documentos (configuración, tablas, mapas, escenas).
+2. **Editar un parámetro:** en `configuracion.json` cambia `combate.ticksPorPaso` (ritmo del combate) a otro valor dentro del rango; escribe uno fuera de rango para ver el aviso en el mismo campo. **Guardar** debe dejar `configuracion.json.bak`. En «Combatientes» prueba **Duplicar** un enemigo y cambiar su vida; mira la pestaña de **Balance**.
+3. **Validar:** pulsa **Revisar con el motor**, copia el comando y córrelo en la raíz del proyecto (`scripts/validar-contenido.sh "app/src/main/assets/contenido" --json > informe.json`); carga `informe.json` en el cuadro. Todo debe salir `OK`. Si metes a propósito un id roto, el motor debe marcarlo.
+4. **Exportar (opcional):** **Exportar copia…** a una carpeta vacía, o `scripts/exportar-contenido.sh app/src/main/assets/contenido ../variante`.
+5. **Ver el cambio en el juego:** compila el APK de depuración (Android Studio) o sube la rama y baja el APK del flujo `APK` de GitHub (ver más abajo), instálalo, empieza una partida nueva y entra a un combate: debe notarse el ritmo o el enemigo que cambiaste. Para deshacer: `git checkout app/src/main/assets/contenido`.
+6. Anotar en "Preguntas pendientes" (o decirlo al agente) lo que se vea mal: pantallas apretadas, textos confusos, campos que falten.
 
 ## Cómo probar el APK
 1. **Bajarlo:** en GitHub, pestaña **Actions** del repositorio → ejecución **APK** de la rama (`feature/h8-cierre`, o `main` cuando esté fusionada) → sección **Artifacts** → **ff1-debug-apk** (un .zip con el .apk; dura 14 días). Enlace directo a las ejecuciones: https://github.com/nivergarah-collab/ff1/actions/workflows/apk.yml
@@ -80,14 +90,15 @@ Limitaciones conocidas: una sola ranura de guardado; no se guarda a mitad de un 
 
 ## Ramas y pull requests pendientes
 Orden de fusión: de la más antigua a la más nueva, con "Merge commit".
-1. `chore/limpieza-editor` (desde `main`): limpieza del editor (`Dom.el`). Sin pull request: las ramas `chore/**` se abren al cerrar el hito siguiente; H12 parte de esta rama.
+1. `chore/limpieza-editor` (desde `main`): limpieza del editor (`Dom.el`). Pull request abierto con H12.
+2. `feature/h12-conexion` (desde `chore/limpieza-editor`): H12 (exportar y flujo documentado). Pull request abierto al cerrar el bloque 15.
 
 ## Preguntas pendientes
 - Las ramas `chore/**` no disparan los flujos `Pruebas` ni `APK` (solo `main`, `feature/**` y `fix/**`); `chore/limpieza-h5-h7` no tiene ejecuciones, pero su contenido está incluido en `feature/h8-integracion`, que sí está en verde. Si se quiere CI en `chore/**`, lo añade el usuario en `.github/`.
 - `gradle/libs.versions.toml` conserva la entrada `games-activity`, ya sin uso; quitarla es opcional y lo decide el usuario (`gradle/` no lo toca el agente).
 
 ## Pruebas
-Nube, 2026-10-03 (bloque 15): `scripts/probar-logica.sh` 275 de 275 pruebas pasan en `chore/limpieza-editor`; `scripts/probar-editor.sh` 50 de 50 (node 22). Las ramas `chore/**` no disparan Actions.
+Nube, 2026-10-03 (bloque 15): `scripts/probar-logica.sh` 275 de 275 pruebas pasan en `feature/h12-conexion`; `scripts/probar-editor.sh` 57 de 57 (node 22). Las ramas `chore/**` no disparan Actions.
 
 ## Notas
 - `ExampleUnitTest` y `ExampleInstrumentedTest` son de la plantilla y se reemplazarán.

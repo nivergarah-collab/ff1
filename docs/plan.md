@@ -102,9 +102,9 @@ Reglas de la fase:
 - **Salida:** crear un enemigo nuevo y su encuentro desde el editor sin escribir JSON a mano.
 
 ### H12 · Conexión con el juego
-- [ ] Documentar y probar el flujo: editar → validar → copiar la carpeta de contenido → compilar el APK.
-- [ ] Opción de exportar un paquete de contenido como carpeta lista para una variante del juego.
-- [ ] Revisión final, `docs/estado.md` con pasos para que el usuario pruebe el editor, y estado `LISTO PARA REVISIÓN`.
+- [x] Documentar y probar el flujo: editar → validar → copiar la carpeta de contenido → compilar el APK.
+- [x] Opción de exportar un paquete de contenido como carpeta lista para una variante del juego.
+- [x] Revisión final, `docs/estado.md` con pasos para que el usuario pruebe el editor, y estado `LISTO PARA REVISIÓN`.
 
 ## Deuda técnica
 Registrar aquí lo que se deja pendiente de refactorizar o limpiar.
