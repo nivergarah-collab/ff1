@@ -4,6 +4,14 @@ Formato: más reciente primero, con fecha en `AAAA-MM-DD`.
 
 ## 2026-10-03
 
+### Añadido (bloque 12, H8 terminado)
+- Elección de los nombres de los héroes al empezar una partida nueva: `EditorNombre` (rejilla de letras con la cruceta, Borrar y Fin), `PantallaNombres` antes de la apertura, `Heroe.renombrar` y el parámetro `juego.largoNombre` (1–12, por defecto 8). `NombresTest`. 262 pruebas.
+- README final.
+
+### Cambiado (bloque 12)
+- Las listas de combate, tienda y objetos comparten `Estilo.desdeVentana`: si no caben, se desplazan con el cursor (antes solo el combate).
+- MVP en estado `LISTO PARA REVISIÓN`.
+
 ### Añadido (bloque 11, H8)
 - Segundo paquete de contenido mínimo "El faro de la ensenada" (`app/src/test/resources/contenido-minimo/`) y `PaqueteMinimoTest`: el motor juega una partida entera con él sin cambiar código.
 - `RecorridoCompletoTest`: una partida de principio a fin con el paquete del juego, guardado y Continuar incluidos. 257 pruebas.

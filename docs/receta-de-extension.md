@@ -91,7 +91,7 @@ Archivo `escenas/<id>.json` (el `id` interno igual al nombre). Ejemplo real abre
               { "quien": "{heroe:herbolaria}", "texto": "Las ovejas ya no beben." },
               { "quien": "Ofelia", "texto": "{heroe:guardian}, la llave ahora es tuya." } ] }
 ```
-Sin `quien` habla el narrador. `{heroe:<clase>}` pone el nombre que el jugador dio al héroe de esa clase (los textos no deben llevar los nombres de ejemplo). Para mostrarla: `new PantallaEscena(juego, Guion.cargar(fuente, "id"), partida.nombresPorClase(), pantallaSiguiente)` y `juego.irA(...)`; al terminar la última línea pasa a `pantallaSiguiente`. La apertura se engancha con el campo opcional `introduccion` de `inicio.json`.
+Sin `quien` habla el narrador. `{heroe:<clase>}` pone el nombre que el jugador dio al héroe de esa clase (los textos no deben llevar los nombres de ejemplo). Para mostrarla: `new PantallaEscena(juego, Guion.cargar(fuente, "id"), partida.nombresPorClase(), pantallaSiguiente)` y `juego.irA(...)`; al terminar la última línea pasa a `pantallaSiguiente`. La apertura se engancha con el campo opcional `introduccion` de `inicio.json`. En una partida nueva, antes de la apertura, `PantallaNombres` deja al jugador cambiar el nombre de cada héroe del grupo (propone el de `inicio.json`; largo máximo en `juego.largoNombre`).
 - **Prueba:** en `juego/EscenaDeTextoTest`: cargar la escena del paquete (`Guion.cargar(PaqueteDelJuego.fuente(), "id")`), avanzar con `j.pulsar(Boton.ACEPTAR)` y comprobar la línea con `Escena.contieneTexto`; y que una escena con un campo inválido se rechaza con la ruta del campo en el mensaje (`Guion.desde(LectorJson.leer(...))`).
 
 ## 7. La partida nueva

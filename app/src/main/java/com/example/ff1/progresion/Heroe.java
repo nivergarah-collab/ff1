@@ -13,7 +13,7 @@ import com.example.ff1.inventario.Equipo;
 public final class Heroe {
 
     private final DefinicionCombatiente clase;
-    private final String nombre;
+    private String nombre;
     private final TablaProgresion tabla;
     private final Equipo equipo;
     private int experiencia;
@@ -33,6 +33,14 @@ public final class Heroe {
 
     public String nombre() {
         return nombre;
+    }
+
+    /** Cambia el nombre (lo elige el jugador al empezar); no puede quedar vacío. */
+    public void renombrar(String nuevo) {
+        if (nuevo == null || nuevo.trim().isEmpty()) {
+            throw new IllegalArgumentException("el nombre no puede quedar vacío");
+        }
+        this.nombre = nuevo;
     }
 
     public DefinicionCombatiente clase() {

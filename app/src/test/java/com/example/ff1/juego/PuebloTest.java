@@ -24,7 +24,7 @@ public class PuebloTest {
     static Juego enPozaluz() {
         Juego j = JuegoTest.nuevo(1);
         j.pulsar(Boton.ACEPTAR);
-        for (int i = 0; i < 50 && j.pantalla() instanceof PantallaEscena; i++) {
+        for (int i = 0; i < 50 && (j.pantalla() instanceof PantallaNombres || j.pantalla() instanceof PantallaEscena); i++) {
             j.pulsar(Boton.ACEPTAR);
         }
         assertTrue(j.pantalla() instanceof PantallaExploracion);
@@ -211,7 +211,7 @@ public class PuebloTest {
         Escena e = new Escena();
         j.dibujar(e);
         assertTrue(e.contieneTexto("Ofelia"));
-        for (int i = 0; i < 10 && j.pantalla() instanceof PantallaEscena; i++) {
+        for (int i = 0; i < 10 && (j.pantalla() instanceof PantallaNombres || j.pantalla() instanceof PantallaEscena); i++) {
             j.pulsar(Boton.ACEPTAR);
         }
         assertEquals(mapa, j.pantalla());

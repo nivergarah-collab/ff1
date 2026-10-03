@@ -55,6 +55,14 @@ public final class Estilo {
         }
     }
 
+    /**
+     * Primera opción visible de una lista que muestra {@code visibles} filas y sigue al cursor: si la
+     * lista no cabe, el cursor queda en la última fila visible (o más arriba, al llegar al final).
+     */
+    public static int desdeVentana(int cursor, int total, int visibles) {
+        return Math.max(0, Math.min(cursor - visibles + 1, total - visibles));
+    }
+
     /** Barra horizontal llena en proporción {@code valor / maximo}. */
     public static void barra(Escena e, int x, int y, int ancho, int alto, int valor, int maximo, int color) {
         e.rectangulo(x, y, ancho, alto, VACIO);

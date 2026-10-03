@@ -124,12 +124,21 @@ public final class Juego {
             partida = Partida.nueva(fuente, azar);
             pila.clear();
             rapido = partida.config().actual().entero(ConfiguracionJuego.RAPIDO_AL_EMPEZAR) == 1;
-            Pantalla mapa = new PantallaExploracion(this, partida);
-            irA(partida.introduccion() == null ? mapa
-                    : new PantallaEscena(this, partida.introduccion(), partida.nombresPorClase(), mapa));
+            if (partida.grupo().isEmpty()) {
+                empezarRecorrido();
+            } else {
+                irA(new PantallaNombres(this, partida));
+            }
         } catch (ErrorDeDatos e) {
             irA(new PantallaError(this, e.getMessage()));
         }
+    }
+
+    /** Tras elegir los nombres: la apertura (si el paquete trae una) y después el mapa. */
+    void empezarRecorrido() {
+        Pantalla mapa = new PantallaExploracion(this, partida);
+        irA(partida.introduccion() == null ? mapa
+                : new PantallaEscena(this, partida.introduccion(), partida.nombresPorClase(), mapa));
     }
 
     /** Si hay una partida guardada que continuar. */

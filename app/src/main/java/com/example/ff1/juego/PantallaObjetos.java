@@ -15,6 +15,9 @@ import java.util.Map;
  */
 public final class PantallaObjetos implements Pantalla {
 
+    /** Filas de la lista que caben en la ventana; con más, la lista se desplaza con el cursor. */
+    static final int VISIBLES = 9;
+
     private final Juego juego;
     private final Partida partida;
     private final List<String> ids = new ArrayList<>();
@@ -128,9 +131,10 @@ public final class PantallaObjetos implements Pantalla {
         if (ids.isEmpty()) {
             e.texto(16, 44, "No llevas objetos.", Estilo.LETRA, Estilo.APAGADO);
         }
-        for (int i = 0; i < ids.size(); i++) {
+        int desde = Estilo.desdeVentana(cursor, ids.size(), VISIBLES);
+        for (int i = desde; i < Math.min(ids.size(), desde + VISIBLES); i++) {
             DefinicionObjeto o = partida.objetos().objeto(ids.get(i));
-            int yy = 40 + i * Estilo.LINEA;
+            int yy = 40 + (i - desde) * Estilo.LINEA;
             int color = i == cursor ? Estilo.RESALTE : usable(o) ? Estilo.TEXTO : Estilo.APAGADO;
             if (i == cursor) {
                 Estilo.marcador(e, 12, yy);
