@@ -72,7 +72,7 @@ Hito insertado por el usuario el 2026-10-02 (ver `decisiones.md`): el juego nece
 - [x] Actualizar `docs/contrato-de-datos.md` con lo que quedó (documentos obligatorios y opcionales, paquete mínimo, tipos de lugar, `juego.Guardado`, textos de la interfaz).
 - [ ] Recorrido completo en emulador (lo verifica el usuario; pasos en `docs/estado.md`).
 - [x] Elegir los nombres de los héroes al empezar (punto 3 de `mision-mvp.md`, que faltaba: hoy salen de `inicio.json`). Pantalla de nombres en Java puro con rejilla de letras manejada con la cruceta, nombre por defecto el de `inicio.json`, antes de la apertura; con pruebas. Añadida en el bloque 11 al repasar la definición de terminado. Hecho en el bloque 12: `EditorNombre`, `PantallaNombres`, `juego.largoNombre` y `NombresTest`.
-- [ ] Refactorización, eliminación de código muerto, balance y README final. (Hecho en el bloque 11: guardado separado en `juego.Guardado`, registro de lugares, `Bando.contrario` quitado, tope del oro unificado, prueba `RecorridoCompletoTest` y balance del Soterrado. Queda el README final, tras los nombres.)
+- [x] Refactorización, eliminación de código muerto, balance y README final. (Hecho en el bloque 11: guardado separado en `juego.Guardado`, registro de lugares, `Bando.contrario` quitado, tope del oro unificado, prueba `RecorridoCompletoTest` y balance del Soterrado. README final y ventana de listas común `Estilo.desdeVentana` en el bloque 12.)
 
 ## Deuda técnica
 Registrar aquí lo que se deja pendiente de refactorizar o limpiar.
@@ -83,6 +83,6 @@ Registrar aquí lo que se deja pendiente de refactorizar o limpiar.
 - H3.5: los textos de la interfaz (menús, mensajes de combate en `juego.Mensajes`) están en el código; pasarlos a datos si se quiere traducir o reutilizar (H8). Los héroes caídos siguen caídos tras ganar un combate hasta que exista la posada (H5).
 - Limpieza tras H3.6 y H4 hecha en el bloque 9 (`Menu.vuelta`, `Estilo.marcador`). Pendiente para H8: unificar el dibujo de listas con ventana y los textos de las pantallas del menú (siguen en el código).
 - Limpieza tras H5–H7 hecha en el bloque 11 (rama `chore/limpieza-h5-h7`): guardado en `juego.Guardado`, registro de lugares (`Mapa.TIPOS_LUGAR`, `Servicios.servicio`, `PantallaExploracion.lugares()`), `Bando.contrario` sin uso quitado y tope del oro en `Partida.ORO_MAXIMO`. Los textos de `PantallaTienda`/`PantallaPosada` siguen en el código: pasarlos a datos exige un documento nuevo (cambio de contrato), así que quedan como deuda aceptada junto al resto de textos de la interfaz.
-- Deuda aceptada del MVP: textos fijos de la interfaz en el código (`Mensajes` y cada `Pantalla*`), y el dibujo de listas con ventana sin unificar (cada pantalla tiene su disposición y unificarla cambiaría lo que se ve). Los nombres de contenido sí vienen siempre del paquete.
+- Deuda aceptada del MVP: textos fijos de la interfaz en el código (`Mensajes` y cada `Pantalla*`), y la disposición de cada lista propia de su pantalla (bloque 12: el desplazamiento de las listas largas ya es común, `Estilo.desdeVentana`, en combate, tienda y objetos). Los nombres de contenido sí vienen siempre del paquete.
 - Enemigos con habilidades: solo el jefe usa `golpeFuerte`; los demás atacan (la IA general queda fuera del MVP).
 - Guardado: una sola ranura y no se guarda dentro de un combate.
