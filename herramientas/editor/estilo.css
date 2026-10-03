@@ -171,3 +171,8 @@ dialog menu { margin: 16px 0 0; padding: 0; display: flex; justify-content: flex
 .subfila { width: 100%; border: 1px solid var(--borde); border-radius: 8px; padding: 10px; display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px 14px; background: var(--fondo); }
 .subfila > button { align-self: end; justify-self: start; }
 .documentos button.sucio::after { content: ' ●'; color: var(--aviso); }
+
+/* ---- Vista de balance (H11) ---- */
+.tabla-balance { width: 100%; border-collapse: collapse; margin: 6px 0 14px; font-size: 13px; }
+.tabla-balance th, .tabla-balance td { text-align: left; padding: 5px 8px; border-bottom: 1px solid var(--borde); }
+.tabla-balance th { color: var(--suave); font-weight: 600; background: var(--fondo); }

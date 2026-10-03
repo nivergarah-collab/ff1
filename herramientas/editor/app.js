@@ -6,6 +6,7 @@
   const ESQUEMA = window.ESQUEMA_CONFIGURACION;
   const T = window.Tablas;
   const ET = window.EditorTablas;
+  const VB = window.VistaBalance;
   const $ = (id) => document.getElementById(id);
 
   const TIPOS = {
@@ -23,6 +24,8 @@
     informe: null,
     tablas: {}, // ruta -> {doc, original (texto normalizado), invalido, sucio}
   };
+
+  const BALANCE = '__balance';
 
   // Documentos de tablas y las tablas que contiene cada uno.
   const TABLAS_DE = {
@@ -259,6 +262,10 @@
   function dibujarLista() {
     const ul = $('documentos');
     ul.replaceChildren();
+    if (estado.almacen && estado.documentos.some((d) => d.tipo === 'combatientes')) {
+      ul.append(el('li', {}, el('button', { type: 'button', 'data-ruta': BALANCE, 'aria-current': String(estado.actual === BALANCE), onclick: () => seleccionar(BALANCE) },
+        el('span', { texto: 'Vista de balance' }), el('span', { clase: 'etiqueta', texto: 'cálculo' }))));
+    }
     for (const d of estado.documentos) {
       const malo = estado.informe && estado.informe.documentos.find((x) => x.documento === d.ruta && x.estado === 'error');
       const boton = el('button', { type: 'button', 'data-ruta': d.ruta, 'aria-current': String(d.ruta === estado.actual), onclick: () => seleccionar(d.ruta) },
@@ -268,9 +275,30 @@
     }
   }
 
+  async function dibujarBalance() {
+    const cont = $('editor');
+    cont.hidden = false;
+    $('bienvenida').hidden = true;
+    let progresion;
+    if (estado.documentos.some((d) => d.ruta === 'progresion.json')) {
+      const r = L.analizar(await estado.almacen.leer('progresion.json'));
+      if (r.ok) progresion = r.valor;
+    }
+    const valoresVigentes = () => {
+      const c = estado.config;
+      if (!c || c.invalido) return {};
+      const v = {};
+      for (const p of ESQUEMA.parametros) { const n = L.leerNumero(c.entradas[p.nombre]); if (Number.isFinite(n)) v[p.nombre] = n; }
+      return v;
+    };
+    VB.dibujar(cont, { docs: { combatientes: docDeTabla('combatientes'), progresion }, valores: valoresVigentes });
+    actualizarBarra();
+  }
+
   async function seleccionar(ruta) {
     estado.actual = ruta;
     dibujarLista();
+    if (ruta === BALANCE) { await dibujarBalance(); return; }
     const doc = estado.documentos.find((d) => d.ruta === ruta);
     if (doc.tipo === 'configuracion') {
       if (!estado.config) estado.config = cargarConfiguracion(await estado.almacen.leer(ruta));
