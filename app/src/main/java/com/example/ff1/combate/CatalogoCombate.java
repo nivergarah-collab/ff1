@@ -40,7 +40,17 @@ public final class CatalogoCombate {
             Registro<?> estados) {
         Nodo docHabilidades = fuente.cargar(TIPO_HABILIDADES, TIPO_HABILIDADES, VERSION);
         Nodo docCombatientes = fuente.cargar(TIPO_COMBATIENTES, TIPO_COMBATIENTES, VERSION);
-        return desde(docCombatientes, docHabilidades, tiposHabilidad, estados);
+        Map<String, Habilidad> habilidades;
+        try {
+            habilidades = leerHabilidades(docHabilidades, tiposHabilidad, estados);
+        } catch (ErrorDeDatos e) {
+            throw new ErrorDeDatos(TIPO_HABILIDADES + ".json: " + e.getMessage(), e); // dice en qué documento está
+        }
+        try {
+            return new CatalogoCombate(leerCombatientes(docCombatientes, habilidades), habilidades);
+        } catch (ErrorDeDatos e) {
+            throw new ErrorDeDatos(TIPO_COMBATIENTES + ".json: " + e.getMessage(), e);
+        }
     }
 
     public static CatalogoCombate desde(Nodo docCombatientes, Nodo docHabilidades,

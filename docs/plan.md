@@ -83,9 +83,9 @@ Reglas de la fase:
 - Contenido original, como en el resto del proyecto.
 
 ### H9 · Validación de contenido desde la línea de comandos
-- [ ] `scripts/validar-contenido.sh <carpeta>`: carga un paquete de contenido con los validadores reales del motor (Java puro) e imprime una línea por documento y el detalle solo de los errores, con la ruta del campo. Código de salida distinto de cero si falla.
-- [ ] Pruebas del validador con paquetes buenos y malos (sobre el paquete del juego y sobre el segundo paquete de H8).
-- [ ] Una salida opcional en JSON (`--json`) para que el editor la lea.
+- [x] `scripts/validar-contenido.sh <carpeta>`: carga un paquete de contenido con los validadores reales del motor (Java puro) e imprime una línea por documento y el detalle solo de los errores, con la ruta del campo. Código de salida distinto de cero si falla.
+- [x] Pruebas del validador con paquetes buenos y malos (sobre el paquete del juego y sobre el segundo paquete de H8).
+- [x] Una salida opcional en JSON (`--json`) para que el editor la lea.
 - **Salida:** validar cualquier carpeta de contenido con un solo comando; documentado en `docs/pruebas.md`.
 
 ### H10 · Editor de la configuración
