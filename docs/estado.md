@@ -1,11 +1,11 @@
 # Estado · ff1
 
 ## Control
-- Estado del MVP: LISTO PARA REVISIÓN
+- Estado del MVP: EN CURSO
 - Bloques ejecutados: 12 de 50
 - Bloques seguidos sin avance: 0
 
-Última actualización: 2026-10-03, bloque 12 (Opus: H8 terminado, MVP listo para revisión)
+Última actualización: 2026-10-03 (usuario: nueva fase, editor de parámetros; el MVP queda terminado)
 
 ## Hecho
 - Proyecto movido a `Desktop\Android\ff1`.
@@ -46,17 +46,9 @@
 - Autorizado por el usuario el 2026-10-02: límite de 50 bloques (antes 24), quitar el código nativo de la plantilla (ver `skills/01-trabajo-autonomo.md`) y bloques de hasta unos 25 minutos, una sesión por hora.
 
 ## Siguiente
-El MVP cumple la definición de terminado de `docs/mision-mvp.md` y queda **LISTO PARA REVISIÓN**. Lo que debe hacer el usuario:
-1. **Revisar y fusionar** el pull request de `feature/h8-cierre` (con "Merge commit").
-2. **Recorrido completo en emulador o celular** (única tarea sin marcar de `docs/plan.md`): seguir "Cómo probar el APK" de abajo, de "Nueva partida" a la escena de cierre, y después Guardar, cerrar la app y Continuar.
-3. **Revisar en especial:**
-   - La pantalla de nombres (nueva): que la rejilla se lea bien, que el marcador `>` se vea y que el nombre largo (8 letras) quepa en las escenas y en el combate.
-   - El ritmo del jefe: se pensó para vencerlo a nivel 4–5 atacando sin más (antes con magia y objetos). Si queda muy duro o muy fácil, se ajusta en `combatientes.json` y `habilidades.json` sin tocar código.
-   - Tamaño de letra y de los botones táctiles en un celular real.
-   - El README final (`README.md`).
-4. **Decidir:** si se acepta el MVP, pausar o borrar la tarea programada (mientras siga activa, cada sesión sale de inmediato porque el estado no es `EN CURSO`). Para pedir cambios, anotarlos en "Preguntas pendientes" y volver el estado a `EN CURSO`.
-
-Lo que queda fuera del MVP o como deuda aceptada está en "Deuda técnica" de `docs/plan.md`.
+1. **Fase 2, editor de parámetros** (ver `docs/plan.md`): H9 (validador de contenido por línea de comandos), H10 (editor de la configuración), H11 (editor de contenido) y H12 (conexión con el juego). Rama `feature/h9-validador` desde `main`.
+2. Reglas: la herramienta va en `herramientas/editor/` sin dependencias; lo que guarda pasa la validación real del motor; no se cambia el contrato de datos de forma incompatible. Si el agente se atasca (2 bloques sin avance o `Pruebas` en rojo 2 bloques seguidos), pone `PAUSA: volver a Opus (motivo)`.
+3. Pixel art con modelos de personajes, monstruos y escenarios: fase posterior, requiere definir antes un contrato de arte.
 
 ## Cómo probar el APK
 1. **Bajarlo:** en GitHub, pestaña **Actions** del repositorio → ejecución **APK** de la rama (`feature/h8-cierre`, o `main` cuando esté fusionada) → sección **Artifacts** → **ff1-debug-apk** (un .zip con el .apk; dura 14 días). Enlace directo a las ejecuciones: https://github.com/nivergarah-collab/ff1/actions/workflows/apk.yml

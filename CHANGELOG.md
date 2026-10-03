@@ -4,6 +4,9 @@ Formato: más reciente primero, con fecha en `AAAA-MM-DD`.
 
 ## 2026-10-03
 
+### Añadido (usuario)
+- Fase 2 en `docs/plan.md`: editor de parámetros (hitos H9 a H12). Tarea reanudada (EN CURSO).
+
 ### Añadido (bloque 12, H8 terminado)
 - Elección de los nombres de los héroes al empezar una partida nueva: `EditorNombre` (rejilla de letras con la cruceta, Borrar y Fin), `PantallaNombres` antes de la apertura, `Heroe.renombrar` y el parámetro `juego.largoNombre` (1–12, por defecto 8). `NombresTest`. 262 pruebas.
 - README final.

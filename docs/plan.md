@@ -74,6 +74,38 @@ Hito insertado por el usuario el 2026-10-02 (ver `decisiones.md`): el juego nece
 - [x] Elegir los nombres de los héroes al empezar (punto 3 de `mision-mvp.md`, que faltaba: hoy salen de `inicio.json`). Pantalla de nombres en Java puro con rejilla de letras manejada con la cruceta, nombre por defecto el de `inicio.json`, antes de la apertura; con pruebas. Añadida en el bloque 11 al repasar la definición de terminado. Hecho en el bloque 12: `EditorNombre`, `PantallaNombres`, `juego.largoNombre` y `NombresTest`.
 - [x] Refactorización, eliminación de código muerto, balance y README final. (Hecho en el bloque 11: guardado separado en `juego.Guardado`, registro de lugares, `Bando.contrario` quitado, tope del oro unificado, prueba `RecorridoCompletoTest` y balance del Soterrado. README final y ventana de listas común `Estilo.desdeVentana` en el bloque 12.)
 
+## Fase 2 · Editor de parámetros (herramienta aparte)
+Meta: una herramienta para el computador, separada del juego, que lee y edita el contenido y la configuración (`app/src/main/assets/contenido/`) sin tocar el código del motor. Decisión del usuario (2026-10-03): opción 1 (interfaz paralela que adapta parámetros); el pixel art queda para una fase posterior.
+Reglas de la fase:
+- La herramienta vive en `herramientas/editor/`: HTML, CSS y JavaScript sin dependencias ni paso de construcción (se abre en el navegador). No toca `gradle/`, `settings.gradle.kts` ni `.github/`.
+- Lo que el editor guarda tiene que cumplir `docs/contrato-de-datos.md` y pasar la validación real del motor (Java), no solo una copia en JavaScript.
+- No se cambia de forma incompatible el contrato de datos ni las interfaces del motor; si hace falta ampliar el contrato, es una versión nueva compatible, anotada en `docs/decisiones.md`.
+- Contenido original, como en el resto del proyecto.
+
+### H9 · Validación de contenido desde la línea de comandos
+- [ ] `scripts/validar-contenido.sh <carpeta>`: carga un paquete de contenido con los validadores reales del motor (Java puro) e imprime una línea por documento y el detalle solo de los errores, con la ruta del campo. Código de salida distinto de cero si falla.
+- [ ] Pruebas del validador con paquetes buenos y malos (sobre el paquete del juego y sobre el segundo paquete de H8).
+- [ ] Una salida opcional en JSON (`--json`) para que el editor la lea.
+- **Salida:** validar cualquier carpeta de contenido con un solo comando; documentado en `docs/pruebas.md`.
+
+### H10 · Editor de la configuración
+- [ ] `herramientas/editor/index.html`: abrir la carpeta de contenido con la API de archivos del navegador, listar los documentos y mostrar `configuracion.json` como formulario (todos los parámetros, con rangos y descripciones tomados del contrato).
+- [ ] Guardado con copia de seguridad `.bak` y aviso de cambios sin guardar.
+- [ ] Validación en el editor (rangos y tipos del contrato) y botón para revisar con `scripts/validar-contenido.sh`.
+- [ ] `herramientas/editor/LEEME.md`: cómo abrirlo y qué hace.
+- **Salida:** cambiar el ritmo del combate o los pasos entre encuentros desde un formulario y verlo en el juego.
+
+### H11 · Editor de contenido
+- [ ] Editores de tabla para `combatientes`, `habilidades`, `objetos`, `botin`, `encuentros` y `servicios` (añadir, duplicar, borrar filas; referencias por id con lista desplegable y aviso de ids rotos).
+- [ ] Vista de balance: daño esperado, turnos para vencer a un enemigo y experiencia por nivel, calculados con las mismas fórmulas del motor (reutilizar el motor desde una prueba que exporte las tablas, o replicarlas con una prueba que compare ambos resultados).
+- [ ] Mapas y escenas: vista de solo lectura del mapa por casillas y edición de textos de escenas.
+- **Salida:** crear un enemigo nuevo y su encuentro desde el editor sin escribir JSON a mano.
+
+### H12 · Conexión con el juego
+- [ ] Documentar y probar el flujo: editar → validar → copiar la carpeta de contenido → compilar el APK.
+- [ ] Opción de exportar un paquete de contenido como carpeta lista para una variante del juego.
+- [ ] Revisión final, `docs/estado.md` con pasos para que el usuario pruebe el editor, y estado `LISTO PARA REVISIÓN`.
+
 ## Deuda técnica
 Registrar aquí lo que se deja pendiente de refactorizar o limpiar.
 - Combate: los factores estructurales de las fórmulas (defensa / 2 y / 4, el 2 × de la huida y sus límites 5–95 %) son constantes en `Acciones`; pasarlos a la configuración si el balance lo pide (H8).
